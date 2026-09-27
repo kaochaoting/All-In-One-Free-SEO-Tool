@@ -21,6 +21,7 @@ import {
 } from "@/db/schema";
 import { getSetting, setSetting } from "./settings-store";
 import { REPO_API_URL } from "./repo";
+import { autoUpdateEnabled } from "@/lib/feature-flags";
 
 const exec = promisify(execFile);
 
@@ -98,6 +99,9 @@ async function getUpdateAvailable(): Promise<boolean> {
   // Skip the check entirely inside Docker — users update by rebuilding the
   // container, not by clicking the in-app button.
   if (process.env.RUNNING_IN_DOCKER === "1") return false;
+  // zh-TW fork: no upstream GitHub update check unless explicitly enabled
+  // (SEO_ENABLE_AUTO_UPDATE=1, see src/lib/feature-flags.ts).
+  if (!autoUpdateEnabled()) return false;
 
   const now = Date.now();
   if (updateCache && now - updateCache.checkedAt < UPDATE_CHECK_TTL_MS) {

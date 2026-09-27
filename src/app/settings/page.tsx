@@ -51,6 +51,7 @@ import { apiKeys, inboundWebhooks } from "@/db/schema";
 import { desc as descSql } from "drizzle-orm";
 import { InboundWebhooksManager } from "./inbound-webhooks/manager";
 import { UpdateCard } from "./update-card";
+import { autoUpdateEnabled } from "@/lib/feature-flags";
 import { MaintainerCredit } from "@/components/shell/maintainer-credit";
 
 export default async function SettingsPage() {
@@ -236,8 +237,10 @@ export default async function SettingsPage() {
       </nav>
 
       {/* Updates — keep at top but visually quieter */}
+      {/* Upstream auto-update is disabled in the zh-TW fork unless
+          SEO_ENABLE_AUTO_UPDATE=1 (see src/lib/feature-flags.ts). */}
       <div id="install" className="scroll-mt-24">
-        <UpdateCard />
+        {autoUpdateEnabled() && <UpdateCard />}
       </div>
 
       {/* Data */}

@@ -15,12 +15,14 @@ import path from "node:path";
 import { existsSync } from "node:fs";
 import { detectPortFromRequest, rememberPort } from "@/lib/port-memory";
 import { guardAdminRequest } from "@/lib/admin-auth";
+import { selfRestartEnabled, disabledResponse } from "@/lib/feature-flags";
 
 export const dynamic = "force-dynamic";
 // Required: uses node:child_process + node:fs — Edge runtime can't load these.
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
+  if (!selfRestartEnabled()) return disabledResponse("restart");
   const denied = guardAdminRequest(req);
   if (denied) return denied;
 
