@@ -1,3 +1,4 @@
+import { tr } from "@/lib/i18n";
 /**
  * How the tools are grouped on /tools.
  *
@@ -40,32 +41,28 @@ export const CATEGORY_LABELS: Record<
   { label: string; description: string }
 > = {
   win: {
-    label: "Win the work",
-    description:
-      "Size up a site fast, and prove there's a problem worth paying to fix.",
+    label: tr("Win the work"),
+    description: tr("Size up a site fast, and prove there's a problem worth paying to fix."),
   },
   fix: {
-    label: "Find what's broken",
-    description:
-      "Diagnostics. Something's wrong and you need to know what, and where.",
+    label: tr("Find what's broken"),
+    description: tr("Diagnostics. Something's wrong and you need to know what, and where."),
   },
   improve: {
-    label: "Improve a page",
-    description: "Make one page better — content, meta, schema, links.",
+    label: tr("Improve a page"),
+    description: tr("Make one page better — content, meta, schema, links."),
   },
   track: {
-    label: "Track & report",
-    description: "Measure what's happening and turn it into something to send.",
+    label: tr("Track & report"),
+    description: tr("Measure what's happening and turn it into something to send."),
   },
   ai: {
-    label: "Get found by AI",
-    description:
-      "Being cited in ChatGPT, Perplexity and AI Overviews — and controlling which bots read you.",
+    label: tr("Get found by AI"),
+    description: tr("Being cited in ChatGPT, Perplexity and AI Overviews — and controlling which bots read you."),
   },
   occasional: {
-    label: "Occasional",
-    description:
-      "Migrations, generators and specialist jobs. Useful when you need them, noise when you don't.",
+    label: tr("Occasional"),
+    description: tr("Migrations, generators and specialist jobs. Useful when you need them, noise when you don't."),
   },
 };
 

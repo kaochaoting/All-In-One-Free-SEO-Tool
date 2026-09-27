@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { checkSecurity, type SecurityResult } from "./actions";
 import { useClientId } from "@/components/client-id-field";
+import { tr } from "@/lib/i18n";
 
 export default function SecurityPage() {
   // Seeded from ?url= so opening this from a client keeps the client.
@@ -44,7 +45,7 @@ export default function SecurityPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -53,19 +54,18 @@ export default function SecurityPage() {
             <ShieldCheck className="size-5 text-amber-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">Security headers + SSL</span>
+            <span className="text-gradient-brand">{tr("Security headers + SSL")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Mozilla Observatory + SSL Labs + critical HTTP headers in one shot.
-          All free APIs. SSL Labs may take up to 60s if uncached.
+          {tr("Mozilla Observatory + SSL Labs + critical HTTP headers in one shot. All free APIs. SSL Labs may take up to 60s if uncached.")}
         </p>
       </header>
 
       <section className="glass-apple relative overflow-hidden rounded-2xl p-5">
         <div className="flex items-end gap-3">
           <div className="flex-1 space-y-1.5">
-            <Label htmlFor="surl">Site URL</Label>
+            <Label htmlFor="surl">{tr("Site URL")}</Label>
             <Input
               id="surl"
               value={url}

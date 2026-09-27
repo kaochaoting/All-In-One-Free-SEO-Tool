@@ -21,6 +21,8 @@
  */
 
 import { scanSerp } from "./serp-scanner";
+import { cjkTerms } from "@/lib/text/segment";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 const USER_AGENT =
   "Mozilla/5.0 (compatible; SeoToolBot/1.0; +https://example.com/bot)";
@@ -96,7 +98,7 @@ export async function buildCorpus(opts: {
 
   const serp = await scanSerp({
     query: opts.targetKeyword,
-    country: opts.country ?? "US",
+    country: opts.country ?? DEFAULT_COUNTRY,
   });
   if (!serp.ok || serp.topResults.length === 0) {
     return emptyInsights(serp.error ?? "Couldn't fetch SERP for this keyword.");
@@ -330,7 +332,9 @@ function tokenize(text: string): string[] {
     .toLowerCase()
     .replace(/[^a-z0-9'\-\s]/g, " ")
     .split(/\s+/)
-    .filter((w) => w.length >= 3 && w.length <= 28 && !STOP_WORDS.has(w));
+    .filter((w) => w.length >= 3 && w.length <= 28 && !STOP_WORDS.has(w))
+    // The [a-z0-9] filter above drops Chinese entirely; add CJK terms.
+    .concat(cjkTerms(text));
 }
 
 function countKeywordHits(text: string, target: string): number {

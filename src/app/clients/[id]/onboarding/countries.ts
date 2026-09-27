@@ -3,6 +3,8 @@
  * it's 250 entries of noise — these cover ~95% of what users actually pick.
  */
 export const COUNTRIES: { code: string; name: string }[] = [
+  { code: "TW", name: "台灣 Taiwan" },
+  { code: "HK", name: "香港 Hong Kong" },
   { code: "US", name: "United States" },
   { code: "GB", name: "United Kingdom" },
   { code: "CA", name: "Canada" },

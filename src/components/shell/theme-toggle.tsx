@@ -4,11 +4,12 @@ import { useTransition } from "react";
 import { Moon, Sun, MonitorSmartphone } from "lucide-react";
 import { cycleTheme } from "@/app/settings/theme-actions";
 import type { ThemePreference } from "@/app/settings/theme-actions";
+import { tr } from "@/lib/i18n";
 
 const NEXT_LABEL: Record<ThemePreference, string> = {
-  light: "Switch to dark theme",
-  dark: "Match system theme",
-  system: "Switch to light theme",
+  light: tr("Switch to dark theme"),
+  dark: tr("Match system theme"),
+  system: tr("Switch to light theme"),
 };
 
 /**

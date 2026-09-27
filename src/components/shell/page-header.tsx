@@ -2,6 +2,10 @@ import Link from "next/link";
 import { ChevronRight, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { HelpLink } from "./help-link";
+import { tr } from "@/lib/i18n";
+
+/** Plain-string titles / descriptions / crumbs go through the zh-TW dictionary. */
+const T = <V,>(v: V): V => (typeof v === "string" ? (tr(v) as V) : v);
 
 type Crumb = { href?: string; label: string };
 
@@ -53,10 +57,10 @@ export function PageHeader({
                     href={c.href}
                     className="transition-colors hover:text-foreground"
                   >
-                    {c.label}
+                    {T(c.label)}
                   </Link>
                 ) : (
-                  <span className="text-foreground">{c.label}</span>
+                  <span className="text-foreground">{T(c.label)}</span>
                 )}
               </span>
             ))}
@@ -68,13 +72,13 @@ export function PageHeader({
             <Icon className={cn("h-5 w-5 shrink-0", accentText[accent])} />
           )}
           <h1 className="pro-mode-marker text-2xl font-bold tracking-tight text-foreground">
-            {title}
+            {T(title)}
           </h1>
         </div>
 
         {description && (
           <p className="pro-hide-help max-w-3xl text-sm text-muted-foreground">
-            {description}
+            {T(description)}
           </p>
         )}
 

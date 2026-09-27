@@ -25,6 +25,7 @@ import {
   type AiFailure,
   type AiResult,
 } from "./ai-error";
+import { languageDirective, resolveAiOutputLanguage } from "@/lib/ai-language";
 
 export type AiFeatureName =
   | "exec_summary"
@@ -208,6 +209,19 @@ export async function callAIResult(opts: AiCallOptions): Promise<AiResult> {
       max = Math.min(max, 500);
       temperature = Math.min(temperature, 0.3);
     }
+  }
+
+  // Output language (this fork defaults to Traditional Chinese, Taiwan
+  // usage). Appended last-but-one so it sits after the task prompt; see
+  // src/lib/ai-language.ts. Silent on failure.
+  try {
+    const lang = resolveAiOutputLanguage(
+      await getSetting<string>("ai.output_language"),
+    );
+    const directive = languageDirective(lang);
+    if (directive) system = `${system}\n\n${directive}`;
+  } catch {
+    // ignore
   }
 
   // Inject learned style rules from the feedback-driven preference store.

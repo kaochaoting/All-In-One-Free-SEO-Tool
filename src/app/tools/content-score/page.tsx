@@ -25,6 +25,8 @@ import {
   type ContentScoreResult,
   type ContentStats,
 } from "./actions";
+import { formatLength } from "@/lib/text/segment";
+import { tr } from "@/lib/i18n";
 
 export default function ContentScorePage() {
   const [content, setContent] = useState("");
@@ -62,7 +64,7 @@ export default function ContentScorePage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -71,19 +73,17 @@ export default function ContentScorePage() {
             <Gauge className="size-5 text-emerald-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">Content scorer</span>
+            <span className="text-gradient-brand">{tr("Content scorer")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Paste a draft (or live page text) + your target keyword. AI scores
-          it on readability, density, structure, and E-E-A-T signals — then
-          surfaces specific changes + LSI terms to add.
+          {tr("Paste a draft (or live page text) + your target keyword. AI scores it on readability, density, structure, and E-E-A-T signals — then surfaces specific changes + LSI terms to add.")}
         </p>
       </header>
 
       <section className="glass-apple relative overflow-hidden rounded-2xl space-y-4 p-5">
         <div className="space-y-1.5">
-          <Label htmlFor="cs-keyword">Target keyword</Label>
+          <Label htmlFor="cs-keyword">{tr("Target keyword")}</Label>
           <Input
             id="cs-keyword"
             value={keyword}
@@ -93,14 +93,9 @@ export default function ContentScorePage() {
         </div>
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <Label htmlFor="cs-content">Content</Label>
+            <Label htmlFor="cs-content">{tr("Content")}</Label>
             <span className="text-[11px] tabular-nums text-muted-foreground">
-              {
-                content
-                  .split(/\s+/)
-                  .filter(Boolean).length
-              }{" "}
-              words
+              {formatLength(content)}
             </span>
           </div>
           <textarea
@@ -159,17 +154,17 @@ export default function ContentScorePage() {
                 {savePending ? (
                   <>
                     <Loader2 className="size-3.5 animate-spin" />
-                    Saving…
+                    {tr("Saving…")}
                   </>
                 ) : saved ? (
                   <>
                     <CheckCircle2 className="size-3.5 text-emerald-300" />
-                    Saved
+                    {tr("Saved")}
                   </>
                 ) : (
                   <>
                     <Save className="size-3.5" />
-                    Save snapshot
+                    {tr("Save snapshot")}
                   </>
                 )}
               </Button>
@@ -380,7 +375,7 @@ function ScoreBubble({ score }: { score: number }) {
     >
       <div className="text-3xl font-bold tabular-nums">{score}</div>
       <div className="text-[10px] uppercase tracking-wider opacity-80">
-        Content
+        {tr("Content")}
       </div>
     </div>
   );

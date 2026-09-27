@@ -13,6 +13,7 @@ import {
   Users2,
 } from "lucide-react";
 import { REPO_URL } from "@/lib/repo";
+import { tr } from "@/lib/i18n";
 
 type AuthStatus = {
   enabled: boolean;
@@ -80,7 +81,7 @@ export function ProfileMenu() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        aria-label="Profile menu"
+        aria-label={tr("Profile menu")}
         className="relative size-8 rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-indigo-600 grid place-items-center text-xs font-semibold text-white shadow-lg shadow-violet-500/40 ring-1 ring-inset ring-white/30 transition-transform hover:scale-105"
       >
         <span className="relative">{initial}</span>
@@ -116,7 +117,7 @@ export function ProfileMenu() {
               className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-white/5"
             >
               <Settings className="size-3.5 text-muted-foreground" />
-              Settings
+              {tr("Settings")}
             </Link>
             <Link
               href="/settings#ai"
@@ -124,7 +125,7 @@ export function ProfileMenu() {
               className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-white/5"
             >
               <Settings className="size-3.5 text-muted-foreground" />
-              AI provider keys
+              {tr("AI provider keys")}
             </Link>
             <Link
               href="/settings#update"
@@ -132,7 +133,7 @@ export function ProfileMenu() {
               className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-white/5"
             >
               <RefreshCw className="size-3.5 text-muted-foreground" />
-              Check for updates
+              {tr("Check for updates")}
             </Link>
             <Link
               href="/settings/health"
@@ -140,7 +141,7 @@ export function ProfileMenu() {
               className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-white/5"
             >
               <Settings className="size-3.5 text-muted-foreground" />
-              System health
+              {tr("System health")}
             </Link>
             <Link
               href="/settings/errors"
@@ -148,7 +149,7 @@ export function ProfileMenu() {
               className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-white/5"
             >
               <Settings className="size-3.5 text-muted-foreground" />
-              Error log
+              {tr("Error log")}
             </Link>
             <Link
               href="/settings/backup"
@@ -164,7 +165,7 @@ export function ProfileMenu() {
               className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-white/5"
             >
               <HelpCircle className="size-3.5 text-muted-foreground" />
-              What the AI chat can do
+              {tr("What the AI chat can do")}
             </Link>
             <Link
               href="/automations/overview"
@@ -190,7 +191,7 @@ export function ProfileMenu() {
               className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-white/5"
             >
               <ExternalLink className="size-3.5 text-muted-foreground" />
-              GitHub repo
+              {tr("GitHub repo")}
             </a>
             {authEnabled && (
               <button

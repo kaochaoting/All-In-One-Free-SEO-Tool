@@ -11,6 +11,7 @@
 
 import { callAI, lastAiFailure } from "@/lib/ai-call";
 import { saveToolRun } from "@/lib/tool-runs";
+import { countWords, segmentWords, textStats } from "@/lib/text/segment";
 
 export type ContentScoreResult =
   | {
@@ -160,12 +161,20 @@ function analyzeStats(content: string, keyword: string): ContentStats {
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-  const words = plain.split(/\s+/).filter(Boolean);
+  // CJK-aware tokens: Chinese has no spaces between words.
+  const words = segmentWords(plain);
   const wordCount = words.length;
-  const sentences = plain.split(/[.!?]+\s+/).filter((s) => s.trim().length > 0);
+  const stats = textStats(plain);
+  // Chinese sentences end in 。！？ with no trailing space.
+  const sentences = plain
+    .split(/[.!?]+\s+|[。！？；]+\s*/)
+    .filter((s) => s.trim().length > 0);
   const sentenceCount = sentences.length || 1;
   const averageWordsPerSentence = wordCount / sentenceCount;
-  const readingTimeMin = Math.max(1, Math.round(wordCount / 220));
+  // ~220 English words/min; Traditional Chinese readers ≈ 400 字/min.
+  const readingTimeMin = stats.cjkDominant
+    ? Math.max(1, Math.round((stats.cjkChars + stats.latinWords) / 400))
+    : Math.max(1, Math.round(wordCount / 220));
 
   // Flesch reading ease
   // 206.835 - 1.015 * (words/sentences) - 84.6 * (syllables/words)
@@ -202,11 +211,11 @@ function analyzeStats(content: string, keyword: string): ContentStats {
     }
   }
   const primaryDensityPct =
-    wordCount > 0 ? (primaryCount * lowerKw.split(/\s+/).length) / wordCount * 100 : 0;
+    wordCount > 0 ? (primaryCount * Math.max(1, countWords(lowerKw))) / wordCount * 100 : 0;
 
   // Short-sentence percentage
   const shortSentences = sentences.filter(
-    (s) => s.split(/\s+/).filter(Boolean).length <= 10,
+    (s) => countWords(s) <= (stats.cjkDominant ? 15 : 10),
   ).length;
   const shortSentencePct = (shortSentences / sentenceCount) * 100;
 

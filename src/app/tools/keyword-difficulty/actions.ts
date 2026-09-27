@@ -3,6 +3,7 @@
 import { scanSerp } from "@/lib/serp-scanner";
 import { callAI } from "@/lib/ai-call";
 import { saveToolRun } from "@/lib/tool-runs";
+import { countWords } from "@/lib/text/segment";
 
 export type DifficultyResult = {
   ok: true;
@@ -158,7 +159,7 @@ export async function estimateDifficulty(
   ).length;
   const uniqueDomains = new Set(top.map((r) => r.domain.toLowerCase())).size;
   const avgWords =
-    top.reduce((s, r) => s + r.title.split(/\s+/).length, 0) / top.length;
+    top.reduce((s, r) => s + countWords(r.title), 0) / top.length;
 
   const computedSignals = {
     bigBrandsInTop10: bigBrands,

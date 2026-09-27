@@ -14,6 +14,7 @@
  */
 
 import { crawlSite } from "./sitemap-generator";
+import { cjkTerms, countWords } from "@/lib/text/segment";
 
 const USER_AGENT =
   "Mozilla/5.0 (compatible; SeoToolBot/1.0; +https://example.com/bot)";
@@ -211,7 +212,7 @@ export async function analyseInternalLinks(opts: {
       title: d.title,
       inbound: inbound.get(url) ?? 0,
       outbound: outbound.get(url) ?? 0,
-      wordCount: d.text.split(/\s+/).filter(Boolean).length,
+      wordCount: countWords(d.text),
     }),
   );
 
@@ -343,7 +344,9 @@ function termFrequency(text: string): Map<string, number> {
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
-    .filter((w) => w.length > 2 && !STOP_WORDS.has(w));
+    .filter((w) => w.length > 2 && !STOP_WORDS.has(w))
+    // The regex above strips everything outside [a-z0-9]; add Chinese terms back.
+    .concat(cjkTerms(text));
   const tf = new Map<string, number>();
   for (const t of tokens) tf.set(t, (tf.get(t) ?? 0) + 1);
   return tf;

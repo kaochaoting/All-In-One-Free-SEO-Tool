@@ -10,6 +10,7 @@
 import { callAI } from "./ai-call";
 import { buildCorpus } from "./content-grader";
 import { scanSerp } from "./serp-scanner";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 export type CompositeBrief = {
   ok: boolean;
@@ -72,7 +73,7 @@ export async function generateCompositeBrief(opts: {
   clientDomain?: string;
   clientId?: number | null;
 }): Promise<CompositeBrief> {
-  const country = (opts.country ?? "US").toUpperCase();
+  const country = (opts.country ?? DEFAULT_COUNTRY).toUpperCase();
 
   const [insights, serp] = await Promise.all([
     buildCorpus({ targetKeyword: opts.query, country }),

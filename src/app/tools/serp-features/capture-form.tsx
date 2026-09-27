@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { Loader2, Sparkles } from "lucide-react";
 import { runCapture, type CaptureState } from "./actions";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 export function CaptureForm() {
   const [state, formAction, pending] = useActionState<
@@ -29,7 +30,7 @@ export function CaptureForm() {
         />
         <input
           name="country"
-          defaultValue="US"
+          defaultValue={DEFAULT_COUNTRY}
           maxLength={4}
           className="h-9 w-full rounded-md border border-white/10 bg-card/60 px-3 text-sm uppercase focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
         />

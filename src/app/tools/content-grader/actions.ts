@@ -8,10 +8,11 @@ import {
   type GradeResult,
 } from "@/lib/content-grader";
 import { saveToolRun } from "@/lib/tool-runs";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 const inputSchema = z.object({
   targetKeyword: z.string().trim().min(2).max(120),
-  country: z.string().trim().min(2).max(8).default("US"),
+  country: z.string().trim().min(2).max(8).default(DEFAULT_COUNTRY),
   content: z.string().trim().min(50).max(80_000),
 });
 

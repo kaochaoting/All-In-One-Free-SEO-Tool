@@ -3,13 +3,14 @@ export const dynamic = "force-dynamic";
 import { Gauge } from "lucide-react";
 import { PageHeader } from "@/components/shell/page-header";
 import { GraderForm } from "./grader-form";
+import { tr } from "@/lib/i18n";
 
 export default function ContentGraderPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <PageHeader
-        title="Content grader"
-        description="Surfer / Clearscope replacement. Pulls the top-10 SERP results for your keyword, builds a TF-IDF corpus, then scores your draft on length and how much of what the ranking pages cover you actually cover. Keyword density is measured but deliberately not scored — it isn't a ranking factor. Free, no paid API."
+        title={tr("Content grader")}
+        description={tr("Surfer / Clearscope replacement. Pulls the top-10 SERP results for your keyword, builds a TF-IDF corpus, then scores your draft on length and how much of what the ranking pages cover you actually cover. Keyword density is measured but deliberately not scored — it isn't a ranking factor. Free, no paid API.")}
         icon={Gauge}
         accent="emerald"
       />

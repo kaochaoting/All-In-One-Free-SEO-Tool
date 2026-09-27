@@ -1,3 +1,5 @@
+import { cjkTerms } from "@/lib/text/segment";
+
 /**
  * Lightweight keyword clustering: group keywords by shared meaningful tokens.
  *
@@ -76,7 +78,9 @@ function tokenize(query: string): string[] {
     .split(/\s+/)
     .filter(Boolean)
     .filter((t) => t.length > 2)
-    .filter((t) => !STOPWORDS.has(t));
+    .filter((t) => !STOPWORDS.has(t))
+    // Chinese queries were stripped to nothing by the [a-z0-9] filter.
+    .concat(cjkTerms(query));
   return Array.from(new Set(tokens));
 }
 

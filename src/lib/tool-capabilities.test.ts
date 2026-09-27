@@ -10,6 +10,7 @@ import {
   TOTAL_TOOL_COUNT,
   aiUsageOf,
 } from "./tool-capabilities";
+import { tr } from "@/lib/i18n";
 
 describe("tool capabilities", () => {
   it("the committed flags still match the code", () => {
@@ -129,7 +130,8 @@ describe("tool capabilities", () => {
   it("does not advertise an AI page as usable under a subscription", () => {
     const ai = TOOL_CAPABILITIES.find((c) => c.needsAI)!;
     expect(badgeFor(ai, "mcp")?.tone).toBe("key");
-    expect(badgeFor(ai, "mcp")?.label).toBe("Needs a key");
+    // zh-TW fork: labels go through the UI dictionary.
+    expect(badgeFor(ai, "mcp")?.label).toBe(tr("Needs a key"));
   });
 
   it("counts only top-level tools, so the copy matches the grid", () => {
@@ -231,7 +233,8 @@ describe("what the badge tells the user", () => {
     // The question users keep asking. The answer has to be on the badge,
     // not only in a doc nobody opens.
     for (const r of ["/tools/schema", "/tools/llms-txt"]) {
-      expect(badge(r, "mcp").detail, r).toMatch(/chat|MCP|other way/i);
+      // zh-TW fork: the translated copy says 聊天 (chat) / 反方向 (other way).
+      expect(badge(r, "mcp").detail, r).toMatch(/chat|MCP|other way|聊天|反方向/i);
     }
   });
 

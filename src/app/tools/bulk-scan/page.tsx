@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { runBulkScan, type BulkRow, type BulkScanResult } from "./actions";
+import { tr } from "@/lib/i18n";
 
 type SortKey = "url" | "score" | "performance" | "totalFindings";
 
@@ -71,7 +72,7 @@ export default function BulkScanPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -80,14 +81,11 @@ export default function BulkScanPage() {
             <ListChecks className="size-5 text-violet-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">Bulk URL scanner</span>
+            <span className="text-gradient-brand">{tr("Bulk URL scanner")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Paste up to 25 URLs. We run the full health check on each in parallel
-          (audit + Core Web Vitals + security + redirects + images), then
-          surface a sortable table. Optionally save every result as a snapshot
-          so you can compare later.
+          {tr("Paste up to 25 URLs. We run the full health check on each in parallel (audit + Core Web Vitals + security + redirects + images), then surface a sortable table. Optionally save every result as a snapshot so you can compare later.")}
         </p>
       </header>
 
@@ -202,7 +200,7 @@ export default function BulkScanPage() {
                       className="px-5 py-3 text-left"
                     />
                     <SortableTh
-                      label="Health"
+                      label={tr("Health")}
                       sort={sort}
                       kind="score"
                       onClick={() => toggleSort("score")}

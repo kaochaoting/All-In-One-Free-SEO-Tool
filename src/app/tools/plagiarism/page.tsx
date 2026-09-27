@@ -13,6 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { checkPlagiarism, type PlagiarismResult } from "./actions";
+import { formatLength } from "@/lib/text/segment";
+import { tr } from "@/lib/i18n";
 
 export default function PlagiarismPage() {
   const [content, setContent] = useState("");
@@ -35,7 +37,7 @@ export default function PlagiarismPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -45,15 +47,12 @@ export default function PlagiarismPage() {
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
             <span className="text-gradient-brand">
-              Plagiarism + AI detector
+              {tr("Plagiarism + AI detector")}
             </span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          AI-powered review of how AI-generated and how original your content
-          reads. For a definitive verbatim-plagiarism check against the live
-          web, use the linked external tools — they have full web indexes we
-          don&apos;t.
+          {tr("AI-powered review of how AI-generated and how original your content reads. For a definitive verbatim-plagiarism check against the live web, use the linked external tools — they have full web indexes we don&apos;t.")}
         </p>
       </header>
 
@@ -72,8 +71,7 @@ export default function PlagiarismPage() {
         />
         <div className="mt-3 flex items-center justify-between gap-3">
           <span className="text-[11px] text-muted-foreground">
-            {content.length} chars · {content.split(/\s+/).filter(Boolean).length}{" "}
-            words
+            {content.length} 個字元 · {formatLength(content)}
           </span>
           <Button onClick={run} disabled={pending || content.length < 100}>
             {pending ? (
@@ -84,7 +82,7 @@ export default function PlagiarismPage() {
             ) : (
               <>
                 <ScanText className="size-4" />
-                Run check
+                {tr("Run check")}
               </>
             )}
           </Button>

@@ -19,6 +19,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { logActivity } from "@/lib/activity";
 import { guardAdminRequest } from "@/lib/admin-auth";
 import { REPO_SLUG } from "@/lib/repo";
+import { autoUpdateEnabled, disabledResponse } from "@/lib/feature-flags";
 
 const exec = promisify(execFile);
 
@@ -97,6 +98,7 @@ async function isBehind(remote: string): Promise<boolean | null> {
 }
 
 export async function GET(req: Request) {
+  if (!autoUpdateEnabled()) return disabledResponse("update");
   const denied = guardAdminRequest(req);
   if (denied) return denied;
 
@@ -169,6 +171,7 @@ async function detectPm(): Promise<"pnpm" | "npm"> {
 }
 
 export async function POST(req: Request) {
+  if (!autoUpdateEnabled()) return disabledResponse("update");
   const denied = guardAdminRequest(req);
   if (denied) return denied;
 

@@ -1,3 +1,6 @@
+import { countWords } from "@/lib/text/segment";
+import { googleGl, googleHl } from "@/lib/locale";
+
 export type SerpResult = {
   url: string;
   title: string;
@@ -127,7 +130,7 @@ export async function fetchPaaQuestions(query: string): Promise<string[]> {
   // Use Google autocomplete with question seeds — far cheaper than scraping SERPs
   for (const prefix of prefixes) {
     const seed = `${prefix} ${query}`;
-    const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=en&q=${encodeURIComponent(seed)}`;
+    const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=${encodeURIComponent(googleHl())}&gl=${googleGl()}&q=${encodeURIComponent(seed)}`;
     try {
       const c = new AbortController();
       const t = setTimeout(() => c.abort(), 4_000);
@@ -186,7 +189,7 @@ export async function fetchOutline(
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<[^>]+>/g, " ");
-  const wordCount = decode(stripped).trim().split(/\s+/).length;
+  const wordCount = countWords(decode(stripped).trim());
 
   return { url, title, headings, wordCount };
 }

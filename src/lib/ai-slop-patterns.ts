@@ -1,3 +1,5 @@
+import { countWords } from "@/lib/text/segment";
+
 /**
  * 24-pattern AI slop detector — port of ericosiu/ai-marketing-skills'
  * humanizer checklist. Each pattern is detected via regex / heuristic.
@@ -103,7 +105,7 @@ function regexHits(
 
 export function scoreContent(rawText: string): SlopReport {
   const text = rawText ?? "";
-  const wordCount = text.split(/\s+/).filter(Boolean).length;
+  const wordCount = countWords(text);
   const all: SlopViolation[] = [];
 
   // 1 — Significance Inflation

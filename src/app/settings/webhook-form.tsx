@@ -10,6 +10,7 @@ import {
   testWebhook,
   type WebhookActionResult,
 } from "./actions";
+import { tr } from "@/lib/i18n";
 
 export function WebhookForm({ initialUrl }: { initialUrl: string | null }) {
   const [draft, setDraft] = useState(initialUrl ?? "");
@@ -37,7 +38,7 @@ export function WebhookForm({ initialUrl }: { initialUrl: string | null }) {
   return (
     <div className="space-y-4">
       <div className="grid gap-2">
-        <Label htmlFor="webhook-url">Webhook URL</Label>
+        <Label htmlFor="webhook-url">{tr("Webhook URL")}</Label>
         <div className="relative">
           <Input
             id="webhook-url"
@@ -54,8 +55,7 @@ export function WebhookForm({ initialUrl }: { initialUrl: string | null }) {
           )}
         </div>
         <p className="text-xs text-muted-foreground">
-          Paste a Slack incoming webhook, Discord webhook URL, or Microsoft
-          Teams connector URL. Leave blank and save to disable.
+          {tr("Paste a Slack incoming webhook, Discord webhook URL, or Microsoft Teams connector URL. Leave blank and save to disable.")}
         </p>
       </div>
 

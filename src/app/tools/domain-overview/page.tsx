@@ -19,6 +19,7 @@ import {
   runDomainOverview,
   type DomainOverviewResult,
 } from "./actions";
+import { tr } from "@/lib/i18n";
 
 const externalCheckers = [
   {
@@ -94,7 +95,7 @@ export default function DomainOverviewPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -103,14 +104,11 @@ export default function DomainOverviewPage() {
             <Globe className="size-5 text-violet-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">Domain overview</span>
+            <span className="text-gradient-brand">{tr("Domain overview")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Run every signal we can check ourselves — HTTPS, security headers,
-          schema, on-page basics, indexed-pages estimate, robots/sitemap. For
-          paid metrics (DA, backlink count, organic traffic estimate), we link
-          you to the best free external checkers.
+          {tr("Run every signal we can check ourselves — HTTPS, security headers, schema, on-page basics, indexed-pages estimate, robots/sitemap. For paid metrics (DA, backlink count, organic traffic estimate), we link you to the best free external checkers.")}
         </p>
       </header>
 

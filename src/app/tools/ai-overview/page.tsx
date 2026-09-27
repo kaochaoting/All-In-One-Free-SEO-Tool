@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { analyzeAiOverview, type AiOverviewAnalysis } from "./actions";
+import { tr } from "@/lib/i18n";
 
 export default function AiOverviewPage() {
   const [url, setUrl] = useState("");
@@ -38,7 +39,7 @@ export default function AiOverviewPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -47,19 +48,18 @@ export default function AiOverviewPage() {
             <Sparkles className="size-5 text-fuchsia-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">AI Overview optimizer</span>
+            <span className="text-gradient-brand">{tr("AI Overview optimizer")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Paste a page URL — the AI scores how citation-worthy it is for
-          Google&apos;s AI Overviews + tells you exactly what to change.
+          {tr("Paste a page URL — the AI scores how citation-worthy it is for Google&apos;s AI Overviews + tells you exactly what to change.")}
         </p>
       </header>
 
       <section className="glass-apple relative overflow-hidden rounded-2xl p-5">
         <div className="flex items-end gap-3">
           <div className="flex-1 space-y-1.5">
-            <Label htmlFor="aurl">Page URL</Label>
+            <Label htmlFor="aurl">{tr("Page URL")}</Label>
             <Input
               id="aurl"
               value={url}

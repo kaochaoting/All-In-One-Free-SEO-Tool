@@ -23,6 +23,7 @@ import {
 import { getAiAvailability } from "@/lib/ai-availability";
 import { getGoogleConnectionStatus } from "@/lib/google-oauth";
 import { NextStepDismissButton } from "./next-step-dismiss";
+import { tr } from "@/lib/i18n";
 
 const DISMISS_COOKIE_PREFIX = "next-step-dismissed-";
 
@@ -71,8 +72,8 @@ async function pickNextStep(): Promise<Step | null> {
     const s = await maybe({
       id: "ai",
       href: "/settings#ai",
-      label: "Connect an AI provider",
-      detail: "Free Gemini or Groq — takes 2 min",
+      label: tr("Connect an AI provider"),
+      detail: tr("Free Gemini or Groq — takes 2 min"),
       primary: true,
     });
     if (s) return s;
@@ -86,8 +87,8 @@ async function pickNextStep(): Promise<Step | null> {
     const s = await maybe({
       id: "client",
       href: "/clients/new",
-      label: "Add your first client",
-      detail: "Their site URL is all you need to start",
+      label: tr("Add your first client"),
+      detail: tr("Their site URL is all you need to start"),
       primary: true,
     });
     if (s) return s;
@@ -103,8 +104,8 @@ async function pickNextStep(): Promise<Step | null> {
     const s = await maybe({
       id: "google",
       href: "/settings/google",
-      label: "Connect Google (GSC + GA4)",
-      detail: "Real keyword + traffic data, one-time setup",
+      label: tr("Connect Google (GSC + GA4)"),
+      detail: tr("Real keyword + traffic data, one-time setup"),
     });
     if (s) return s;
   }
@@ -117,8 +118,8 @@ async function pickNextStep(): Promise<Step | null> {
     const s = await maybe({
       id: "audit",
       href: "/audits",
-      label: "Run your first audit",
-      detail: "Site-wide scan, ~2 minutes",
+      label: tr("Run your first audit"),
+      detail: tr("Site-wide scan, ~2 minutes"),
       primary: true,
     });
     if (s) return s;
@@ -132,8 +133,8 @@ async function pickNextStep(): Promise<Step | null> {
     const s = await maybe({
       id: "keywords",
       href: "/keywords",
-      label: "Track your first keyword",
-      detail: "Daily rank checks, free via browser mode",
+      label: tr("Track your first keyword"),
+      detail: tr("Daily rank checks, free via browser mode"),
     });
     if (s) return s;
   }
@@ -146,8 +147,8 @@ async function pickNextStep(): Promise<Step | null> {
     const s = await maybe({
       id: "report",
       href: "/reports",
-      label: "Generate your first report",
-      detail: "PDF, white-labeled, AI summary",
+      label: tr("Generate your first report"),
+      detail: tr("PDF, white-labeled, AI summary"),
     });
     if (s) return s;
   }
@@ -166,8 +167,8 @@ async function pickNextStep(): Promise<Step | null> {
     const s = await maybe({
       id: "tasks",
       href: "/tasks",
-      label: `${openTasks?.value} open task${openTasks?.value === 1 ? "" : "s"}`,
-      detail: "Pick one to work on",
+      label: openTasks?.value === 1 ? tr("1 open task") : tr("{n} open tasks", { n: openTasks?.value ?? 0 }),
+      detail: tr("Pick one to work on"),
     });
     if (s) return s;
   }
@@ -177,8 +178,8 @@ async function pickNextStep(): Promise<Step | null> {
   return await maybe({
     id: "morning",
     href: "/morning",
-    label: "Daily briefing",
-    detail: "Today's priorities across all clients",
+    label: tr("Daily briefing"),
+    detail: tr("Today's priorities across all clients"),
   });
 }
 

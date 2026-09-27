@@ -35,6 +35,7 @@
 
 import { callAI } from "./ai-call";
 import { getGuestPostSiteById, type GuestPostSite } from "./guest-post-sites";
+import { countWords as countWordsCjk } from "@/lib/text/segment";
 
 export type GuestPostInput = {
   siteId: string;
@@ -209,7 +210,7 @@ Now write the full post in markdown.`;
 }
 
 function countWords(s: string): number {
-  return s.trim().split(/\s+/).filter(Boolean).length;
+  return countWordsCjk(s.trim());
 }
 
 function countOccurrences(haystack: string, needle: string): number {

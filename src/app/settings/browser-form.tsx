@@ -8,6 +8,7 @@ import {
   type BrowserSettingsState,
   type ProxyHealthState,
 } from "./browser-actions";
+import { tr } from "@/lib/i18n";
 
 export function BrowserForm({
   initial,
@@ -44,7 +45,7 @@ export function BrowserForm({
     <form action={formAction} className="space-y-4">
       <div className="grid gap-3 md:grid-cols-[160px_1fr]">
         <label className="space-y-1 text-xs">
-          <span className="text-muted-foreground">Max concurrency</span>
+          <span className="text-muted-foreground">{tr("Max concurrency")}</span>
           <input
             type="number"
             name="maxConcurrency"
@@ -54,7 +55,7 @@ export function BrowserForm({
             className="h-9 w-full rounded-md border border-white/10 bg-card/60 px-3 text-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
           />
           <span className="block text-[10px] text-muted-foreground">
-            How many browser contexts can run in parallel. Default 4.
+            {tr("How many browser contexts can run in parallel. Default 4.")}
           </span>
         </label>
         <label className="flex items-start gap-2 text-xs">
@@ -66,12 +67,10 @@ export function BrowserForm({
           />
           <span>
             <span className="font-medium text-foreground">
-              Stealth mode (recommended)
+              {tr("Stealth mode (recommended)")}
             </span>
             <span className="block text-muted-foreground">
-              Hides headless-browser fingerprints — navigator.webdriver,
-              plugins, languages, permissions API quirks. Reduces captcha
-              triggers on Google + paywalled sites.
+              {tr("Hides headless-browser fingerprints — navigator.webdriver, plugins, languages, permissions API quirks. Reduces captcha triggers on Google + paywalled sites.")}
             </span>
           </span>
         </label>
@@ -79,7 +78,7 @@ export function BrowserForm({
 
       <label className="block space-y-1 text-xs">
         <span className="text-muted-foreground">
-          Outbound proxies (one per line — optional, rotated round-robin)
+          {tr("Outbound proxies (one per line — optional, rotated round-robin)")}
         </span>
         <textarea
           name="proxies"
@@ -93,8 +92,7 @@ export function BrowserForm({
         <span className="block text-[10px] text-muted-foreground">
           Leave empty for direct connection. With proxies set, every browser
           context gets the next one in the list. Supports{" "}
-          <code>http://</code> and <code>socks5://</code> with optional
-          user:pass.
+          <code>http://</code> and <code>socks5://</code> {tr("with optional user:pass.")}
         </span>
       </label>
 
@@ -113,9 +111,7 @@ export function BrowserForm({
           className="w-full rounded-md border border-white/10 bg-card/60 px-3 py-2 font-mono text-xs focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
         />
         <span className="block text-[10px] text-muted-foreground">
-          Used for logged-in scraping (paywalled sites, staging behind auth,
-          GSC alternative views). Cookies inject into every browser context.
-          Leave empty if not needed.
+          {tr("Used for logged-in scraping (paywalled sites, staging behind auth, GSC alternative views). Cookies inject into every browser context. Leave empty if not needed.")}
         </span>
       </label>
 
@@ -125,7 +121,7 @@ export function BrowserForm({
           Chrome entirely (peak RAM drops by ~400-800 MB). */}
       <label className="block space-y-1 text-xs">
         <span className="text-muted-foreground">
-          Remote browser endpoint (WebSocket URL) — optional
+          {tr("Remote browser endpoint (WebSocket URL) — optional")}
         </span>
         <input
           name="remoteWs"
@@ -135,11 +131,7 @@ export function BrowserForm({
           className="h-9 w-full rounded-md border border-white/10 bg-card/60 px-3 font-mono text-xs focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
         />
         <span className="block text-[10px] text-muted-foreground">
-          Drops local Chrome entirely — connects to Browserless,
-          Cloudflare Browser Rendering, Browserbase, or any
-          chromium.connect-compatible service. Saves ~400-800 MB RAM
-          on the server. Leave empty to use local browser. Env var
-          BROWSERLESS_WS_URL also works.
+          {tr("Drops local Chrome entirely — connects to Browserless, Cloudflare Browser Rendering, Browserbase, or any chromium.connect-compatible service. Saves ~400-800 MB RAM on the server. Leave empty to use local browser. Env var BROWSERLESS_WS_URL also works.")}
         </span>
       </label>
 
@@ -148,7 +140,7 @@ export function BrowserForm({
           tool's page still renders but shows a "disabled" notice. */}
       <fieldset className="space-y-2 rounded-lg border border-white/[0.06] bg-black/20 p-4">
         <legend className="px-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Lean mode — disable browser tools to save RAM
+          {tr("Lean mode — disable browser tools to save RAM")}
         </legend>
         <p className="text-[10px] text-muted-foreground">
           Each checkbox turns off one browser-using feature. Useful on
@@ -162,9 +154,9 @@ export function BrowserForm({
             className="size-4 rounded border-white/20 bg-card/60"
           />
           <span>
-            Disable rank checking
+            {tr("Disable rank checking")}
             <span className="ml-1 text-[10px] text-muted-foreground">
-              (daily Google SERP scrapes)
+              {tr("(daily Google SERP scrapes)")}
             </span>
           </span>
         </label>
@@ -176,9 +168,9 @@ export function BrowserForm({
             className="size-4 rounded border-white/20 bg-card/60"
           />
           <span>
-            Disable local Core Web Vitals
+            {tr("Disable local Core Web Vitals")}
             <span className="ml-1 text-[10px] text-muted-foreground">
-              (PSI API path still works without a browser)
+              {tr("(PSI API path still works without a browser)")}
             </span>
           </span>
         </label>
@@ -190,9 +182,9 @@ export function BrowserForm({
             className="size-4 rounded border-white/20 bg-card/60"
           />
           <span>
-            Disable SERP feature scanner
+            {tr("Disable SERP feature scanner")}
             <span className="ml-1 text-[10px] text-muted-foreground">
-              (AI Overview / featured-snippet / PAA detection)
+              {tr("(AI Overview / featured-snippet / PAA detection)")}
             </span>
           </span>
         </label>
@@ -204,9 +196,9 @@ export function BrowserForm({
             className="size-4 rounded border-white/20 bg-card/60"
           />
           <span>
-            Allow GBP scraper fallback
+            {tr("Allow GBP scraper fallback")}
             <span className="ml-1 text-[10px] text-muted-foreground">
-              (OFF by default — prefer official GBP API)
+              {tr("(OFF by default — prefer official GBP API)")}
             </span>
           </span>
         </label>
@@ -221,12 +213,12 @@ export function BrowserForm({
           {pending ? (
             <>
               <Loader2 className="mr-2 size-3 animate-spin" />
-              Saving…
+              {tr("Saving…")}
             </>
           ) : (
             <>
               <Save className="mr-2 size-3" />
-              Save
+              {tr("Save")}
             </>
           )}
         </button>
@@ -239,12 +231,12 @@ export function BrowserForm({
           {testing ? (
             <>
               <Loader2 className="mr-2 size-3 animate-spin" />
-              Testing proxies…
+              {tr("Testing proxies…")}
             </>
           ) : (
             <>
               <Zap className="mr-2 size-3" />
-              Test proxies
+              {tr("Test proxies")}
             </>
           )}
         </button>
@@ -258,7 +250,7 @@ export function BrowserForm({
 
       {health && health.ok && health.results.length === 0 && (
         <p className="text-xs text-muted-foreground">
-          No proxies configured. Add one above and save first.
+          {tr("No proxies configured. Add one above and save first.")}
         </p>
       )}
       {health && health.ok && health.results.length > 0 && (

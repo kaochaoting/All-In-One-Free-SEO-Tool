@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ArrowLeft, Eye, Monitor, Smartphone } from "lucide-react";
 import Link from "next/link";
+import { tr } from "@/lib/i18n";
 
 export default function PixelPreviewPage() {
   const [title, setTitle] = useState("");
@@ -32,7 +33,7 @@ export default function PixelPreviewPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -41,19 +42,18 @@ export default function PixelPreviewPage() {
             <Eye className="size-5 text-violet-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">Pixel preview</span>
+            <span className="text-gradient-brand">{tr("Pixel preview")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Type below — see exactly how Google will render the search result on
-          mobile and desktop. Length warnings update live.
+          {tr("Type below — see exactly how Google will render the search result on mobile and desktop. Length warnings update live.")}
         </p>
       </header>
 
       {/* Form */}
       <section className="glass-apple relative overflow-hidden rounded-2xl space-y-4 p-5">
         <Field
-          label="Page URL"
+          label={tr("Page URL")}
           value={url}
           onChange={setUrl}
           placeholder="https://yoursite.com/page"

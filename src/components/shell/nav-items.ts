@@ -51,6 +51,7 @@ import {
   Wrench,
   type LucideIcon,
 } from "lucide-react";
+import { tr } from "@/lib/i18n";
 
 export type NavItem = {
   href: string;
@@ -91,41 +92,41 @@ export type NavGroup = {
 export const NAV_GROUPS: NavGroup[] = [
   {
     id: "essentials",
-    title: "Essentials",
+    title: tr("Essentials"),
     pinned: true,
     items: [
-      { href: "/", label: "Dashboard", icon: LayoutDashboard, guided: true },
-      { href: "/welcome", label: "Get started", icon: Sparkles, guided: true },
-      { href: "/clients", label: "Clients", icon: Users, guided: true },
-      { href: "/seo-chat", label: "SEO chat", icon: Bot, guided: true },
-      { href: "/audits", label: "Audits", icon: ClipboardList, guided: true },
-      { href: "/tasks", label: "Tasks", icon: ListChecks, guided: true },
-      { href: "/tools", label: "All tools", icon: Wrench, guided: true },
-      { href: "/reports", label: "Reports", icon: FileDown, guided: true },
+      { href: "/", label: tr("Dashboard"), icon: LayoutDashboard, guided: true },
+      { href: "/welcome", label: tr("Get started"), icon: Sparkles, guided: true },
+      { href: "/clients", label: tr("Clients"), icon: Users, guided: true },
+      { href: "/seo-chat", label: tr("SEO chat"), icon: Bot, guided: true },
+      { href: "/audits", label: tr("Audits"), icon: ClipboardList, guided: true },
+      { href: "/tasks", label: tr("Tasks"), icon: ListChecks, guided: true },
+      { href: "/tools", label: tr("All tools"), icon: Wrench, guided: true },
+      { href: "/reports", label: tr("Reports"), icon: FileDown, guided: true },
     ],
   },
   {
     id: "everyday",
-    title: "Everyday",
+    title: tr("Everyday"),
     defaultOpen: false,
     items: [
-      { href: "/morning", label: "Morning briefing", icon: Activity, guided: true },
-      { href: "/digest", label: "Weekly digest", icon: Send },
-      { href: "/grader", label: "Instant audit", icon: Sparkles, guided: true },
-      { href: "/leads", label: "Leads", icon: Inbox, guided: true },
-      { href: "/agent", label: "AI agent", icon: Bot },
+      { href: "/morning", label: tr("Morning briefing"), icon: Activity, guided: true },
+      { href: "/digest", label: tr("Weekly digest"), icon: Send },
+      { href: "/grader", label: tr("Instant audit"), icon: Sparkles, guided: true },
+      { href: "/leads", label: tr("Leads"), icon: Inbox, guided: true },
+      { href: "/agent", label: tr("AI agent"), icon: Bot },
       // Guided, because "what is this thing doing to my sites while I'm
       // not looking" is a question a beginner needs answered more
       // urgently than an expert does — and the answer, including the
       // undo button, is on this page.
-      { href: "/agent/autopilot", label: "Autopilot", icon: ShieldCheck, guided: true },
-      { href: "/capacity", label: "Capacity", icon: Gauge },
-      { href: "/activity", label: "Activity log", icon: History },
+      { href: "/agent/autopilot", label: tr("Autopilot"), icon: ShieldCheck, guided: true },
+      { href: "/capacity", label: tr("Capacity"), icon: Gauge },
+      { href: "/activity", label: tr("Activity log"), icon: History },
     ],
   },
   {
     id: "content",
-    title: "Content",
+    title: tr("Content"),
     items: [
       // Writing lives in BlogPilot now — its own tool, MIT, self-hosted.
       // This app does technical SEO and applies fixes; drafting articles
@@ -133,116 +134,116 @@ export const NAV_GROUPS: NavGroup[] = [
       // helped nobody.
       {
         href: "https://github.com/IamRamgarhia/BlogPilot-Open-Source-AI-SEO-Content-Studio",
-        label: "Writing → BlogPilot",
+        label: tr("Writing → BlogPilot"),
         icon: ExternalLink,
         guided: true,
         external: true,
       },
-      { href: "/title-tests", label: "Title A/B tests", icon: Wand2 },
-      { href: "/meta-rewrite", label: "Meta rewrite batch", icon: Wand2 },
+      { href: "/title-tests", label: tr("Title A/B tests"), icon: Wand2 },
+      { href: "/meta-rewrite", label: tr("Meta rewrite batch"), icon: Wand2 },
     ],
   },
   {
     id: "keywords",
-    title: "Keywords & ranks",
+    title: tr("Keywords & ranks"),
     items: [
-      { href: "/keywords", label: "Tracked keywords", icon: Search, guided: true },
-      { href: "/cannibalization", label: "Cannibalization", icon: GitMerge },
-      { href: "/cwv", label: "Core Web Vitals", icon: Gauge },
-      { href: "/serp-scans", label: "SERP scans archive", icon: Globe },
+      { href: "/keywords", label: tr("Tracked keywords"), icon: Search, guided: true },
+      { href: "/cannibalization", label: tr("Cannibalization"), icon: GitMerge },
+      { href: "/cwv", label: tr("Core Web Vitals"), icon: Gauge },
+      { href: "/serp-scans", label: tr("SERP scans archive"), icon: Globe },
     ],
   },
   {
     id: "paid-ads",
-    title: "Paid ads",
+    title: tr("Paid ads"),
     defaultOpen: true,
     items: [
       // The ⭐ marks this as the newest / most-recommended entry —
       // matches the same treatment on /tools and the per-client launcher.
       {
         href: "/tools/ads-funnel",
-        label: "Ad Funnel Architect ⭐",
+        label: tr("Ad Funnel Architect ⭐"),
         icon: Megaphone,
       },
-      { href: "/tools/branded-split", label: "Branded vs non-branded", icon: Target },
+      { href: "/tools/branded-split", label: tr("Branded vs non-branded"), icon: Target },
     ],
   },
   {
     id: "backlinks",
-    title: "Backlinks & outreach",
+    title: tr("Backlinks & outreach"),
     items: [
-      { href: "/backlinks", label: "Backlinks", icon: Link2, guided: true },
-      { href: "/link-building", label: "Link building", icon: Link2 },
-      { href: "/outreach", label: "Outreach", icon: Send },
-      { href: "/broken-links", label: "Broken links", icon: Link2 },
+      { href: "/backlinks", label: tr("Backlinks"), icon: Link2, guided: true },
+      { href: "/link-building", label: tr("Link building"), icon: Link2 },
+      { href: "/outreach", label: tr("Outreach"), icon: Send },
+      { href: "/broken-links", label: tr("Broken links"), icon: Link2 },
     ],
   },
   {
     id: "local",
-    title: "Local SEO",
+    title: tr("Local SEO"),
     items: [
-      { href: "/gbp", label: "Google Business Profile", icon: Building, guided: true },
-      { href: "/citations", label: "Citations", icon: MapPin },
-      { href: "/local-rank", label: "Local rank tracker", icon: MapPin },
-      { href: "/local-grid", label: "Local rank heatmap", icon: MapPin },
+      { href: "/gbp", label: tr("Google Business Profile"), icon: Building, guided: true },
+      { href: "/citations", label: tr("Citations"), icon: MapPin },
+      { href: "/local-rank", label: tr("Local rank tracker"), icon: MapPin },
+      { href: "/local-grid", label: tr("Local rank heatmap"), icon: MapPin },
     ],
   },
   {
     id: "competitors",
-    title: "Competitors & brand",
+    title: tr("Competitors & brand"),
     items: [
-      { href: "/competitors", label: "Competitors", icon: Network },
-      { href: "/brand-monitor", label: "Brand visibility", icon: Network },
-      { href: "/compare", label: "Site compare", icon: GitCompare },
+      { href: "/competitors", label: tr("Competitors"), icon: Network },
+      { href: "/brand-monitor", label: tr("Brand visibility"), icon: Network },
+      { href: "/compare", label: tr("Site compare"), icon: GitCompare },
     ],
   },
   {
     id: "ai-visibility",
-    title: "AI visibility",
+    title: tr("AI visibility"),
     items: [
-      { href: "/ai-visibility", label: "AI visibility tracker", icon: Sparkles },
-      { href: "/chats", label: "AI chat history", icon: Bot },
+      { href: "/ai-visibility", label: tr("AI visibility tracker"), icon: Sparkles },
+      { href: "/chats", label: tr("AI chat history"), icon: Bot },
     ],
   },
   {
     id: "monitoring",
-    title: "Monitoring + history",
+    title: tr("Monitoring + history"),
     items: [
-      { href: "/monitor", label: "Page monitor", icon: Activity },
-      { href: "/snapshots", label: "Snapshots", icon: ImageIcon },
-      { href: "/history", label: "Tool run history", icon: History },
-      { href: "/algorithm-updates", label: "Algorithm updates", icon: History },
-      { href: "/news", label: "SEO news", icon: Newspaper },
+      { href: "/monitor", label: tr("Page monitor"), icon: Activity },
+      { href: "/snapshots", label: tr("Snapshots"), icon: ImageIcon },
+      { href: "/history", label: tr("Tool run history"), icon: History },
+      { href: "/algorithm-updates", label: tr("Algorithm updates"), icon: History },
+      { href: "/news", label: tr("SEO news"), icon: Newspaper },
     ],
   },
   {
     id: "imports",
-    title: "Imports",
+    title: tr("Imports"),
     items: [
-      { href: "/import", label: "Import (all sources)", icon: ScanText },
+      { href: "/import", label: tr("Import (all sources)"), icon: ScanText },
     ],
   },
   {
     id: "deliverables",
-    title: "Deliverables",
+    title: tr("Deliverables"),
     items: [
-      { href: "/reports/batch", label: "Generate all reports", icon: FileStack, guided: true },
-      { href: "/reports/archive", label: "Report archive", icon: FileDown },
-      { href: "/automations", label: "Automations", icon: Workflow },
-      { href: "/proposals", label: "Proposals", icon: FileSignature, guided: true },
-      { href: "/invoices", label: "Invoices", icon: Receipt },
+      { href: "/reports/batch", label: tr("Generate all reports"), icon: FileStack, guided: true },
+      { href: "/reports/archive", label: tr("Report archive"), icon: FileDown },
+      { href: "/automations", label: tr("Automations"), icon: Workflow },
+      { href: "/proposals", label: tr("Proposals"), icon: FileSignature, guided: true },
+      { href: "/invoices", label: tr("Invoices"), icon: Receipt },
     ],
   },
   {
     id: "account",
-    title: "Account",
+    title: tr("Account"),
     pinned: true,
     items: [
-      { href: "/connect", label: "Connect accounts", icon: Plug, guided: true },
-      { href: "/settings", label: "Settings", icon: Settings, guided: true },
-      { href: "/docs", label: "Docs", icon: BookOpen, guided: true },
-      { href: "/learn", label: "Learn", icon: GraduationCap, guided: true },
-      { href: "/knowledge", label: "Knowledge hub", icon: GraduationCap },
+      { href: "/connect", label: tr("Connect accounts"), icon: Plug, guided: true },
+      { href: "/settings", label: tr("Settings"), icon: Settings, guided: true },
+      { href: "/docs", label: tr("Docs"), icon: BookOpen, guided: true },
+      { href: "/learn", label: tr("Learn"), icon: GraduationCap, guided: true },
+      { href: "/knowledge", label: tr("Knowledge hub"), icon: GraduationCap },
     ],
   },
 ];

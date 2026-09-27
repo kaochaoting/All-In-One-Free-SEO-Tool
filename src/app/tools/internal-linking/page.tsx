@@ -19,6 +19,7 @@ import {
   type InternalLinkResult,
 } from "./actions";
 import { useClientId } from "@/components/client-id-field";
+import { tr } from "@/lib/i18n";
 
 export default function InternalLinkingPage() {
   const [targetUrl, setTargetUrl] = useState("");
@@ -50,7 +51,7 @@ export default function InternalLinkingPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -59,14 +60,11 @@ export default function InternalLinkingPage() {
             <Link2 className="size-5 text-violet-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">Internal linking suggester</span>
+            <span className="text-gradient-brand">{tr("Internal linking suggester")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Pick a target page + the keyword you&apos;re trying to rank it for.
-          We crawl the site (sitemap + on-page links), find pages that mention
-          the keyword in body text, and flag missing internal links you should
-          add.
+          {tr("Pick a target page + the keyword you&apos;re trying to rank it for. We crawl the site (sitemap + on-page links), find pages that mention the keyword in body text, and flag missing internal links you should add.")}
         </p>
       </header>
 
@@ -86,7 +84,7 @@ export default function InternalLinkingPage() {
         </div>
         <div>
           <Label htmlFor="il-keyword" className="text-sm">
-            Target keyword
+            {tr("Target keyword")}
           </Label>
           <Input
             id="il-keyword"

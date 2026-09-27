@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { runLocalRanks } from "@/app/local-rank/actions";
 import type { LocalRankResult } from "@/lib/local-rank";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 export default function PerClientLocalRank({
   params,
@@ -27,7 +28,7 @@ export default function PerClientLocalRank({
 
   const [query, setQuery] = useState("");
   const [citiesText, setCitiesText] = useState("");
-  const [country, setCountry] = useState("US");
+  const [country, setCountry] = useState(DEFAULT_COUNTRY);
   const [pending, startTransition] = useTransition();
   const [rows, setRows] = useState<LocalRankResult[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -95,7 +96,7 @@ export default function PerClientLocalRank({
               id="lcountry"
               value={country}
               onChange={(e) => setCountry(e.target.value.toUpperCase())}
-              placeholder="US"
+              placeholder="TW"
               maxLength={2}
             />
           </div>

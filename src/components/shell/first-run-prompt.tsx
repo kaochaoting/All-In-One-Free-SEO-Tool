@@ -21,6 +21,7 @@ import {
   X,
 } from "lucide-react";
 import { safeFetch } from "@/lib/safe-fetch";
+import { tr } from "@/lib/i18n";
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
@@ -90,8 +91,7 @@ export function FirstRunPrompt() {
   async function installPwa() {
     if (!pwaPrompt) {
       toast.error("PWA install not available", {
-        description:
-          "Use Chrome / Edge / Brave to install. On Safari use Share → Add to Dock.",
+        description: tr("Use Chrome / Edge / Brave to install. On Safari use Share → Add to Dock."),
       });
       return;
     }
@@ -100,7 +100,7 @@ export function FirstRunPrompt() {
     if (choice.outcome === "accepted") {
       setPwaDone(true);
       toast.success("Installed as app", {
-        description: "Find SEO Tool in your Start Menu / Applications.",
+        description: tr("Find SEO Tool in your Start Menu / Applications."),
       });
     }
     setPwaPrompt(null);
@@ -119,8 +119,7 @@ export function FirstRunPrompt() {
     }
     setShortcutDone(true);
     toast.success("Shortcut created", {
-      description:
-        "Desktop + Start Menu icons added. Right-click the Start Menu entry → Pin to taskbar.",
+      description: tr("Desktop + Start Menu icons added. Right-click the Start Menu entry → Pin to taskbar."),
     });
   }
 
@@ -139,16 +138,16 @@ export function FirstRunPrompt() {
           </div>
           <div className="flex-1 space-y-1">
             <h2 className="text-[15px] font-semibold text-foreground">
-              Make SEO Tool feel like a real app
+              {tr("Make SEO Tool feel like a real app")}
             </h2>
             <p className="text-[13px] text-muted-foreground">
-              One click each. You can change this any time in{" "}
+              {tr("One click each. You can change this any time in")}{" "}
               <Link
                 href="/settings/install"
                 className="text-violet-300 hover:underline"
                 onClick={() => dismiss(true)}
               >
-                Settings → Install
+                {tr("Settings → Install")}
               </Link>
               .
             </p>
@@ -156,7 +155,7 @@ export function FirstRunPrompt() {
           <button
             type="button"
             onClick={() => dismiss(false)}
-            aria-label="Close"
+            aria-label={tr("Close")}
             className="grid size-6 place-items-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
           >
             <X className="size-3.5" />
@@ -167,7 +166,7 @@ export function FirstRunPrompt() {
           <Row
             icon={AppWindow}
             iconColor="text-violet-300"
-            title="Install as app (PWA)"
+            title={tr("Install as app (PWA)")}
             desc="Own window, no browser chrome. Adds to Start Menu / Applications. Right-click → Pin to taskbar."
             done={pwaDone}
             ctaLabel={pwaPrompt ? "Install" : "Not available"}
@@ -178,7 +177,7 @@ export function FirstRunPrompt() {
             <Row
               icon={MonitorDown}
               iconColor="text-cyan-300"
-              title="Desktop & Start Menu shortcut"
+              title={tr("Desktop & Start Menu shortcut")}
               desc="Launches the server AND opens the browser — works even when the server is currently off."
               done={shortcutDone}
               busy={shortcutBusy}
@@ -204,7 +203,7 @@ export function FirstRunPrompt() {
             className="inline-flex items-center gap-1.5 rounded bg-primary px-3 py-1.5 text-[12px] font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50"
           >
             <CheckCircle2 className="size-3.5" />
-            Done
+            {tr("Done")}
           </button>
         </div>
       </div>
@@ -244,7 +243,7 @@ function Row({
       </div>
       {done ? (
         <span className="inline-flex shrink-0 items-center gap-1 rounded bg-emerald-500/10 px-2 py-1 text-[11px] font-medium text-emerald-300 ring-1 ring-inset ring-emerald-500/30">
-          <CheckCircle2 className="size-3" /> Done
+          <CheckCircle2 className="size-3" /> {tr("Done")}
         </span>
       ) : (
         <button

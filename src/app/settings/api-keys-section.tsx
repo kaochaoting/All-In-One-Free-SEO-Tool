@@ -18,21 +18,22 @@ import {
   PROVIDER_CATALOG,
   type Provider,
 } from "@/lib/api-providers";
+import { tr } from "@/lib/i18n";
 
 const tierConfig: Record<
   "free" | "free-tier" | "paid",
   { label: string; tone: string }
 > = {
   free: {
-    label: "FREE",
+    label: tr("FREE"),
     tone: "bg-emerald-500/15 text-emerald-300 ring-emerald-500/30",
   },
   "free-tier": {
-    label: "FREE TIER",
+    label: tr("FREE TIER"),
     tone: "bg-cyan-500/15 text-cyan-300 ring-cyan-500/30",
   },
   paid: {
-    label: "PAID",
+    label: tr("PAID"),
     tone: "bg-amber-500/15 text-amber-300 ring-amber-500/30",
   },
 };
@@ -47,11 +48,9 @@ export function ApiKeysSection({
   return (
     <div className="space-y-4">
       <p className="text-xs text-muted-foreground">
-        Most features work without any keys. AI features (executive summaries,
-        chat assistant, OCR extraction, AI visibility tracking) need at least
-        one provider key.{" "}
+        {tr("Most features work without any keys. AI features (executive summaries, chat assistant, OCR extraction, AI visibility tracking) need at least one provider key.")}{" "}
         <strong className="text-foreground">
-          Free options listed first
+          {tr("Free options listed first")}
         </strong>{" "}
         — start with Gemini or Groq if you&apos;re unsure.
       </p>
@@ -185,13 +184,13 @@ function ProviderCard({
           {isConfigured && (
             <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-300 ring-1 ring-inset ring-emerald-500/30">
               <Check className="size-2.5" />
-              Configured
+              {tr("Configured")}
             </span>
           )}
         </div>
         <span className="inline-flex h-7 items-center gap-1 rounded-md bg-violet-500/15 px-2.5 text-[11px] font-medium text-violet-300 ring-1 ring-inset ring-violet-500/30 group-hover/header:bg-violet-500/25">
           <ExternalLink className="size-3" />
-          Get key from {keyUrlLabel}
+          {tr("Get key from")} {keyUrlLabel}
         </span>
       </a>
 
@@ -206,7 +205,7 @@ function ProviderCard({
       {/* Steps */}
       <div className="space-y-2 border-b border-white/5 px-4 py-3">
         <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-          How to get a key
+          {tr("How to get a key")}
         </div>
         <ol className="space-y-1.5 text-[11px] leading-relaxed text-foreground/85">
           {steps.map((step, i) => (
@@ -295,7 +294,7 @@ function ProviderCard({
               <>
                 <span className="inline-flex items-center gap-1">
                   <Check className="size-3" />
-                  <strong>Working.</strong> Replied in {testResult.elapsedMs}ms:
+                  <strong>{tr("Working.")}</strong> Replied in {testResult.elapsedMs}ms:
                 </span>{" "}
                 <span className="font-mono">
                   &quot;{testResult.reply.slice(0, 120)}&quot;
@@ -305,7 +304,7 @@ function ProviderCard({
               <>
                 <span className="inline-flex items-center gap-1">
                   <AlertCircle className="size-3" />
-                  <strong>Test failed.</strong>
+                  <strong>{tr("Test failed.")}</strong>
                 </span>{" "}
                 {testResult.error}
               </>
@@ -313,14 +312,13 @@ function ProviderCard({
           </div>
         )}
         <p className="text-[10px] text-muted-foreground">
-          Stored locally in <code className="rounded bg-white/5 px-1 py-0.5">data.db</code>{" "}
+          {tr("Stored locally in")} <code className="rounded bg-white/5 px-1 py-0.5">data.db</code>{" "}
           on this machine. You can also set environment variable{" "}
-          <code className="rounded bg-white/5 px-1 py-0.5">{envVar}</code> as an alternative.
+          <code className="rounded bg-white/5 px-1 py-0.5">{envVar}</code> {tr("as an alternative.")}
           {isConfigured && !value && (
             <>
               {" "}
-              <strong>Already configured</strong> — paste a new key above to
-              replace it, or leave blank and click Save to remove.
+              <strong>{tr("Already configured")}</strong> {tr("— paste a new key above to replace it, or leave blank and click Save to remove.")}
             </>
           )}
         </p>

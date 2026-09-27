@@ -5,6 +5,7 @@ import {
 } from "./robots-policy";
 import { guardedFetch, guardUrl } from "./url-guard";
 import { isInfrastructureUrl } from "./infrastructure-urls";
+import { cjkCharThreshold, textStats, wordEquivalents } from "@/lib/text/segment";
 
 export type Severity = "critical" | "high" | "medium" | "low";
 
@@ -125,7 +126,20 @@ function countWords(html: string): number {
     .replace(/<[^>]+>/g, " ");
   const text = decodeEntities(stripped).replace(/\s+/g, " ").trim();
   if (!text) return 0;
-  return text.split(/\s+/).length;
+  // CJK-aware: Chinese pages have no spaces between words. Returned in
+  // "English-word equivalents" (CJK-dominant pages: characters / 1.5), so
+  // every threshold below (200 thin, 80 client-rendered) stays sensible
+  // for Traditional Chinese pages — 200 words ≈ 300 字. See
+  // src/lib/text/segment.ts for the rationale.
+  return wordEquivalents(text);
+}
+
+function visibleTextStats(html: string) {
+  const stripped = html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ");
+  return textStats(decodeEntities(stripped).replace(/\s+/g, " ").trim());
 }
 
 function hasJsonLd(html: string): boolean {
@@ -499,11 +513,14 @@ export function checkPage(page: FetchedPage): {
   // Content thinness
   const wordCount = countWords(html);
   if (wordCount < 200) {
+    const stats = visibleTextStats(html);
     findings.push({
       type: "thin_content",
       severity: "medium",
       url,
-      message: `Page has only ${wordCount} words — Google may classify as thin content.`,
+      message: stats.cjkDominant
+        ? `頁面只有約 ${stats.cjkChars + stats.latinWords} 字（中文頁面門檻 ${cjkCharThreshold(200)} 字），Google 可能視為內容單薄（thin content）。`
+        : `Page has only ${wordCount} words — Google may classify as thin content.`,
     });
   }
 

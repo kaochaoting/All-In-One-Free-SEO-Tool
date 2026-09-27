@@ -20,6 +20,7 @@
 
 import { analyseInternalLinks } from "./internal-link-graph";
 import { callAI, lastAiFailure } from "./ai-call";
+import { cjkTerms } from "@/lib/text/segment";
 
 export type LinkSuggestion = {
   anchorText: string;
@@ -201,7 +202,8 @@ function tokenize(text: string): Set<string> {
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
-    .filter((w) => w.length >= 4 && w.length <= 24 && !STOP.has(w));
+    .filter((w) => w.length >= 4 && w.length <= 24 && !STOP.has(w))
+    .concat(cjkTerms(text));
   return new Set(tokens);
 }
 

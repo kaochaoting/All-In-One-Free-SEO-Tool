@@ -4,6 +4,7 @@
  */
 
 import { callAI, lastAiFailure } from "./ai-call";
+import { countWords } from "@/lib/text/segment";
 
 const USER_AGENT =
   "Mozilla/5.0 (compatible; SeoToolBot/1.0; +https://example.com/bot)";
@@ -96,7 +97,7 @@ const ALT_SYSTEM = `You write SEO-friendly alt text for blog and ecommerce image
 
 Rules per alt text:
 - Describe what's actually in the image, not what the page is about
-- ≤120 chars, plain English
+- ≤120 chars, plain language
 - Include the most relevant keyword from the page context naturally if it fits — don't force it
 - No "image of" / "picture of" prefixes
 - Lowercase first letter unless it's a proper noun
@@ -255,7 +256,7 @@ export async function auditNewsHeadline(opts: {
 }): Promise<{ ok: true; audit: HeadlineAudit } | { ok: false; error: string }> {
   if (!opts.headline.trim()) return { ok: false, error: "Headline required." };
   const charCount = opts.headline.length;
-  const wordCount = opts.headline.trim().split(/\s+/).length;
+  const wordCount = countWords(opts.headline.trim());
   const topStoriesFit = charCount >= 30 && charCount <= 110;
 
   const raw = await callAI({

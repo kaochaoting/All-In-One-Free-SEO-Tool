@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { Check, Copy, Layers, Loader2 } from "lucide-react";
 import { runCluster, type ClusterState } from "./actions";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 const INTENT_TONE: Record<string, string> = {
   informational: "bg-cyan-500/15 text-cyan-300 ring-cyan-500/30",
@@ -70,7 +71,7 @@ export function ClusterForm() {
           />
           <input
             name="country"
-            defaultValue="US"
+            defaultValue={DEFAULT_COUNTRY}
             maxLength={4}
             className="h-9 w-full rounded-md border border-white/10 bg-card/60 px-3 text-sm uppercase focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
           />

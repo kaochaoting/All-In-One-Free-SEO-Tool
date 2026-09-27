@@ -17,6 +17,7 @@ import {
   estimateDifficulty,
   type DifficultyApiResult,
 } from "./actions";
+import { tr } from "@/lib/i18n";
 
 const bandTone: Record<string, string> = {
   easy: "bg-emerald-500/15 text-emerald-300 ring-emerald-500/30",
@@ -53,7 +54,7 @@ export default function KeywordDifficultyPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -62,14 +63,11 @@ export default function KeywordDifficultyPage() {
             <Gauge className="size-5 text-amber-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">Keyword difficulty</span>
+            <span className="text-gradient-brand">{tr("Keyword difficulty")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Heuristic difficulty score (0-100) computed from real SERP signals —
-          no Ahrefs / Semrush key needed. Combines big-brand presence in top 10,
-          SERP-feature occupation, title competitiveness, and your AI key (if
-          configured) for a plain-language take on how to compete.
+          {tr("Heuristic difficulty score (0-100) computed from real SERP signals — no Ahrefs / Semrush key needed. Combines big-brand presence in top 10, SERP-feature occupation, title competitiveness, and your AI key (if configured) for a plain-language take on how to compete.")}
         </p>
       </header>
 

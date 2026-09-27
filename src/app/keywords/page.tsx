@@ -11,6 +11,7 @@ import {
   ClientToolGrid,
   type ClientToolCard,
 } from "@/components/shell/client-tool-grid";
+import { tr } from "@/lib/i18n";
 
 export default async function KeywordsIndexPage({
   searchParams,
@@ -91,8 +92,8 @@ export default async function KeywordsIndexPage({
   return (
     <div className="mx-auto max-w-7xl space-y-6">
       <PageHeader
-        title="Keywords"
-        description="Pick a client to research keywords, track ranks, and find quick wins."
+        title={tr("Keywords")}
+        description={tr("Pick a client to research keywords, track ranks, and find quick wins.")}
         icon={Search}
         accent="cyan"
       />

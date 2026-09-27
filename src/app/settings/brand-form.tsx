@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { saveBrand, clearLogo, type BrandActionResult } from "./brand-actions";
+import { tr } from "@/lib/i18n";
 
 export function BrandForm({
   initialName,
@@ -69,7 +70,7 @@ export function BrandForm({
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-1.5">
-          <Label htmlFor="brand-name">Brand name</Label>
+          <Label htmlFor="brand-name">{tr("Brand name")}</Label>
           <Input
             id="brand-name"
             name="name"
@@ -79,19 +80,19 @@ export function BrandForm({
             maxLength={80}
           />
           <p className="text-[11px] text-muted-foreground">
-            Shown on PDF report covers and the footer.
+            {tr("Shown on PDF report covers and the footer.")}
           </p>
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="brand-color">Accent color</Label>
+          <Label htmlFor="brand-color">{tr("Accent color")}</Label>
           <div className="flex items-center gap-2">
             <input
               type="color"
               value={color}
               onChange={(e) => setColor(e.target.value)}
               className="h-9 w-12 cursor-pointer rounded-md border border-white/10 bg-card/60"
-              aria-label="Pick brand color"
+              aria-label={tr("Pick brand color")}
             />
             <Input
               id="brand-color"
@@ -104,13 +105,13 @@ export function BrandForm({
             />
           </div>
           <p className="text-[11px] text-muted-foreground">
-            Used for headings and highlights in PDF reports.
+            {tr("Used for headings and highlights in PDF reports.")}
           </p>
         </div>
       </div>
 
       <div className="space-y-2">
-        <Label>Logo</Label>
+        <Label>{tr("Logo")}</Label>
         <div className="rounded-xl border border-white/5 bg-black/20 p-4">
           {logoDataUrl ? (
             <div className="flex items-center justify-between gap-4">
@@ -129,7 +130,7 @@ export function BrandForm({
                   className="inline-flex items-center gap-1 rounded-md border border-white/10 bg-white/5 px-2.5 py-1 text-xs hover:bg-white/10"
                 >
                   <Upload className="size-3" />
-                  Replace
+                  {tr("Replace")}
                 </button>
                 <button
                   type="button"
@@ -140,7 +141,7 @@ export function BrandForm({
                   className="inline-flex items-center gap-1 rounded-md bg-rose-500/10 px-2.5 py-1 text-xs text-rose-300 ring-1 ring-inset ring-rose-500/20 hover:bg-rose-500/20"
                 >
                   <Trash2 className="size-3" />
-                  Remove
+                  {tr("Remove")}
                 </button>
               </div>
             </div>
@@ -151,7 +152,7 @@ export function BrandForm({
               className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-white/10 px-4 py-6 text-sm text-muted-foreground hover:border-white/20 hover:bg-white/5 hover:text-foreground"
             >
               <ImageIcon className="size-4" />
-              Click to upload PNG / JPG / WebP / SVG (max ~350 KB)
+              {tr("Click to upload PNG / JPG / WebP / SVG (max ~350 KB)")}
             </button>
           )}
           <input
@@ -178,26 +179,26 @@ export function BrandForm({
           partner since 2018"-style copy where appropriate. */}
       <fieldset className="space-y-3 rounded-xl border border-white/5 bg-black/20 p-4">
         <legend className="px-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Contact + footer (optional, used on invoices + emails)
+          {tr("Contact + footer (optional, used on invoices + emails)")}
         </legend>
 
         <div className="space-y-1.5">
-          <Label htmlFor="brand-tagline">Tagline</Label>
+          <Label htmlFor="brand-tagline">{tr("Tagline")}</Label>
           <Input
             id="brand-tagline"
             name="tagline"
             defaultValue={initialTagline ?? ""}
-            placeholder="Your growth partner — SEO done right"
+            placeholder={tr("Your growth partner — SEO done right")}
             maxLength={120}
           />
           <p className="text-[11px] text-muted-foreground">
-            Sub-headline under the brand name on report covers.
+            {tr("Sub-headline under the brand name on report covers.")}
           </p>
         </div>
 
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-1.5">
-            <Label htmlFor="brand-email">Contact email</Label>
+            <Label htmlFor="brand-email">{tr("Contact email")}</Label>
             <Input
               id="brand-email"
               name="email"
@@ -208,7 +209,7 @@ export function BrandForm({
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="brand-phone">Phone</Label>
+            <Label htmlFor="brand-phone">{tr("Phone")}</Label>
             <Input
               id="brand-phone"
               name="phone"
@@ -220,7 +221,7 @@ export function BrandForm({
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="brand-website">Website</Label>
+          <Label htmlFor="brand-website">{tr("Website")}</Label>
           <Input
             id="brand-website"
             name="website"
@@ -231,7 +232,7 @@ export function BrandForm({
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="brand-footer">Footer text</Label>
+          <Label htmlFor="brand-footer">{tr("Footer text")}</Label>
           <Input
             id="brand-footer"
             name="footerText"
@@ -240,9 +241,7 @@ export function BrandForm({
             maxLength={200}
           />
           <p className="text-[11px] text-muted-foreground">
-            Single line shown in the bottom of invoices, the weekly
-            digest email, and the client portal page. Good for
-            registration info, address, or a tagline.
+            {tr("Single line shown in the bottom of invoices, the weekly digest email, and the client portal page. Good for registration info, address, or a tagline.")}
           </p>
         </div>
       </fieldset>

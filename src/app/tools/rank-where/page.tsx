@@ -6,9 +6,11 @@ import { ExternalLink, Loader2, Target } from "lucide-react";
 import { PageHeader } from "@/components/shell/page-header";
 import { checkRank, type RankWhereState } from "./actions";
 import { RecentRuns } from "@/components/recent-runs";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 // Quick country picker — most useful for SEO work
 const COUNTRIES = [
+  { code: "TW", name: "Taiwan 台灣" },
   { code: "US", name: "United States" },
   { code: "GB", name: "United Kingdom" },
   { code: "CA", name: "Canada" },
@@ -92,7 +94,7 @@ export default function RankWherePage() {
             <span className="text-muted-foreground">Country</span>
             <select
               name="country"
-              defaultValue="US"
+              defaultValue={DEFAULT_COUNTRY}
               className="h-9 w-full rounded-md border border-white/10 bg-card/60 px-3 text-sm"
             >
               {COUNTRIES.map((c) => (

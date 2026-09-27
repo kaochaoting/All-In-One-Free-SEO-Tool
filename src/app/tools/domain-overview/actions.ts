@@ -3,6 +3,7 @@
 import { fetchSiteMetadata, type SiteMetadata } from "@/lib/site-metadata";
 import { saveToolRun } from "@/lib/tool-runs";
 import { guardedFetch, guardUrl } from "@/lib/url-guard";
+import { countWords } from "@/lib/text/segment";
 
 export type DomainOverview = {
   ok: true;
@@ -118,7 +119,7 @@ export async function runDomainOverview(
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-  const wordCount = visible ? visible.split(/\s+/).length : 0;
+  const wordCount = visible ? countWords(visible) : 0;
 
   // Link counts
   const links = [...html.matchAll(/<a\s+[^>]*href=(?:"([^"]*)"|'([^']*)')/gi)]

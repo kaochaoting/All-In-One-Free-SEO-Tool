@@ -2,6 +2,7 @@
 
 import { scanSerp } from "@/lib/serp-scanner";
 import { saveToolRun } from "@/lib/tool-runs";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 export type RankWhereResult = {
   domain: string;
@@ -48,7 +49,7 @@ export async function checkRank(
 ): Promise<RankWhereState> {
   const domain = normalizeDomain(String(formData.get("domain") ?? ""));
   const query = String(formData.get("query") ?? "").trim();
-  const country = String(formData.get("country") ?? "US").trim().toUpperCase();
+  const country = String(formData.get("country") ?? DEFAULT_COUNTRY).trim().toUpperCase();
   const topNRaw = Number(formData.get("topN") ?? 100);
   const topN = ([10, 20, 50, 100].includes(topNRaw) ? topNRaw : 100) as
     | 10

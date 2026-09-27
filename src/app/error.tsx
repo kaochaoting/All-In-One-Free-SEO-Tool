@@ -20,6 +20,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { friendlyError, ghIssueLink } from "@/lib/friendly-error";
+import { selfRestartEnabled } from "@/lib/feature-flags";
 
 export default function PageError({
   error,
@@ -131,11 +132,13 @@ export default function PageError({
           title="Go back"
           onClick={() => history.back()}
         />
-        <ActionButton
-          icon={RefreshCw}
-          title="Restart the server"
-          onClick={restart}
-        />
+        {selfRestartEnabled() && (
+          <ActionButton
+            icon={RefreshCw}
+            title="Restart the server"
+            onClick={restart}
+          />
+        )}
       </div>
 
       {fe.helpLink && (

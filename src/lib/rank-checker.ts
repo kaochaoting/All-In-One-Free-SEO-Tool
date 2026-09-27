@@ -1,6 +1,7 @@
 import { type Page } from "playwright";
 import { withBrowserContext } from "./browser-pool";
 import { captchaUserMessage, detectCaptcha, emptyResultsReason } from "./captcha-detect";
+import { DEFAULT_COUNTRY, googleHl } from "@/lib/locale";
 
 export type RankCheckResult = {
   query: string;
@@ -227,8 +228,8 @@ async function checkOnGoogle(
       let resultsScanned = 0;
 
       try {
-    const country = (locale?.country ?? "US").toUpperCase();
-    const lang = locale?.language ?? "en";
+    const country = (locale?.country ?? DEFAULT_COUNTRY).toUpperCase();
+    const lang = locale?.language ?? googleHl(country);
     // For city-level checks, prepend the city to the query — that's what
     // produces a localised SERP without needing IP-spoofing infrastructure.
     const finalQuery = locale?.city ? `${query} ${locale.city}` : query;

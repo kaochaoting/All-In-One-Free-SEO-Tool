@@ -21,6 +21,7 @@ import {
 } from "./page-inspectors";
 import { auditEeat } from "./eeat-audit";
 import { measureCwv } from "./local-cwv";
+import { wordEquivalents } from "@/lib/text/segment";
 
 const USER_AGENT =
   "Mozilla/5.0 (compatible; SeoToolBot/1.0; +https://example.com/bot)";
@@ -318,7 +319,7 @@ async function fetchPage(url: string): Promise<PageData | null> {
     )
       .replace(/\s+/g, " ")
       .trim();
-    const wordCount = text.split(/\s+/).filter(Boolean).length;
+    const wordCount = wordEquivalents(text);
 
     return {
       status: res.status,

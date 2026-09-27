@@ -17,6 +17,7 @@ import { ShortcutsHelpHotkey } from "@/components/shell/shortcuts-help-hotkey";
 import { getUnreadCounts } from "@/lib/unread-counts";
 import { getUiMode } from "./settings/ui-actions";
 import { getThemePreference } from "./settings/theme-actions";
+import { HTML_LANG, tr } from "@/lib/i18n";
 import "./globals.css";
 
 // Inter is warmer + more readable at small sizes than Geist's precise grotesk.
@@ -34,12 +35,12 @@ const monoFont = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SEO Tool",
-  description: "Self-hosted SEO platform — free, modern, beginner-friendly.",
+  title: tr("SEO Tool"),
+  description: tr("Self-hosted SEO platform — free, modern, beginner-friendly."),
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
-    title: "SEO Tool",
+    title: tr("SEO Tool"),
     statusBarStyle: "black-translucent",
   },
 };
@@ -101,7 +102,7 @@ export default async function RootLayout({
 
   return (
     <html
-      lang="en"
+      lang={HTML_LANG}
       suppressHydrationWarning
       data-ui-mode={uiMode}
       data-theme={theme}

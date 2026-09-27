@@ -36,6 +36,7 @@ import { startScheduler, tickScheduler } from "@/lib/scheduler";
 import { redirect } from "next/navigation";
 import { getSetting } from "@/lib/settings-store";
 import { FreshnessBadge } from "@/components/ui/freshness-badge";
+import { tr } from "@/lib/i18n";
 
 const priorityVariant: Record<
   string,
@@ -47,10 +48,10 @@ const priorityVariant: Record<
 };
 
 function greetingForHour(hour: number) {
-  if (hour < 5) return "Working late";
-  if (hour < 12) return "Good morning";
-  if (hour < 18) return "Good afternoon";
-  return "Good evening";
+  if (hour < 5) return tr("Working late");
+  if (hour < 12) return tr("Good morning");
+  if (hour < 18) return tr("Good afternoon");
+  return tr("Good evening");
 }
 
 export default async function DashboardPage() {
@@ -174,17 +175,17 @@ export default async function DashboardPage() {
         <div className="space-y-3">
           <div className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
             <span className="size-1.5 rounded-full bg-emerald-400" />
-            Local · single-user · everything on this machine
+            {tr("Local · single-user · everything on this machine")}
           </div>
           <h1 className="text-3xl font-bold leading-tight tracking-tight text-foreground">
             {isFresh
-              ? "Welcome. Let's set up your first 5 minutes."
-              : `${greeting}, here's what needs attention today.`}
+              ? tr("Welcome. Let's set up your first 5 minutes.")
+              : tr("{greeting}, here's what needs attention today.", { greeting })}
           </h1>
           <p className="max-w-2xl text-sm text-muted-foreground">
             {isFresh
-              ? "Paste a URL and get a full technical audit in about a minute — no API keys, no signup, nothing to configure. Rank tracking, content tools and AI features are all here too, and you can turn them on once you've seen the audit."
-              : "Free, modern, beginner-friendly SEO for freelancers and small agencies — without the $140/mo SaaS bills."}
+              ? tr("Paste a URL and get a full technical audit in about a minute — no API keys, no signup, nothing to configure. Rank tracking, content tools and AI features are all here too, and you can turn them on once you've seen the audit.")
+              : tr("Free, modern, beginner-friendly SEO for freelancers and small agencies — without the $140/mo SaaS bills.")}
           </p>
           <div className="flex flex-wrap items-center gap-3 pt-1">
             {isFresh ? (
@@ -194,26 +195,26 @@ export default async function DashboardPage() {
                     key, so a first-time user can see real output before
                     deciding whether to configure anything. */}
                 <Link href="/clients/new" className={buttonVariants()}>
-                  Add your first site
+                  {tr("Add your first site")}
                 </Link>
                 <Link
                   href="/settings#ai"
                   className="inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
-                  Or connect an AI provider
+                  {tr("Or connect an AI provider")}
                   <ArrowUpRight className="size-3.5" />
                 </Link>
               </>
             ) : (
               <>
                 <Link href="/clients/new" className={buttonVariants()}>
-                  Add a client
+                  {tr("Add a client")}
                 </Link>
                 <Link
                   href="/clients"
                   className="inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
-                  View clients
+                  {tr("View clients")}
                   <ArrowUpRight className="size-3.5" />
                 </Link>
               </>
@@ -226,7 +227,7 @@ export default async function DashboardPage() {
             <ScoreGauge score={latestScore} />
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                <span>Latest audit</span>
+                <span>{tr("Latest audit")}</span>
                 <FreshnessBadge
                   capturedAt={
                     recentAudits[0]?.completedAt ??
@@ -250,11 +251,11 @@ export default async function DashboardPage() {
                     }`}
                   >
                     {scoreDelta > 0 ? "+" : ""}
-                    {scoreDelta} vs previous
+                    {scoreDelta} {tr("vs previous")}
                   </div>
                 ) : (
                   <div className="text-[11px] text-muted-foreground">
-                    First measurement
+                    {tr("First measurement")}
                   </div>
                 )}
               </div>
@@ -268,41 +269,41 @@ export default async function DashboardPage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
             className="animate-page-enter stagger-1"
-            label="Open tasks"
+            label={tr("Open tasks")}
             value={openTaskCount}
             accent="violet"
             icon={ListChecks}
             hint={
-              openTaskCount > 0 ? "Sorted by priority below" : "All caught up"
+              openTaskCount > 0 ? tr("Sorted by priority below") : tr("All caught up")
             }
             spark={issueTimeline.length > 1 ? issueTimeline : undefined}
           />
           <StatCard
             className="animate-page-enter stagger-2"
-            label="Clients"
+            label={tr("Clients")}
             value={clientCount}
             accent="cyan"
             icon={Users}
-            hint="Active"
+            hint={tr("Active")}
           />
           <StatCard
             className="animate-page-enter stagger-3"
-            label="Audits run"
+            label={tr("Audits run")}
             value={auditCount}
             accent="amber"
             icon={ClipboardList}
             hint={
               scoreDelta !== null
-                ? `Score ${latestScore} (${scoreDelta > 0 ? "+" : ""}${scoreDelta})`
+                ? tr("Score {score} ({delta})", { score: latestScore ?? "—", delta: `${scoreDelta > 0 ? "+" : ""}${scoreDelta}` })
                 : completedAudits.length > 0
-                  ? `Latest ${latestScore}`
-                  : "Run your first"
+                  ? tr("Latest {score}", { score: latestScore ?? "—" })
+                  : tr("Run your first")
             }
             spark={scoreTimeline.length > 1 ? scoreTimeline : undefined}
           />
           <StatCard
             className="animate-page-enter stagger-4"
-            label="Latest score"
+            label={tr("Latest score")}
             value={latestScore ?? "—"}
             accent="emerald"
             icon={Sparkles}
@@ -313,12 +314,12 @@ export default async function DashboardPage() {
             source="crawl"
             hint={
               completedAudits.length > 0
-                ? `${completedAudits.length} completed`
-                : "Run an audit first"
+                ? tr("{n} completed", { n: completedAudits.length })
+                : tr("Run an audit first")
             }
             delta={
               scoreDelta !== null
-                ? { value: scoreDelta, label: "vs previous" }
+                ? { value: scoreDelta, label: tr("vs previous") }
                 : undefined
             }
           />
@@ -382,17 +383,17 @@ export default async function DashboardPage() {
                 <div>
                   <h2 className="flex items-center gap-2 text-[13px] font-semibold text-foreground">
                     <Sparkles className="size-3.5 text-violet-300" />
-                    Priority tasks
+                    {tr("Priority tasks")}
                   </h2>
                   <p className="mt-0.5 text-[11px] text-muted-foreground">
-                    Auto-generated from audits and niche templates
+                    {tr("Auto-generated from audits and niche templates")}
                   </p>
                 </div>
                 <Link
                   href="/tasks"
                   className="inline-flex items-center gap-1 rounded px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
-                  View all
+                  {tr("View all")}
                   <ArrowUpRight className="size-3" />
                 </Link>
               </header>
@@ -433,17 +434,17 @@ export default async function DashboardPage() {
                 <div>
                   <h2 className="flex items-center gap-2 text-[13px] font-semibold text-foreground">
                     <ClipboardList className="size-3.5 text-violet-300" />
-                    Recent audits
+                    {tr("Recent audits")}
                   </h2>
                   <p className="mt-0.5 text-[11px] text-muted-foreground">
-                    Last 5 across all clients
+                    {tr("Last 5 across all clients")}
                   </p>
                 </div>
                 <Link
                   href="/clients"
                   className="inline-flex items-center gap-1 rounded px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
-                  Clients
+                  {tr("Clients")}
                   <ArrowUpRight className="size-3" />
                 </Link>
               </header>
@@ -458,7 +459,7 @@ export default async function DashboardPage() {
                         href={`/audits/${a.id}`}
                         className="block truncate font-medium text-foreground hover:underline"
                       >
-                        {a.clientName ?? `Client ${a.clientId}`}
+                        {a.clientName ?? tr("Client {id}", { id: a.clientId })}
                       </Link>
                       <div className="text-[11px] text-muted-foreground">
                         {(a.completedAt ?? a.createdAt).toLocaleDateString()} ·{" "}
@@ -480,10 +481,10 @@ export default async function DashboardPage() {
           <header className="mb-4 flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold tracking-tight text-foreground">
-                Audit score trend
+                {tr("Audit score trend")}
               </h2>
               <p className="text-sm text-muted-foreground">
-                Last {trendAudits.length} completed audits across all clients.
+                {tr("Last {n} completed audits across all clients.", { n: trendAudits.length })}
               </p>
             </div>
           </header>
@@ -540,45 +541,45 @@ type BentoTile = {
 const BENTO_TILES: BentoTile[] = [
   {
     href: "/audits",
-    title: "Run an audit",
-    desc: "30 SEO checks, severity-classified, AI-summarized.",
+    title: tr("Run an audit"),
+    desc: tr("30 SEO checks, severity-classified, AI-summarized."),
     icon: ClipboardList,
     iconColor: "text-violet-300",
     className: "md:col-span-2 md:row-span-2",
   },
   {
     href: "/keywords",
-    title: "Track keywords",
-    desc: "Daily ranks, free browser mode.",
+    title: tr("Track keywords"),
+    desc: tr("Daily ranks, free browser mode."),
     icon: Search,
     iconColor: "text-cyan-300",
   },
   {
     href: "/reports",
-    title: "Generate report",
-    desc: "PDF, white-label, AI summary.",
+    title: tr("Generate report"),
+    desc: tr("PDF, white-label, AI summary."),
     icon: FileDown,
     iconColor: "text-amber-300",
   },
   {
     href: "/agent",
-    title: "AI agent",
-    desc: "Auto-detects issues + applies fixes via WP bridge.",
+    title: tr("AI agent"),
+    desc: tr("Auto-detects issues + applies fixes via WP bridge."),
     icon: Bot,
     iconColor: "text-fuchsia-300",
     className: "md:col-span-2",
   },
   {
     href: "/backlinks",
-    title: "Backlinks",
-    desc: "GSC + Common Crawl, lost-link recovery.",
+    title: tr("Backlinks"),
+    desc: tr("GSC + Common Crawl, lost-link recovery."),
     icon: Link2,
     iconColor: "text-emerald-300",
   },
   {
     href: "/tools",
-    title: "All tools",
-    desc: "100+ tools in one searchable grid.",
+    title: tr("All tools"),
+    desc: tr("100+ tools in one searchable grid."),
     icon: Wrench,
     iconColor: "text-rose-300",
   },
@@ -588,7 +589,7 @@ function BentoQuickActions() {
   return (
     <section>
       <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-        Quick actions
+        {tr("Quick actions")}
       </h2>
       <div className="grid auto-rows-[110px] grid-cols-2 gap-3 md:grid-cols-4">
         {BENTO_TILES.map((tile) => {
@@ -624,12 +625,12 @@ function BentoQuickActions() {
  */
 function FeatureHighlights() {
   const highlights = [
-    { icon: ClipboardList, label: "30+ audit checks", tone: "text-violet-400" },
-    { icon: Search, label: "Daily rank tracker", tone: "text-cyan-400" },
-    { icon: FileDown, label: "White-label reports", tone: "text-amber-400" },
-    { icon: Bot, label: "AI agent + chat", tone: "text-fuchsia-400" },
-    { icon: Link2, label: "Backlink monitor", tone: "text-emerald-400" },
-    { icon: Wrench, label: "100+ free tools", tone: "text-rose-400" },
+    { icon: ClipboardList, label: tr("30+ audit checks"), tone: "text-violet-400" },
+    { icon: Search, label: tr("Daily rank tracker"), tone: "text-cyan-400" },
+    { icon: FileDown, label: tr("White-label reports"), tone: "text-amber-400" },
+    { icon: Bot, label: tr("AI agent + chat"), tone: "text-fuchsia-400" },
+    { icon: Link2, label: tr("Backlink monitor"), tone: "text-emerald-400" },
+    { icon: Wrench, label: tr("100+ free tools"), tone: "text-rose-400" },
   ];
   return (
     <aside className="flex flex-col gap-4 rounded-xl border border-border bg-card p-5 shadow">
@@ -638,10 +639,10 @@ function FeatureHighlights() {
           What you&apos;ll unlock
         </div>
         <h3 className="mt-1 text-base font-semibold text-foreground">
-          The full SEO stack, free
+          {tr("The full SEO stack, free")}
         </h3>
         <p className="mt-1 text-xs text-muted-foreground">
-          Replaces $140+/mo SaaS. Everything runs on this machine.
+          {tr("Replaces $140+/mo SaaS. Everything runs on this machine.")}
         </p>
       </div>
       <ul className="space-y-1.5">
@@ -657,10 +658,9 @@ function FeatureHighlights() {
       </ul>
       <div className="mt-auto space-y-3">
         <div className="rounded-md border border-violet-500/30 bg-violet-500/5 p-3">
-          <div className="text-xs font-medium text-violet-300">No paid APIs</div>
+          <div className="text-xs font-medium text-violet-300">{tr("No paid APIs")}</div>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            Browser mode + free Google APIs cover everything. BYO key only if
-            you want premium SERP data.
+            {tr("Browser mode + free Google APIs cover everything. BYO key only if you want premium SERP data.")}
           </p>
         </div>
         {/* Maintainer credit — subtle, links to source + support */}

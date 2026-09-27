@@ -18,6 +18,7 @@ import {
 } from "./connection-mode-actions";
 import { McpSetup } from "./mcp-setup";
 import { ModePreview } from "./mode-preview";
+import { tr } from "@/lib/i18n";
 
 /**
  * Two things you can connect, not three options to pick between.
@@ -127,7 +128,7 @@ export function ConnectionModePicker({
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-sm font-medium">AI connection</h3>
+        <h3 className="text-sm font-medium">{tr("AI connection")}</h3>
         <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
           {FREE_TOOL_COUNT} of the {TOTAL_TOOL_COUNT} tools need no AI and
           already work. These two cover the other {AI_TOOL_COUNT}. They do
@@ -137,9 +138,7 @@ export function ConnectionModePicker({
 
       {mode === "both" && (
         <p className="rounded-md border border-emerald-500/30 bg-emerald-500/10 p-2 text-[11px] leading-relaxed text-emerald-900 dark:text-emerald-100/90">
-          <strong>Both connected — nothing is missing.</strong> The AI tools in
-          here run on your key, and your chat app can work with your SEO data
-          directly.
+          <strong>{tr("Both connected — nothing is missing.")}</strong> {tr("The AI tools in here run on your key, and your chat app can work with your SEO data directly.")}
         </p>
       )}
 
@@ -153,7 +152,7 @@ export function ConnectionModePicker({
         <section className="space-y-2 rounded-xl border border-white/10 bg-white/[0.02] p-3">
           <div className="flex flex-wrap items-center gap-2">
             <KeyRound className="size-3.5 text-amber-300" />
-            <p className="text-sm font-medium">An API key</p>
+            <p className="text-sm font-medium">{tr("An API key")}</p>
             <StatusDot status={status.api} />
           </div>
           <p className="text-xs leading-relaxed text-muted-foreground">
@@ -162,14 +161,14 @@ export function ConnectionModePicker({
             running overnight. Gemini and Groq have free tiers.
           </p>
           <p className="text-[11px] text-muted-foreground">
-            Providers are listed below.
+            {tr("Providers are listed below.")}
           </p>
         </section>
 
         <section className="space-y-2 rounded-xl border border-white/10 bg-white/[0.02] p-3">
           <div className="flex flex-wrap items-center gap-2">
             <MessageSquare className="size-3.5 text-violet-300" />
-            <p className="text-sm font-medium">Your Claude / ChatGPT app</p>
+            <p className="text-sm font-medium">{tr("Your Claude / ChatGPT app")}</p>
             <StatusDot status={status.mcp} />
           </div>
           <p className="text-xs leading-relaxed text-muted-foreground">
@@ -179,7 +178,7 @@ export function ConnectionModePicker({
           </p>
           {mcp.connected && mcp.lastSeenLabel && (
             <p className="text-[11px] text-muted-foreground">
-              Last used{" "}
+              {tr("Last used")}{" "}
               <span className="text-foreground">{mcp.lastSeenLabel}</span>
               {mcp.lastClient && (
                 <>
@@ -207,35 +206,34 @@ export function ConnectionModePicker({
       {openChat && (
         <div className="space-y-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
           <p className="text-xs leading-relaxed text-muted-foreground">
-            <strong className="text-foreground">How this one works.</strong>{" "}
+            <strong className="text-foreground">{tr("How this one works.")}</strong>{" "}
             Your chat app connects to this tool and calls it, so it answers in
             that app while you&apos;re at the keyboard. It does not power the
             AI pages in here, and nothing is charged per use.
           </p>
 
           <div className="space-y-2 rounded-lg border border-border bg-card/60 p-3">
-            <p className="text-xs font-medium">Endpoint and tokens</p>
-            {mcp.enabled && <CopyRow label="Server URL" value={remoteUrl} />}
+            <p className="text-xs font-medium">{tr("Endpoint and tokens")}</p>
+            {mcp.enabled && <CopyRow label={tr("Server URL")} value={remoteUrl} />}
 
             {/* The read-only token first: it is the one almost everyone
                 should be pasting into a chat app. */}
             {mcp.readOnlyToken ? (
               <>
                 <CopyRow
-                  label="Read-only token"
+                  label={tr("Read-only token")}
                   value={mcp.readOnlyToken}
                   secret
                 />
                 <p className="text-[11px] leading-relaxed text-muted-foreground">
-                  Reads everything, changes nothing — it cannot run the agent or
-                  apply a fix. This is the one to give a chat app.
+                  {tr("Reads everything, changes nothing — it cannot run the agent or apply a fix. This is the one to give a chat app.")}
                 </p>
                 <button
                   type="button"
                   onClick={() => start(() => void revokeMcpReadOnlyToken())}
                   className="text-[11px] text-rose-300 underline decoration-dotted underline-offset-2 hover:decoration-solid"
                 >
-                  Revoke the read-only token
+                  {tr("Revoke the read-only token")}
                 </button>
               </>
             ) : (
@@ -245,21 +243,20 @@ export function ConnectionModePicker({
                 onClick={() => start(() => void generateMcpReadOnlyToken())}
                 className="inline-flex h-8 items-center rounded-lg bg-violet-500/15 px-3 text-xs font-medium text-violet-300 ring-1 ring-inset ring-violet-500/30 hover:bg-violet-500/25 disabled:opacity-50"
               >
-                Generate a read-only token
+                {tr("Generate a read-only token")}
               </button>
             )}
 
             {mcp.token ? (
               <>
-                <CopyRow label="Full-access token" value={mcp.token} secret />
+                <CopyRow label={tr("Full-access token")} value={mcp.token} secret />
                 <p className="text-[11px] leading-relaxed text-muted-foreground">
-                  Anyone who can reach that URL with this token can read every
-                  client and change live websites — treat it like a password.
+                  {tr("Anyone who can reach that URL with this token can read every client and change live websites — treat it like a password.")}
                 </p>
                 {isLocalUrl && (
                   <p className="text-[11px] leading-relaxed text-muted-foreground">
                     <strong className="text-foreground">
-                      This is a local address.
+                      {tr("This is a local address.")}
                     </strong>{" "}
                     Right for Claude Code, Claude Desktop and Cursor. claude.ai
                     and ChatGPT cannot reach it — start a tunnel, then open this
@@ -272,15 +269,13 @@ export function ConnectionModePicker({
                   onClick={() => start(() => void revokeMcpToken())}
                   className="text-[11px] text-rose-300 underline decoration-dotted underline-offset-2 hover:decoration-solid"
                 >
-                  Revoke the full-access token
+                  {tr("Revoke the full-access token")}
                 </button>
               </>
             ) : (
               <>
                 <p className="text-[11px] leading-relaxed text-muted-foreground">
-                  A full-access token also lets a connected app run the agent
-                  and apply fixes, within your autonomy setting. Only generate
-                  one if you want that from a chat.
+                  {tr("A full-access token also lets a connected app run the agent and apply fixes, within your autonomy setting. Only generate one if you want that from a chat.")}
                 </p>
                 <button
                   type="button"
@@ -288,14 +283,13 @@ export function ConnectionModePicker({
                   onClick={() => start(() => void generateMcpToken())}
                   className="inline-flex h-8 items-center rounded-lg bg-white/5 px-3 text-xs font-medium text-muted-foreground ring-1 ring-inset ring-white/10 hover:bg-white/10 hover:text-foreground disabled:opacity-50"
                 >
-                  Generate a full-access token
+                  {tr("Generate a full-access token")}
                 </button>
               </>
             )}
             {!mcp.enabled && (
               <p className="text-[11px] leading-relaxed text-muted-foreground">
-                The endpoint stays closed until one of these exists. Requests
-                are capped per token.
+                {tr("The endpoint stays closed until one of these exists. Requests are capped per token.")}
               </p>
             )}
           </div>

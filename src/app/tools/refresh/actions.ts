@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { detectRefresh, type RefreshPlan } from "@/lib/refresh-detector";
 import { saveToolRun } from "@/lib/tool-runs";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 const inputSchema = z.object({
   url: z
@@ -12,7 +13,7 @@ const inputSchema = z.object({
     .transform((v) => (/^https?:\/\//i.test(v) ? v : `https://${v}`))
     .pipe(z.string().url()),
   targetKeyword: z.string().trim().min(2).max(200),
-  country: z.string().trim().min(2).max(8).default("US"),
+  country: z.string().trim().min(2).max(8).default(DEFAULT_COUNTRY),
 });
 
 export type RefreshState =

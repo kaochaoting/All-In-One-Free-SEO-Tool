@@ -1,5 +1,6 @@
 import { withBrowserContext } from "./browser-pool";
 import { captchaUserMessage, detectCaptcha } from "./captcha-detect";
+import { DEFAULT_COUNTRY, googleHl } from "@/lib/locale";
 
 /**
  * Local rank tracker — runs a rank check with city-level location intent
@@ -45,7 +46,7 @@ export async function checkLocalRank(opts: {
   domain: string;
   country?: string;
 }): Promise<LocalRankResult> {
-  const country = (opts.country ?? "US").toUpperCase();
+  const country = (opts.country ?? DEFAULT_COUNTRY).toUpperCase();
   const domain = normalizeDomain(opts.domain);
 
   // Bake the city into the query for local intent
@@ -65,7 +66,7 @@ export async function checkLocalRank(opts: {
     const page = await context.newPage();
 
     try {
-    const url = `https://www.google.com/search?q=${encodeURIComponent(localQuery)}&hl=en&gl=${country}&pws=0&num=50`;
+    const url = `https://www.google.com/search?q=${encodeURIComponent(localQuery)}&hl=${encodeURIComponent(googleHl(country))}&gl=${country}&pws=0&num=50`;
     await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30_000 });
     await page.waitForTimeout(700);
 

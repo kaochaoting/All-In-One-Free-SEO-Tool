@@ -16,6 +16,7 @@
 
 import { callAI, lastAiFailure } from "./ai-call";
 import { scanSerp } from "./serp-scanner";
+import { DEFAULT_COUNTRY, googleGl, googleHl, trendsHl } from "@/lib/locale";
 
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
@@ -69,7 +70,7 @@ export async function findTrendingIdeas(opts: {
   country?: string;
   clientId?: number;
 }): Promise<TrendingResult> {
-  const country = (opts.country ?? "US").toUpperCase();
+  const country = (opts.country ?? DEFAULT_COUNTRY).toUpperCase();
 
   const [trends, autocomplete, serp, reddit] = await Promise.all([
     fetchTrendsRelated(opts.topic, country).catch(() => ({ rising: [], top: [] })),
@@ -223,7 +224,7 @@ async function fetchTrendsRelated(
   topic: string,
   country: string,
 ): Promise<{ rising: string[]; top: string[] }> {
-  const explore = `https://trends.google.com/trends/api/explore?hl=en-US&tz=0&req=${encodeURIComponent(
+  const explore = `https://trends.google.com/trends/api/explore?hl=${trendsHl(country)}&tz=-480&req=${encodeURIComponent(
     JSON.stringify({
       comparisonItem: [{ keyword: topic, geo: country, time: "today 3-m" }],
       category: 0,
@@ -254,7 +255,7 @@ async function fetchTrendsRelated(
   const widget = exploreData.widgets?.find((w) => w.id === "RELATED_QUERIES");
   if (!widget) return { rising: [], top: [] };
 
-  const url = `https://trends.google.com/trends/api/widgetdata/relatedsearches?hl=en-US&tz=0&req=${encodeURIComponent(
+  const url = `https://trends.google.com/trends/api/widgetdata/relatedsearches?hl=${trendsHl(country)}&tz=-480&req=${encodeURIComponent(
     JSON.stringify(widget.request),
   )}&token=${widget.token}`;
   let text: string;
@@ -300,7 +301,7 @@ async function fetchAutocomplete(
   await Promise.all(
     prefixes.map(async (p) => {
       const q = `${topic}${p}`;
-      const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=${country.toLowerCase()}&q=${encodeURIComponent(q)}`;
+      const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=${encodeURIComponent(googleHl(country))}&gl=${googleGl(country)}&q=${encodeURIComponent(q)}`;
       try {
         const res = await fetch(url, {
           headers: { "user-agent": USER_AGENT },

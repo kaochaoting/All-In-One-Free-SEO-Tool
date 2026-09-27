@@ -7,6 +7,7 @@ import {
   type Provider,
 } from "@/lib/api-providers";
 import { setActiveProvider } from "./key-actions";
+import { tr } from "@/lib/i18n";
 
 const tierTone: Record<"free" | "free-tier" | "paid", string> = {
   free: "bg-emerald-500/15 text-emerald-300 ring-emerald-500/30",
@@ -28,9 +29,7 @@ export function ActiveProviderCard({
   if (configuredCount === 0) {
     return (
       <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-xs text-amber-200">
-        Configure at least one provider below — then you can pick one as the
-        active model that all AI features (executive summary, chat assistant,
-        OCR extraction) will use.
+        {tr("Configure at least one provider below — then you can pick one as the active model that all AI features (executive summary, chat assistant, OCR extraction) will use.")}
       </div>
     );
   }
@@ -42,11 +41,9 @@ export function ActiveProviderCard({
           <Sparkles className="size-3.5 text-violet-300" />
         </div>
         <div>
-          <div className="text-sm font-semibold">Active AI provider</div>
+          <div className="text-sm font-semibold">{tr("Active AI provider")}</div>
           <p className="text-[11px] text-muted-foreground">
-            All AI features in this app use this one model — exec summaries,
-            the AI assistant, and OCR extraction. AI visibility tracking is
-            the exception (it intentionally calls every configured provider).
+            {tr("All AI features in this app use this one model — exec summaries, the AI assistant, and OCR extraction. AI visibility tracking is the exception (it intentionally calls every configured provider).")}
           </p>
         </div>
         {pending && (

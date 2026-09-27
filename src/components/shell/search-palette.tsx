@@ -25,6 +25,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { search, type SearchHit } from "@/app/search/actions";
+import { tr } from "@/lib/i18n";
 
 const typeIcon: Record<SearchHit["type"], typeof Users> = {
   client: Users,
@@ -165,11 +166,11 @@ export function SearchPalette() {
         type="button"
         onClick={() => setOpen(true)}
         className="group flex h-9 max-w-md flex-1 items-center gap-2 rounded-lg border border-white/10 bg-card/60 px-3 text-sm text-muted-foreground transition-colors hover:border-cyan-500/30 hover:bg-cyan-500/[0.04]"
-        title="Quick search — Cmd / Ctrl + K"
+        title={tr("Quick search — Cmd / Ctrl + K")}
       >
         <Search className="size-4 transition-colors group-hover:text-cyan-300" />
         <span className="flex-1 text-left transition-colors group-hover:text-foreground">
-          Search clients, keywords, tasks…
+          {tr("Search clients, keywords, tasks…")}
         </span>
         {/* Visually prominent so users notice the shortcut. The cyan
             ring + foreground text contrast makes it scan as an
@@ -197,12 +198,12 @@ export function SearchPalette() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Search clients, keywords, tasks, audits, competitors, briefs…"
+                placeholder={tr("Search clients, keywords, tasks, audits, competitors, briefs…")}
                 className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
               />
               <button
                 onClick={() => setOpen(false)}
-                aria-label="Close"
+                aria-label={tr("Close")}
                 className="grid size-7 place-items-center rounded-md text-muted-foreground hover:bg-white/5 hover:text-foreground"
               >
                 <X className="size-3.5" />

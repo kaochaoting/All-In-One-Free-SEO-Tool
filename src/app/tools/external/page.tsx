@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { tr } from "@/lib/i18n";
 
 /**
  * Each tool declares how to convert a user input (a domain/URL or a keyword)
@@ -244,7 +245,7 @@ const tools: Tool[] = [
     build: () => `https://search.google.com/search-console`,
   },
   {
-    name: "Bing Webmaster Tools",
+    name: tr("Bing Webmaster Tools"),
     whatItDoes:
       "Bing's GSC equivalent + a free SEO audit. Underused — easy free wins for audit reports.",
     category: "Indexing + crawl",
@@ -388,7 +389,7 @@ export default function ExternalToolsLaunchpadPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -397,7 +398,7 @@ export default function ExternalToolsLaunchpadPage() {
             <Globe className="size-5 text-cyan-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">External tools launchpad</span>
+            <span className="text-gradient-brand">{tr("External tools launchpad")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">

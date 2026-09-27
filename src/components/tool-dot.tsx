@@ -1,4 +1,5 @@
 import { toolReadiness, type ToolNeed } from "@/lib/tool-readiness";
+import { tr } from "@/lib/i18n";
 
 /**
  * The green / amber dot beside a tool name.
@@ -54,11 +55,11 @@ export function ToolDotLegend({ className = "" }: { className?: string }) {
     >
       <span className="inline-flex items-center gap-1.5">
         <span className="inline-block size-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/25" />
-        Ready
+        {tr("Ready")}
       </span>
       <span className="inline-flex items-center gap-1.5">
         <span className="inline-block size-2 rounded-full bg-amber-500 ring-2 ring-amber-500/30" />
-        Needs setup
+        {tr("Needs setup")}
       </span>
     </p>
   );

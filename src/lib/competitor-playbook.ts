@@ -15,6 +15,8 @@ import { crawlSite } from "./sitemap-generator";
 import { callAI, lastAiFailure } from "./ai-call";
 import { searchDuckDuckGo } from "./link-prospector";
 import { citationsForCountry, type CitationEntry } from "./citations-data";
+import { countWords } from "@/lib/text/segment";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 export type CompetitorPage = {
   url: string;
@@ -79,7 +81,7 @@ export async function reverseEngineerCompetitor(opts: {
   country?: string;
 }): Promise<CompetitorPlaybook> {
   const maxPages = opts.maxPages ?? 60;
-  const country = (opts.country ?? "US").toUpperCase();
+  const country = (opts.country ?? DEFAULT_COUNTRY).toUpperCase();
 
   let competitorDomain = "";
   try {
@@ -324,7 +326,7 @@ async function extractMetadata(url: string): Promise<CompetitorPage | null> {
       ) ?? "";
     const h1 = extractTag(html, /<h1[^>]*>([\s\S]*?)<\/h1>/i);
     const text = stripHtmlBody(html);
-    const wordCount = text.split(/\s+/).filter(Boolean).length;
+    const wordCount = countWords(text);
 
     let segment = "/";
     let silo = "(home)";

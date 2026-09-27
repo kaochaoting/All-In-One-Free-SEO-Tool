@@ -14,6 +14,7 @@
  */
 
 import { REPO_UA_SUFFIX } from "./repo";
+import { countWords } from "@/lib/text/segment";
 
 const USER_AGENT =
   `Mozilla/5.0 (compatible; SEO-Tool-Extractor/1.0; ${REPO_UA_SUFFIX})`;
@@ -102,7 +103,7 @@ export async function extractMainContent(
       url,
       title: parsed.title,
       markdown: parsed.markdown,
-      wordCount: parsed.markdown.split(/\s+/).filter(Boolean).length,
+      wordCount: countWords(parsed.markdown),
     };
   } catch (err) {
     return {

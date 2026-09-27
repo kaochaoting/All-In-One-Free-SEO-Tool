@@ -16,6 +16,7 @@
 
 import { withBrowserContext } from "./browser-pool";
 import { detectCaptcha, captchaUserMessage } from "./captcha-detect";
+import { googleGl, googleHl } from "@/lib/locale";
 
 export type AiSearchScrapeResult = {
   ok: boolean;
@@ -36,7 +37,7 @@ export async function scrapeGoogleAiMode(
     const page = await context.newPage();
     try {
       // ?udm=50 is Google's stable identifier for the AI Mode surface.
-      const url = `https://www.google.com/search?udm=50&hl=en&q=${encodeURIComponent(
+      const url = `https://www.google.com/search?udm=50&hl=${encodeURIComponent(googleHl())}&gl=${googleGl()}&q=${encodeURIComponent(
         query,
       )}`;
       await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30_000 });

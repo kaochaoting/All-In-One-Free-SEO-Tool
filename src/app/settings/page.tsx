@@ -51,7 +51,9 @@ import { apiKeys, inboundWebhooks } from "@/db/schema";
 import { desc as descSql } from "drizzle-orm";
 import { InboundWebhooksManager } from "./inbound-webhooks/manager";
 import { UpdateCard } from "./update-card";
+import { autoUpdateEnabled } from "@/lib/feature-flags";
 import { MaintainerCredit } from "@/components/shell/maintainer-credit";
+import { tr } from "@/lib/i18n";
 
 export default async function SettingsPage() {
   const [{ value: clientCount }] = await db
@@ -126,8 +128,8 @@ export default async function SettingsPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <PageHeader
-        title="Settings"
-        description="Workspace preferences, integrations, and where your data lives."
+        title={tr("Settings")}
+        description={tr("Workspace preferences, integrations, and where your data lives.")}
         icon={SettingsIcon}
         accent="violet"
       />
@@ -140,17 +142,17 @@ export default async function SettingsPage() {
           <span className="inline-flex items-center gap-1.5 font-medium">
             <span className="size-1.5 rounded-full bg-emerald-400" />
             {teamCount > 0
-              ? `Local · ${teamCount} ${teamCount === 1 ? "account" : "accounts"}`
-              : "Local · single-user"}
+              ? (teamCount === 1 ? tr("Local · 1 account") : tr("Local · {n} accounts", { n: teamCount }))
+              : tr("Local · single-user")}
           </span>
           <span className="text-muted-foreground">{tz}</span>
-          <span className="text-muted-foreground">Dark mode</span>
+          <span className="text-muted-foreground">{tr("Dark mode")}</span>
           <Link
             href="/shortcuts"
             className="ml-auto inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
           >
             <Sparkles className="size-3" />
-            Keyboard shortcuts
+            {tr("Keyboard shortcuts")}
             <ArrowRight className="size-3" />
           </Link>
         </div>
@@ -168,45 +170,45 @@ export default async function SettingsPage() {
             About     — install / privacy / maintainer credit
           Anchors and section IDs are preserved so deep-links keep working. */}
       <nav
-        aria-label="Settings sections"
+        aria-label={tr("Settings sections")}
         className="space-y-2 text-xs"
       >
         {(
           [
             {
-              label: "Setup",
+              label: tr("Setup"),
               items: [
-                { href: "#ai", label: "AI keys", primary: true },
-                { href: "#google", label: "Google" },
-                { href: "#team", label: "Team" },
-                { href: "#email", label: "Email" },
+                { href: "#ai", label: tr("AI keys"), primary: true },
+                { href: "#google", label: tr("Google") },
+                { href: "#team", label: tr("Team") },
+                { href: "#email", label: tr("Email") },
               ],
             },
             {
-              label: "Brand",
-              items: [{ href: "#brand", label: "Brand identity" }],
+              label: tr("Brand"),
+              items: [{ href: "#brand", label: tr("Brand identity") }],
             },
             {
-              label: "Power",
+              label: tr("Power"),
               items: [
-                { href: "#notify", label: "Notifications" },
-                { href: "#api", label: "API access" },
-                { href: "#data", label: "Data" },
+                { href: "#notify", label: tr("Notifications") },
+                { href: "#api", label: tr("API access") },
+                { href: "#data", label: tr("Data") },
               ],
             },
             {
-              label: "Advanced",
+              label: tr("Advanced"),
               items: [
-                { href: "#browser", label: "Browser pool" },
-                { href: "#ai-learning", label: "AI learning" },
+                { href: "#browser", label: tr("Browser pool") },
+                { href: "#ai-learning", label: tr("AI learning") },
               ],
             },
             {
-              label: "About",
+              label: tr("About"),
               items: [
-                { href: "#install", label: "Install" },
-                { href: "#privacy", label: "Privacy" },
-                { href: "#about", label: "Maintainer" },
+                { href: "#install", label: tr("Install") },
+                { href: "#privacy", label: tr("Privacy") },
+                { href: "#about", label: tr("Maintainer") },
               ],
             },
           ] as const
@@ -236,8 +238,10 @@ export default async function SettingsPage() {
       </nav>
 
       {/* Updates — keep at top but visually quieter */}
+      {/* Upstream auto-update is disabled in the zh-TW fork unless
+          SEO_ENABLE_AUTO_UPDATE=1 (see src/lib/feature-flags.ts). */}
       <div id="install" className="scroll-mt-24">
-        <UpdateCard />
+        {autoUpdateEnabled() && <UpdateCard />}
       </div>
 
       {/* Data */}
@@ -245,21 +249,21 @@ export default async function SettingsPage() {
         <header className="relative border-b border-white/5 px-5 py-4">
           <h2 className="flex items-center gap-2 text-base font-semibold">
             <Database className="size-4 text-cyan-300" />
-            Data
+            {tr("Data")}
           </h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            Your database is one file you can copy, back up, or move.
+            {tr("Your database is one file you can copy, back up, or move.")}
           </p>
         </header>
         <div className="relative space-y-4 p-5">
           <div className="grid gap-3 sm:grid-cols-4">
-            <Counter label="Clients" value={clientCount} accent="violet" />
-            <Counter label="Audits" value={auditCount} accent="cyan" />
-            <Counter label="Tasks" value={taskCount} accent="amber" />
-            <Counter label="Keywords" value={keywordCount} accent="emerald" />
+            <Counter label={tr("Clients")} value={clientCount} accent="violet" />
+            <Counter label={tr("Audits")} value={auditCount} accent="cyan" />
+            <Counter label={tr("Tasks")} value={taskCount} accent="amber" />
+            <Counter label={tr("Keywords")} value={keywordCount} accent="emerald" />
           </div>
           <div className="rounded-xl border border-white/5 bg-black/20 p-4 font-mono text-xs">
-            <div className="text-muted-foreground">Database file</div>
+            <div className="text-muted-foreground">{tr("Database file")}</div>
             <div className="mt-1 break-all text-foreground/90">{dbPath}</div>
           </div>
         </div>
@@ -270,11 +274,10 @@ export default async function SettingsPage() {
         <header className="relative border-b border-white/5 px-5 py-4">
           <h2 className="flex items-center gap-2 text-base font-semibold">
             <Palette className="size-4 text-fuchsia-300" />
-            Brand
+            {tr("Brand")}
           </h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            Used on PDF reports — your logo on the cover, your color for
-            headings and accents. Hides our branding entirely.
+            {tr("Used on PDF reports — your logo on the cover, your color for headings and accents. Hides our branding entirely.")}
           </p>
         </header>
         <div className="relative p-5">
@@ -296,21 +299,20 @@ export default async function SettingsPage() {
         <header className="relative border-b border-white/5 px-5 py-4">
           <h2 className="flex items-center gap-2 text-base font-semibold">
             <Plug className="size-4 text-violet-300" />
-            Google integration
+            {tr("Google integration")}
             {googleStatus.configured ? (
               <span className="ml-1 inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-300 ring-1 ring-inset ring-emerald-500/30">
                 <CheckCircle2 className="size-3" />
-                Connected
+                {tr("Connected")}
               </span>
             ) : (
               <span className="ml-1 inline-flex rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-medium text-amber-300 ring-1 ring-inset ring-amber-500/30">
-                Not connected
+                {tr("Not connected")}
               </span>
             )}
           </h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            Connect once, use across every client. Unlocks real keyword data,
-            traffic charts, and quick-wins finder. Free, ~5 minutes to set up.
+            {tr("Connect once, use across every client. Unlocks real keyword data, traffic charts, and quick-wins finder. Free, ~5 minutes to set up.")}
           </p>
         </header>
         <div className="relative flex flex-wrap items-center justify-between gap-3 p-5">
@@ -321,21 +323,19 @@ export default async function SettingsPage() {
                   {googleStatus.email ?? "Connected"}
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  Pulling Search Console + Analytics data when you wire
-                  properties on each client.
+                  {tr("Pulling Search Console + Analytics data when you wire properties on each client.")}
                 </div>
               </>
             ) : googleStatus.credentialsSet ? (
               <>
-                <div className="font-medium">Credentials saved</div>
+                <div className="font-medium">{tr("Credentials saved")}</div>
                 <div className="text-xs text-muted-foreground">
-                  One step left — connect your Google account.
+                  {tr("One step left — connect your Google account.")}
                 </div>
               </>
             ) : (
               <div className="text-xs text-muted-foreground">
-                Step-by-step guide on the next page. Skippable — the rest of
-                the app works without it.
+                {tr("Step-by-step guide on the next page. Skippable — the rest of the app works without it.")}
               </div>
             )}
           </div>
@@ -357,7 +357,7 @@ export default async function SettingsPage() {
         <header className="relative border-b border-white/5 px-5 py-4">
           <h2 className="flex items-center gap-2 text-base font-semibold">
             <Users2 className="size-4 text-violet-300" />
-            Team
+            {tr("Team")}
             {teamCount > 0 ? (
               <span className="ml-1 inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-300 ring-1 ring-inset ring-emerald-500/30">
                 <CheckCircle2 className="size-3" />
@@ -365,7 +365,7 @@ export default async function SettingsPage() {
               </span>
             ) : (
               <span className="ml-1 inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
-                Single password
+                {tr("Single password")}
               </span>
             )}
           </h2>
@@ -391,21 +391,20 @@ export default async function SettingsPage() {
         <header className="relative border-b border-white/5 px-5 py-4">
           <h2 className="flex items-center gap-2 text-base font-semibold">
             <Mail className="size-4 text-cyan-300" />
-            Email delivery
+            {tr("Email delivery")}
             {smtpHost ? (
               <span className="ml-1 inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-medium text-emerald-300 ring-1 ring-inset ring-emerald-500/30">
                 <CheckCircle2 className="size-3" />
-                Configured
+                {tr("Configured")}
               </span>
             ) : (
               <span className="ml-1 inline-flex rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-medium text-amber-300 ring-1 ring-inset ring-amber-500/30">
-                Not configured
+                {tr("Not configured")}
               </span>
             )}
           </h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            SMTP credentials for sending scheduled monthly reports straight to
-            clients. Bring your own — Gmail, Resend, SendGrid, or any SMTP host.
+            {tr("SMTP credentials for sending scheduled monthly reports straight to clients. Bring your own — Gmail, Resend, SendGrid, or any SMTP host.")}
           </p>
         </header>
         <div className="relative p-5">
@@ -428,34 +427,31 @@ export default async function SettingsPage() {
         <header className="relative border-b border-white/5 px-5 py-4">
           <h2 className="flex items-center gap-2 text-base font-semibold">
             <Bell className="size-4 text-fuchsia-300" />
-            Notifications
+            {tr("Notifications")}
           </h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            Get pinged in Slack, Discord, or Teams when audits complete and
-            scores change. We auto-format the message for whichever service you
-            use.
+            {tr("Get pinged in Slack, Discord, or Teams when audits complete and scores change. We auto-format the message for whichever service you use.")}
           </p>
         </header>
         <div className="relative p-5">
           <WebhookForm initialUrl={webhookUrl} />
           <div className="mt-5 grid gap-2 text-xs text-muted-foreground sm:grid-cols-3">
             <div className="rounded-lg border border-white/5 bg-black/20 p-3">
-              <div className="font-medium text-foreground">When triggered</div>
+              <div className="font-medium text-foreground">{tr("When triggered")}</div>
               <div className="mt-1">
-                Audit completed, score dropped &ge;5 points, or audit failed.
+                {tr("Audit completed, score dropped ≥5 points, or audit failed.")}
               </div>
             </div>
             <div className="rounded-lg border border-white/5 bg-black/20 p-3">
-              <div className="font-medium text-foreground">What we send</div>
+              <div className="font-medium text-foreground">{tr("What we send")}</div>
               <div className="mt-1">
-                Client name, score with delta, top issue, link back to the
-                audit.
+                {tr("Client name, score with delta, top issue, link back to the audit.")}
               </div>
             </div>
             <div className="rounded-lg border border-white/5 bg-black/20 p-3">
-              <div className="font-medium text-foreground">Where it goes</div>
+              <div className="font-medium text-foreground">{tr("Where it goes")}</div>
               <div className="mt-1">
-                Only the URL you paste. Nothing else, ever.
+                {tr("Only the URL you paste. Nothing else, ever.")}
               </div>
             </div>
           </div>
@@ -467,12 +463,10 @@ export default async function SettingsPage() {
         <header className="relative border-b border-white/5 px-5 py-4">
           <h2 className="flex items-center gap-2 text-base font-semibold">
             <Globe className="size-4 text-cyan-300" />
-            Headless browser pool
+            {tr("Headless browser pool")}
           </h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            Concurrency cap, stealth fingerprint, and optional outbound
-            proxies for SERP scraping, rank checks, GBP scraping, render +
-            screenshot, and local CWV measurement.
+            {tr("Concurrency cap, stealth fingerprint, and optional outbound proxies for SERP scraping, rank checks, GBP scraping, render + screenshot, and local CWV measurement.")}
           </p>
         </header>
         <div className="relative p-5">
@@ -485,12 +479,12 @@ export default async function SettingsPage() {
         <header className="relative border-b border-white/5 px-5 py-4">
           <h2 className="flex items-center gap-2 text-base font-semibold">
             <Key className="size-4 text-violet-300" />
-            Public API keys
+            {tr("Public API keys")}
           </h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            Bearer-token auth for{" "}
+            {tr("Bearer-token auth for")}{" "}
             <code className="rounded bg-white/5 px-1 py-0.5">/api/v1/*</code>{" "}
-            endpoints. Use these in n8n, Make, Zapier, your own scripts.
+            {tr("endpoints. Use these in n8n, Make, Zapier, your own scripts.")}
           </p>
         </header>
         <div className="relative p-5">
@@ -513,12 +507,10 @@ export default async function SettingsPage() {
         <header className="relative border-b border-white/5 px-5 py-4">
           <h2 className="flex items-center gap-2 text-base font-semibold">
             <Plug className="size-4 text-cyan-300" />
-            Inbound webhooks
+            {tr("Inbound webhooks")}
           </h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            Receive events from external systems — GitHub, Linear, Google
-            Alerts, custom integrations. Each webhook gets a unique URL +
-            stored event log you can replay or query.
+            {tr("Receive events from external systems — GitHub, Linear, Google Alerts, custom integrations. Each webhook gets a unique URL + stored event log you can replay or query.")}
           </p>
         </header>
         <div className="relative p-5">
@@ -537,12 +529,10 @@ export default async function SettingsPage() {
         <header className="relative border-b border-white/5 px-5 py-4">
           <h2 className="flex items-center gap-2 text-base font-semibold">
             <Key className="size-4 text-amber-300" />
-            AI connection
+            {tr("AI connection")}
           </h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            Connect the AI subscription you already pay for, or a provider key
-            — either one drives the same tools. Most of the tool grid needs
-            neither.
+            {tr("Connect the AI subscription you already pay for, or a provider key — either one drives the same tools. Most of the tool grid needs neither.")}
           </p>
         </header>
         <div className="relative space-y-5 p-5">
@@ -563,9 +553,9 @@ export default async function SettingsPage() {
           {connectionMode === "mcp" ? (
             <details className="group rounded-xl border border-white/10 bg-white/[0.02]">
               <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium marker:content-none">
-                Also add an API key
+                {tr("Also add an API key")}
                 <span className="ml-2 text-xs font-normal text-muted-foreground">
-                  optional — only needed for work that runs while you&apos;re away
+                  {tr("optional — only needed for work that runs while you're away")}
                 </span>
               </summary>
               <div className="space-y-5 border-t border-white/5 p-4">
@@ -595,24 +585,21 @@ export default async function SettingsPage() {
         <header className="relative border-b border-white/5 px-5 py-4">
           <h2 className="flex items-center gap-2 text-base font-semibold">
             <Brain className="size-4 text-violet-300" />
-            AI learning
+            {tr("AI learning")}
           </h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            Watches what you correct in AI output and turns it into
-            durable style rules. The longer you use the tool, the better
-            its first-pass output gets — no model training needed.
+            {tr("Watches what you correct in AI output and turns it into durable style rules. The longer you use the tool, the better its first-pass output gets — no model training needed.")}
           </p>
         </header>
         <div className="relative flex flex-wrap items-center justify-between gap-3 p-5">
           <p className="text-sm text-muted-foreground">
-            Review learned rules, manually disable any that are wrong,
-            and trigger the distill step on demand.
+            {tr("Review learned rules, manually disable any that are wrong, and trigger the distill step on demand.")}
           </p>
           <Link
             href="/settings/ai-learning"
             className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm transition-colors hover:bg-white/10"
           >
-            Open AI learning
+            {tr("Open AI learning")}
             <ArrowRight className="size-3.5" />
           </Link>
         </div>
@@ -623,33 +610,28 @@ export default async function SettingsPage() {
         <header className="relative border-b border-emerald-500/20 px-5 py-4">
           <h2 className="flex items-center gap-2 text-base font-semibold text-emerald-300">
             <Shield className="size-4" />
-            Privacy
+            {tr("Privacy")}
           </h2>
         </header>
         <div className="relative space-y-2 p-5 text-sm text-foreground/80">
           <PrivacyLine>
-            <strong>No telemetry.</strong> This app does not phone home or send
-            usage data anywhere.
+            <strong>{tr("No telemetry.")}</strong> {tr("This app does not phone home or send usage data anywhere.")}
           </PrivacyLine>
           <PrivacyLine>
-            <strong>Your data stays here.</strong> Clients, audits, tasks,
-            keywords — all in one SQLite file on this machine.
+            <strong>{tr("Your data stays here.")}</strong> {tr("Clients, audits, tasks, keywords — all in one SQLite file on this machine.")}
           </PrivacyLine>
           <div className="rounded-md bg-white/[0.03] p-3 ring-1 ring-inset ring-white/5 text-xs">
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
-              Database file
+              {tr("Database file")}
             </p>
             <code className="text-xs break-all">{dbAbsolutePath}</code>
             <p className="mt-2 text-[11px] text-muted-foreground">
-              Back this single file up to keep everything. Move it to a new
-              machine to migrate. Replaceable via the{" "}
-              <code>SEO_DB_PATH</code> env var.
+              {tr("Back this single file up to keep everything. Move it to a new machine to migrate. Replaceable via the")}{" "}
+              <code>SEO_DB_PATH</code> {tr("env var.")}
             </p>
           </div>
           <PrivacyLine>
-            <strong>Outbound requests are explicit.</strong> Tech detection,
-            audits, and keyword research fetch the URLs you tell us to. Nothing
-            else.
+            <strong>{tr("Outbound requests are explicit.")}</strong> {tr("Tech detection, audits, and keyword research fetch the URLs you tell us to. Nothing else.")}
           </PrivacyLine>
         </div>
       </section>

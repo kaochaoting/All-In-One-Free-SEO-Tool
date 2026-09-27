@@ -5,6 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { db } from "@/db/client";
 import { keywords } from "@/db/schema";
 import { researchKeywords } from "@/lib/keyword-research";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 export type ResearchActionResult =
   | {
@@ -30,7 +31,7 @@ export async function researchAction(
   formData: FormData,
 ): Promise<ResearchActionResult> {
   const seed = String(formData.get("seed") ?? "").trim();
-  const country = String(formData.get("country") ?? "US")
+  const country = String(formData.get("country") ?? DEFAULT_COUNTRY)
     .trim()
     .toUpperCase();
   const expand = formData.get("expand") === "on";
@@ -68,7 +69,7 @@ export async function researchAction(
 export async function trackKeyword(formData: FormData) {
   const clientId = Number(formData.get("clientId"));
   const query = String(formData.get("query") ?? "").trim();
-  const country = String(formData.get("country") ?? "US")
+  const country = String(formData.get("country") ?? DEFAULT_COUNTRY)
     .trim()
     .toUpperCase();
   const device = (String(formData.get("device") ?? "desktop") as
