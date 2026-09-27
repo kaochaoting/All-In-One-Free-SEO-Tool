@@ -45,7 +45,7 @@
 ### 6. 繁體中文介面
 - 輕量字典式 i18n（`src/lib/i18n/`，不增加套件相依）：`tr("English")` 查表取得繁中字串，找不到則顯示原文。
 - 已翻譯：全域版面（`<html lang="zh-Hant-TW">`）、側邊欄與導覽、搜尋面板、歡迎頁、首頁、工具總覽（**全部工具名稱與一句話說明**）、設定頁與各子表單，以及重點工具頁：網站健檢、關鍵字研究、內容評分、Meta 標籤產生器、robots.txt、Sitemap；多數工具頁的標題與說明。
-- 用詞採台灣慣用：關鍵字、網站健檢、反向連結、索引、結構化資料、排名追蹤、網址、設定…（有測試防止出現「網站體檢」「鏈接」等大陸用語）。
+- 用詞採台灣慣用：關鍵字、網站健檢、反向連結、索引、結構化資料、排名追蹤、網址、設定…（`i18n.test.ts` 會檢查字典中不得出現「关键词」「外链」「软件」「默认」「服务器」等簡體／大陸用語）。
 - 設 `NEXT_PUBLIC_DEFAULT_LOCALE=en` 可恢復英文介面。
 
 ---
@@ -73,7 +73,7 @@ pnpm build && pnpm start
 | 變數 | 預設值 | 說明 |
 |---|---|---|
 | `DEFAULT_LOCALE` | `zh-TW` | 伺服器端預設語系（搜尋語言、AI 輸出語言的預設來源） |
-| `DEFAULT_COUNTRY` | `TW` | 預設國家（Google `gl`、排名檢查、關鍵字研究） |
+| `DEFAULT_COUNTRY` | `TW` | 預設國家（Google `gl`、排名檢查、關鍵字研究）；前端表單可用 `NEXT_PUBLIC_DEFAULT_COUNTRY` |
 | `SEARCH_LANGUAGE` | 依 `DEFAULT_LOCALE` | 覆寫 Google `hl` 參數，例如 `en` |
 | `AI_OUTPUT_LANGUAGE` | 依 `DEFAULT_LOCALE` | AI 輸出語言；`en` 表示不加繁中指示 |
 | `NEXT_PUBLIC_DEFAULT_LOCALE` | `zh-TW` | 介面語言；`en` 恢復英文介面（需重新建置） |
@@ -92,7 +92,7 @@ npx tsc --noEmit          # 型別檢查
 ## 尚未完成（後續階段）
 
 - 多數非重點工具頁的**內頁內容**（表單說明、結果表格欄位）仍為英文；客戶、稽核、報告、代理（Agent）等頁面尚未完整翻譯。
-- 伺服器端產生的稽核發現（finding）訊息多數仍為英文（「內容過少」已提供中文）。
+- 伺服器端產生的稽核發現（finding）訊息多數仍為英文（中文頁面的「內容單薄（thin content）」警告已提供中文）。
 - PDF 報告、Email 範本尚未翻譯。
 - 資料庫 schema 中既有的預設值（例如客戶預設國家 `US`、語言 `en`）未更動，需另寫 migration。
 - 設定頁尚未提供「AI 輸出語言」的下拉選單（目前以環境變數或設定鍵 `ai.output_language` 控制）。
