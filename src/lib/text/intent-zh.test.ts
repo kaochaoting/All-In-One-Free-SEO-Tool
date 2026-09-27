@@ -33,6 +33,12 @@ describe("classifyIntent — Chinese queries", () => {
     expect(classifyIntent("facebook login")).toBe("navigational");
   });
 
+  it("treats marketplace names as shopping unless the query is navigational", () => {
+    expect(classifyIntent("蝦皮 藍牙耳機")).toBe("transactional");
+    expect(classifyIntent("蝦皮 官網 登入")).toBe("navigational");
+    expect(classifyIntent("momo 客服")).toBe("navigational");
+  });
+
   it("returns null when there is no Chinese signal", () => {
     expect(classifyZhIntent("筆電")).toBeNull();
     expect(classifyZhIntent("running shoes")).toBeNull();

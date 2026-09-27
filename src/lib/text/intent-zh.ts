@@ -25,11 +25,20 @@ const ZH_TRANSACTIONAL = new RegExp(
     "優惠碼", "优惠码", "折扣碼", "折扣码", "特價", "特价", "團購", "团购",
     "購買", "购买", "哪裡買", "哪里买", "哪買", "在哪買", "最便宜", "便宜",
     "訂購", "订购", "下單", "下单", "預約", "预约", "代購", "代购", "免運",
-    "免运", "門市", "门市", "出租", "租借", "二手", "拍賣", "拍卖", "蝦皮",
-    "momo", "PChome".toLowerCase(),
+    "免运", "門市", "门市", "出租", "租借", "二手", "拍賣", "拍卖",
   ]
     .map((w) => (/^[a-z]+$/.test(w) ? L(w) : w))
     .join("|"),
+  "i",
+);
+
+/**
+ * Marketplace names (「蝦皮 耳機」 = shopping). Kept apart from the explicit
+ * buying words so 「蝦皮 官網 登入」 stays navigational: a marketplace name
+ * only counts as transactional when no navigational signal is present.
+ */
+const ZH_MARKETPLACE = new RegExp(
+  ["蝦皮", "虾皮", "露天", "淘寶", "淘宝", L("momo"), L("pchome"), L("shopee")].join("|"),
   "i",
 );
 
@@ -74,10 +83,12 @@ export type ZhIntentSignals = Record<ZhIntent, boolean>;
 
 export function zhIntentSignals(query: string): ZhIntentSignals {
   const q = query.toLowerCase();
+  const navigational = ZH_NAVIGATIONAL.test(q);
   return {
-    transactional: ZH_TRANSACTIONAL.test(q),
+    transactional:
+      ZH_TRANSACTIONAL.test(q) || (!navigational && ZH_MARKETPLACE.test(q)),
     commercial: ZH_COMMERCIAL.test(q),
-    navigational: ZH_NAVIGATIONAL.test(q),
+    navigational,
     informational: ZH_INFORMATIONAL.test(q),
   };
 }
