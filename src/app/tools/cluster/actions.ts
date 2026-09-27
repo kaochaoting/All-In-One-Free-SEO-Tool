@@ -2,6 +2,7 @@
 
 import { buildCluster, type ClusterPlan } from "@/lib/cluster-builder";
 import { saveToolRun } from "@/lib/tool-runs";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 export type ClusterState =
   | { ok: true; plan: ClusterPlan }
@@ -12,7 +13,7 @@ export async function runCluster(
   formData: FormData,
 ): Promise<ClusterState> {
   const topic = String(formData.get("topic") ?? "").trim();
-  const country = String(formData.get("country") ?? "US").trim() || "US";
+  const country = String(formData.get("country") ?? DEFAULT_COUNTRY).trim() || DEFAULT_COUNTRY;
   if (!topic) return { ok: false, error: "Head topic required." };
   const plan = await buildCluster({ topic, country });
   if (!plan.ok && plan.error) return { ok: false, error: plan.error };

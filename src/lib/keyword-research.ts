@@ -1,3 +1,7 @@
+import { DEFAULT_COUNTRY, googleGl, googleHl } from "@/lib/locale";
+import { zhIntentSignals } from "@/lib/text/intent-zh";
+import { hasCjk, queryTermCount } from "@/lib/text/segment";
+
 export type Intent = "informational" | "commercial" | "transactional" | "navigational";
 
 export type KeywordSuggestion = {
@@ -53,12 +57,16 @@ const navigationalPatterns =
  * pair had drifted by the time anyone noticed.
  */
 export function classifyIntent(query: string): Intent {
-  if (transactionalPatterns.test(query)) return "transactional";
-  if (commercialPatterns.test(query)) return "commercial";
-  if (navigationalPatterns.test(query)) return "navigational";
+  // Chinese signals (如何 / 推薦 / 價格 / 官網 …) are checked alongside
+  // the English patterns — `\b` never matches between CJK characters.
+  const zh = zhIntentSignals(query);
+  if (transactionalPatterns.test(query) || zh.transactional) return "transactional";
+  if (commercialPatterns.test(query) || zh.commercial) return "commercial";
+  if (zh.informational && !navigationalPatterns.test(query)) return "informational";
+  if (navigationalPatterns.test(query) || zh.navigational) return "navigational";
   if (informationalPatterns.test(query)) return "informational";
   // default for short/ambiguous queries
-  const words = query.trim().split(/\s+/).length;
+  const words = queryTermCount(query);
   return words <= 2 ? "commercial" : "informational";
 }
 
@@ -68,7 +76,7 @@ async function fetchSuggestions(
   query: string,
   country: string,
 ): Promise<string[]> {
-  const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=${encodeURIComponent(country.toLowerCase())}&q=${encodeURIComponent(query)}`;
+  const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=${encodeURIComponent(googleHl(country))}&gl=${encodeURIComponent(googleGl(country))}&q=${encodeURIComponent(query)}`;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 6_000);
   try {
@@ -92,7 +100,7 @@ async function fetchSuggestions(
 
 async function fetchYoutubeSuggestions(query: string): Promise<string[]> {
   // YouTube uses the same suggestqueries endpoint with ds=yt
-  const url = `https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&hl=en&q=${encodeURIComponent(query)}`;
+  const url = `https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&hl=${encodeURIComponent(googleHl())}&gl=${encodeURIComponent(googleGl())}&q=${encodeURIComponent(query)}`;
   const c = new AbortController();
   const t = setTimeout(() => c.abort(), 6_000);
   try {
@@ -112,7 +120,10 @@ async function fetchYoutubeSuggestions(query: string): Promise<string[]> {
 
 async function fetchWikipediaSuggestions(query: string): Promise<string[]> {
   // Wikipedia opensearch — returns article titles related to a query
-  const url = `https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${encodeURIComponent(query)}&limit=20&namespace=0`;
+  // Chinese seeds → zh.wikipedia (variant=zh-tw for Traditional titles).
+  const url = hasCjk(query)
+    ? `https://zh.wikipedia.org/w/api.php?action=opensearch&format=json&variant=zh-tw&search=${encodeURIComponent(query)}&limit=20&namespace=0`
+    : `https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=${encodeURIComponent(query)}&limit=20&namespace=0`;
   const c = new AbortController();
   const t = setTimeout(() => c.abort(), 6_000);
   try {
@@ -198,6 +209,34 @@ const LSI_SUFFIXES = [
   "2026",
 ];
 
+// Traditional Chinese (Taiwan) modifiers, used when the seed is Chinese or
+// the target market is Taiwan / Hong Kong. Taiwan searchers append the
+// forum name (ptt / dcard) to find real-user opinions.
+const ZH_LSI_SUFFIXES = [
+  "推薦",
+  "比較",
+  "評價",
+  "心得",
+  "開箱",
+  "ptt",
+  "dcard",
+  "價格",
+  "多少錢",
+  "優惠",
+  "教學",
+  "是什麼",
+  "怎麼用",
+  "優缺點",
+  "懶人包",
+  "排行",
+  "免費",
+  "新手",
+  "台北",
+  "2026",
+];
+
+const ZH_LSI_PREFIXES = ["如何", "什麼是", "為什麼", "最好的", "便宜", "免費", "哪裡買"];
+
 const LSI_PREFIXES = [
   "best",
   "top",
@@ -227,7 +266,7 @@ export async function researchKeywords(
     volumeLimit?: number;
   } = {},
 ): Promise<ResearchResult> {
-  const country = options.country ?? "US";
+  const country = options.country ?? DEFAULT_COUNTRY;
   const source = options.source ?? "google";
   // Back-compat: old `expand: true` maps to mode: "alphabet"
   const mode: ExpansionMode =
@@ -259,12 +298,16 @@ export async function researchKeywords(
     }
 
     if (mode === "lsi") {
-      // LSI: also fan out with modifier suffixes + prefixes
-      for (const suffix of LSI_SUFFIXES) {
+      // LSI: also fan out with modifier suffixes + prefixes. Chinese seeds
+      // (or a Chinese-language market) get Taiwan-usage modifiers first.
+      const zh = hasCjk(cleanedSeed) || googleHl(country).startsWith("zh");
+      const suffixes = zh ? [...ZH_LSI_SUFFIXES, ...LSI_SUFFIXES.slice(0, 6)] : LSI_SUFFIXES;
+      const prefixes = zh ? ZH_LSI_PREFIXES : LSI_PREFIXES;
+      for (const suffix of suffixes) {
         queries.push(`${cleanedSeed} ${suffix}`);
       }
-      for (const prefix of LSI_PREFIXES) {
-        queries.push(`${prefix} ${cleanedSeed}`);
+      for (const prefix of prefixes) {
+        queries.push(zh ? `${prefix}${cleanedSeed}` : `${prefix} ${cleanedSeed}`);
       }
     }
 
@@ -295,7 +338,8 @@ export async function researchKeywords(
   }
 
   const suggestions: KeywordSuggestion[] = unique.map((q) => {
-    const wordCount = q.trim().split(/\s+/).length;
+    // CJK-aware: Chinese queries have no spaces (「最便宜筆電推薦」).
+    const wordCount = queryTermCount(q);
     return {
       query: q,
       intent: classifyIntent(q),

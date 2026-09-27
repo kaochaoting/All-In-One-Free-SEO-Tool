@@ -6,10 +6,11 @@ import {
   type TrendingResult,
 } from "@/lib/trending-ideas";
 import { saveToolRun } from "@/lib/tool-runs";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 const inputSchema = z.object({
   topic: z.string().trim().min(2).max(120),
-  country: z.string().trim().min(2).max(4).default("US"),
+  country: z.string().trim().min(2).max(4).default(DEFAULT_COUNTRY),
 });
 
 export type TrendingState =

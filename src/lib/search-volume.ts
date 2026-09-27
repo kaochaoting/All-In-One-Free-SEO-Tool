@@ -1,3 +1,4 @@
+import { DEFAULT_COUNTRY, googleGl, googleHl, trendsHl } from "@/lib/locale";
 /**
  * Free search-volume estimator. We can't get exact monthly search counts
  * without a paid API, but we can produce a directional bucket using:
@@ -63,7 +64,7 @@ export async function estimateSearchVolume(opts: {
   query: string;
   country?: string;
 }): Promise<VolumeEstimate> {
-  const country = (opts.country ?? "US").toUpperCase();
+  const country = (opts.country ?? DEFAULT_COUNTRY).toUpperCase();
   const query = opts.query.trim();
 
   const [trends, googleSugg, bingSugg] = await Promise.all([
@@ -179,7 +180,7 @@ async function fetchGoogleTrendsScore(
   query: string,
   country: string,
 ): Promise<{ score: number; trend: number[] } | null> {
-  const explore = `https://trends.google.com/trends/api/explore?hl=en-US&tz=0&req=${encodeURIComponent(
+  const explore = `https://trends.google.com/trends/api/explore?hl=${trendsHl(country)}&tz=-480&req=${encodeURIComponent(
     JSON.stringify({
       comparisonItem: [
         {
@@ -217,7 +218,7 @@ async function fetchGoogleTrendsScore(
   const ts = exploreData.widgets?.find((w) => w.id === "TIMESERIES");
   if (!ts) return null;
 
-  const widget = `https://trends.google.com/trends/api/widgetdata/multiline?hl=en-US&tz=0&req=${encodeURIComponent(
+  const widget = `https://trends.google.com/trends/api/widgetdata/multiline?hl=${trendsHl(country)}&tz=-480&req=${encodeURIComponent(
     JSON.stringify(ts.request),
   )}&token=${ts.token}`;
   let widgetText: string;
@@ -252,8 +253,8 @@ async function fetchGoogleAutocomplete(
   query: string,
   country: string,
 ): Promise<string[]> {
-  const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=${encodeURIComponent(
-    country.toLowerCase(),
+  const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=${encodeURIComponent(googleHl(country))}&gl=${encodeURIComponent(
+    googleGl(country),
   )}&q=${encodeURIComponent(query)}`;
   try {
     const res = await fetch(url, {

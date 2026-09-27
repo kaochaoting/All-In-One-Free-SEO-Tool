@@ -23,6 +23,7 @@ import { withBrowserPage } from "./browser-pool";
 import { db } from "@/db/client";
 import { knowledgePanelSnapshots, type NewKnowledgePanelSnapshot } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
+import { googleGl, googleHl } from "@/lib/locale";
 
 export type KnowledgePanelData = {
   present: boolean;
@@ -44,7 +45,7 @@ export async function captureKnowledgePanel(
     return emptyPanel();
   }
   return withBrowserPage(async (page) => {
-    const url = `https://www.google.com/search?q=${encodeURIComponent(trimmed)}&hl=en`;
+    const url = `https://www.google.com/search?q=${encodeURIComponent(trimmed)}&hl=${encodeURIComponent(googleHl())}&gl=${googleGl()}`;
     try {
       await page.goto(url, { waitUntil: "domcontentloaded", timeout: 25_000 });
       // Knowledge panel selectors are unstable; we try a few known patterns.

@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { ExternalLink, Gauge, Loader2 } from "lucide-react";
 import { gradeContent, type GradeContentState } from "./actions";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 export function GraderForm() {
   const [state, formAction, pending] = useActionState<
@@ -30,7 +31,7 @@ export function GraderForm() {
             <span className="text-muted-foreground">Country</span>
             <input
               name="country"
-              defaultValue="US"
+              defaultValue={DEFAULT_COUNTRY}
               maxLength={4}
               className="h-9 w-full rounded-md border border-white/10 bg-card/60 px-3 text-sm uppercase focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
             />

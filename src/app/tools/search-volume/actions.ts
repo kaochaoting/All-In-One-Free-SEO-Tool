@@ -6,10 +6,11 @@ import {
   type VolumeEstimate,
 } from "@/lib/search-volume";
 import { saveToolRun } from "@/lib/tool-runs";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 const inputSchema = z.object({
   queries: z.string().trim().min(1).max(20_000),
-  country: z.string().trim().min(2).max(8).default("US"),
+  country: z.string().trim().min(2).max(8).default(DEFAULT_COUNTRY),
 });
 
 export type EstimateState =

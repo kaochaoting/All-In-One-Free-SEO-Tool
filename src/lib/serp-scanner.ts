@@ -1,5 +1,6 @@
 import { withBrowserContext } from "./browser-pool";
 import { captchaUserMessage, detectCaptcha } from "./captcha-detect";
+import { DEFAULT_COUNTRY, googleHl } from "@/lib/locale";
 
 /**
  * Scrapes a Google SERP for everything an SEO actually wants to see:
@@ -74,7 +75,7 @@ const empty = (): SerpScanOutput => ({
 });
 
 export async function scanSerp(opts: SerpScanInput): Promise<SerpScanOutput> {
-  const country = (opts.country ?? "US").toUpperCase();
+  const country = (opts.country ?? DEFAULT_COUNTRY).toUpperCase();
   const clientDomain = normalizeDomain(opts.clientDomain);
 
   // Lean-mode short-circuit. Lets users on small VPSes disable the
@@ -96,7 +97,7 @@ export async function scanSerp(opts: SerpScanInput): Promise<SerpScanOutput> {
     const topN = opts.topN ?? 20;
     const url = `https://www.google.com/search?q=${encodeURIComponent(
       opts.query,
-    )}&hl=en&gl=${country}&pws=0&num=${topN}`;
+    )}&hl=${encodeURIComponent(googleHl(country))}&gl=${country}&pws=0&num=${topN}`;
 
     await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30_000 });
     await page.waitForTimeout(900);

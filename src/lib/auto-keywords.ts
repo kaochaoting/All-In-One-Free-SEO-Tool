@@ -38,6 +38,8 @@ import {
   type SiteVocabulary,
   SEED_CONFIDENCE_FLOOR,
 } from "./site-vocabulary";
+import { queryTermCount } from "@/lib/text/segment";
+import { classifyZhIntent } from "@/lib/text/intent-zh";
 
 export type AutoKeywordSource =
   | "gsc"
@@ -463,6 +465,8 @@ const STOP_WORDS = new Set([
 
 function classifyIntentSimple(query: string): KeywordSuggestion["intent"] {
   const q = query.toLowerCase();
+  const zh = classifyZhIntent(q);
+  if (zh) return zh;
   if (/(buy|price|cost|cheap|deal|near\s+me|book|hire)/.test(q))
     return "transactional";
   if (/(best|top|review|vs|compare|alternative)/.test(q)) return "commercial";
@@ -478,7 +482,7 @@ function scoreKeyword(opts: {
   position?: number;
   city?: string | null;
 }): DiscoveredKeyword {
-  const wordCount = opts.query.trim().split(/\s+/).length;
+  const wordCount = queryTermCount(opts.query);
   const isLongTail = wordCount >= 3;
   const isLocal = opts.city ? opts.query.toLowerCase().includes(opts.city.toLowerCase()) : false;
 

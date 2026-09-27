@@ -2,6 +2,7 @@
 
 import { summarizeContent, type Summary } from "@/lib/content-ai-helpers";
 import { saveToolRun } from "@/lib/tool-runs";
+import { formatLength } from "@/lib/text/segment";
 
 export type SumState =
   | { ok: true; summary: Summary }
@@ -17,7 +18,7 @@ export async function runSummarize(
   if (!r.ok) return { ok: false, error: r.error };
   await saveToolRun({
     toolId: "summarizer",
-    label: `${text.split(/\s+/).length} words → summary`,
+    label: `${formatLength(text)} → 摘要`,
     input: { length: text.length },
     result: { ok: true, summary: r.summary },
   }).catch(() => undefined);

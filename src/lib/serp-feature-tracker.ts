@@ -16,6 +16,7 @@ import { db } from "@/db/client";
 import { serpFeatureSnapshots, type NewSerpFeatureSnapshot } from "@/db/schema";
 import { scanSerp } from "./serp-scanner";
 import { logActivity } from "./activity";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 function normalizeDomain(input: string | null | undefined): string {
   if (!input) return "";
@@ -32,7 +33,7 @@ export async function captureSerpSnapshot(opts: {
   ourDomain?: string;
   keywordId?: number;
 }): Promise<{ ok: boolean; snapshotId?: number; error?: string }> {
-  const country = (opts.country ?? "US").toUpperCase();
+  const country = (opts.country ?? DEFAULT_COUNTRY).toUpperCase();
   const ourDomain = normalizeDomain(opts.ourDomain);
 
   const serp = await scanSerp({

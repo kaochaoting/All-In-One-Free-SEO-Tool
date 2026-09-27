@@ -25,6 +25,7 @@ import {
   type ContentScoreResult,
   type ContentStats,
 } from "./actions";
+import { formatLength } from "@/lib/text/segment";
 
 export default function ContentScorePage() {
   const [content, setContent] = useState("");
@@ -95,12 +96,7 @@ export default function ContentScorePage() {
           <div className="flex items-center justify-between">
             <Label htmlFor="cs-content">Content</Label>
             <span className="text-[11px] tabular-nums text-muted-foreground">
-              {
-                content
-                  .split(/\s+/)
-                  .filter(Boolean).length
-              }{" "}
-              words
+              {formatLength(content)}
             </span>
           </div>
           <textarea

@@ -11,6 +11,7 @@
  */
 
 import { crawlSite } from "./sitemap-generator";
+import { wordEquivalents } from "@/lib/text/segment";
 
 const USER_AGENT =
   "Mozilla/5.0 (compatible; SeoToolBot/1.0; +https://example.com/bot)";
@@ -197,7 +198,9 @@ function extractMainText(html: string): string {
 }
 
 function countWords(text: string): number {
-  return text.split(/\s+/).filter(Boolean).length;
+  // CJK-aware, in English-word equivalents (Chinese: characters / 1.5),
+  // so THIN_WORD_THRESHOLD = 100 means ≈150 字 on a Chinese page.
+  return wordEquivalents(text);
 }
 
 function stripTags(s: string): string {

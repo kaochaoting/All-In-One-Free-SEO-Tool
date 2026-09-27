@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { checkPlagiarism, type PlagiarismResult } from "./actions";
+import { formatLength } from "@/lib/text/segment";
 
 export default function PlagiarismPage() {
   const [content, setContent] = useState("");
@@ -72,8 +73,7 @@ export default function PlagiarismPage() {
         />
         <div className="mt-3 flex items-center justify-between gap-3">
           <span className="text-[11px] text-muted-foreground">
-            {content.length} chars · {content.split(/\s+/).filter(Boolean).length}{" "}
-            words
+            {content.length} 個字元 · {formatLength(content)}
           </span>
           <Button onClick={run} disabled={pending || content.length < 100}>
             {pending ? (

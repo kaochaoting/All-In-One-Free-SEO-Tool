@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { Loader2, TrendingUp } from "lucide-react";
 import { estimateVolumes, type EstimateState } from "./actions";
 import { bucketLabel } from "@/lib/search-volume";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 const BUCKET_TONE: Record<string, string> = {
   very_high: "bg-emerald-500/15 text-emerald-300 ring-emerald-500/30",
@@ -42,7 +43,7 @@ export function VolumeForm() {
             <span className="text-muted-foreground">Country</span>
             <input
               name="country"
-              defaultValue="US"
+              defaultValue={DEFAULT_COUNTRY}
               maxLength={4}
               className="h-9 w-full rounded-md border border-white/10 bg-card/60 px-3 text-sm uppercase focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
             />

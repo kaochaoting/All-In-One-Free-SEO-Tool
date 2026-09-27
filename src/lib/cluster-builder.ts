@@ -15,6 +15,7 @@
 
 import { callAI, lastAiFailure } from "./ai-call";
 import { scanSerp } from "./serp-scanner";
+import { DEFAULT_COUNTRY, googleGl, googleHl } from "@/lib/locale";
 
 const USER_AGENT =
   "Mozilla/5.0 (compatible; SeoToolBot/1.0; +https://example.com/bot)";
@@ -81,7 +82,7 @@ export async function buildCluster(opts: {
   country?: string;
   clientId?: number | null;
 }): Promise<ClusterPlan> {
-  const country = (opts.country ?? "US").toUpperCase();
+  const country = (opts.country ?? DEFAULT_COUNTRY).toUpperCase();
 
   const [serp, autocomplete, reddit] = await Promise.all([
     scanSerp({ query: opts.topic, country }).catch(() => null),
@@ -249,7 +250,7 @@ async function fetchAutocomplete(
   await Promise.all(
     prefixes.map(async (p) => {
       const q = `${topic}${p}`;
-      const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=en&gl=${country.toLowerCase()}&q=${encodeURIComponent(q)}`;
+      const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=${encodeURIComponent(googleHl(country))}&gl=${googleGl(country)}&q=${encodeURIComponent(q)}`;
       try {
         const res = await fetch(url, {
           headers: { "user-agent": USER_AGENT },

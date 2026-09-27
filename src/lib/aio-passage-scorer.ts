@@ -20,6 +20,7 @@
  */
 
 import { callAI } from "./ai-call";
+import { wordEquivalents } from "@/lib/text/segment";
 
 export type PassageScore = {
   index: number;
@@ -89,7 +90,7 @@ export function splitIntoPassages(md: string): string[] {
       // Don't include headings as standalone passages — too short
       continue;
     }
-    const blockWords = block.split(/\s+/).length;
+    const blockWords = wordEquivalents(block);
     if (bufferWords + blockWords > 220 && bufferWords > 0) {
       passages.push(buffer.join("\n\n"));
       buffer = [block];
@@ -100,7 +101,7 @@ export function splitIntoPassages(md: string): string[] {
     }
   }
   if (buffer.length > 0) passages.push(buffer.join("\n\n"));
-  return passages.filter((p) => p.split(/\s+/).length >= 25);
+  return passages.filter((p) => wordEquivalents(p) >= 25);
 }
 
 function scoreLength(words: number): { score: number; note: string } {
@@ -187,7 +188,9 @@ function scoreCitesSource(text: string): { score: number; note: string } {
 }
 
 export function scorePassage(text: string, idx: number): PassageScore {
-  const words = text.split(/\s+/).filter(Boolean).length;
+  // Length bands are in English words; Chinese passages are measured by
+  // characters / 1.5 (see src/lib/text/segment.ts).
+  const words = wordEquivalents(text);
   const length = scoreLength(words);
   const selfContained = scoreSelfContained(text);
   const answersAQuestion = scoreAnswersAQuestion(text);

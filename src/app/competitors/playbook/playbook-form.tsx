@@ -16,6 +16,7 @@ import {
 import { playbookToTasks, runCompetitorAnalysis, type PlaybookState } from "./actions";
 import { AiFeedback } from "@/components/ai-feedback";
 import { AiDisclaimer } from "@/components/ai-disclaimer";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 export function PlaybookForm({
   clients,
@@ -55,9 +56,9 @@ export function PlaybookForm({
             <span className="text-muted-foreground">Country</span>
             <input
               name="country"
-              defaultValue="US"
+              defaultValue={DEFAULT_COUNTRY}
               maxLength={4}
-              placeholder="US"
+              placeholder="TW"
               className="h-9 w-full rounded-md border border-white/10 bg-card/60 px-3 text-sm uppercase focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
             />
           </label>

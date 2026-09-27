@@ -24,6 +24,7 @@ import { and, desc, eq, gte, isNull, or } from "drizzle-orm";
 import { db } from "@/db/client";
 import { aiFeedback, aiPreferences, type AiPreference } from "@/db/schema";
 import { callAI } from "./ai-call";
+import { cjkTerms } from "@/lib/text/segment";
 
 export type AiFeature =
   | "exec_summary"
@@ -283,8 +284,8 @@ function similar(a: string, b: string): boolean {
   const la = a.toLowerCase();
   const lb = b.toLowerCase();
   if (la.includes(lb) || lb.includes(la)) return true;
-  const setA = new Set(la.split(/\s+/));
-  const setB = new Set(lb.split(/\s+/));
+  const setA = new Set(la.split(/\s+/).concat(cjkTerms(la)));
+  const setB = new Set(lb.split(/\s+/).concat(cjkTerms(lb)));
   let inter = 0;
   for (const t of setA) if (setB.has(t)) inter++;
   const union = setA.size + setB.size - inter;

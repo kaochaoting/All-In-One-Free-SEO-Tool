@@ -18,6 +18,8 @@
 
 import { buildCorpus, type CorpusInsights } from "./content-grader";
 import { callAI } from "./ai-call";
+import { cjkTerms, countWords } from "@/lib/text/segment";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 const USER_AGENT =
   "Mozilla/5.0 (compatible; SeoToolBot/1.0; +https://example.com/bot)";
@@ -46,7 +48,7 @@ export async function detectRefresh(opts: {
   country?: string;
   clientId?: number;
 }): Promise<RefreshPlan> {
-  const country = opts.country ?? "US";
+  const country = opts.country ?? DEFAULT_COUNTRY;
 
   // Pull SERP corpus + user page in parallel
   const [insights, userPage] = await Promise.all([
@@ -185,8 +187,7 @@ async function fetchUserPage(
     const text = decode(cleaned.replace(/<[^>]+>/g, " "))
       .replace(/\s+/g, " ")
       .trim();
-    const tokens = text.split(/\s+/).filter(Boolean);
-    return { text, headings, wordCount: tokens.length };
+    return { text, headings, wordCount: countWords(text) };
   } catch {
     return null;
   } finally {
@@ -199,7 +200,8 @@ function tokenize(text: string): string[] {
     .toLowerCase()
     .replace(/[^a-z0-9'\-\s]/g, " ")
     .split(/\s+/)
-    .filter((w) => w.length >= 3 && w.length <= 28);
+    .filter((w) => w.length >= 3 && w.length <= 28)
+    .concat(cjkTerms(text));
 }
 
 function decode(s: string): string {

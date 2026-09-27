@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Term } from "@/components/ui/term";
 import { researchAction, trackKeyword, type ResearchActionResult } from "./actions";
+import { DEFAULT_COUNTRY } from "@/lib/locale";
 
 const sources = [
   { value: "google", label: "Google", icon: Globe, hint: "Autocomplete" },
@@ -34,14 +35,20 @@ const intentTone: Record<string, string> = {
 };
 
 const countries = [
-  { code: "US", label: "United States" },
-  { code: "UK", label: "United Kingdom" },
-  { code: "IN", label: "India" },
-  { code: "CA", label: "Canada" },
-  { code: "AU", label: "Australia" },
-  { code: "DE", label: "Germany" },
-  { code: "FR", label: "France" },
-  { code: "ES", label: "Spain" },
+  { code: "TW", label: "台灣" },
+  { code: "HK", label: "香港" },
+  { code: "SG", label: "新加坡" },
+  { code: "MY", label: "馬來西亞" },
+  { code: "CN", label: "中國" },
+  { code: "JP", label: "日本" },
+  { code: "US", label: "美國" },
+  { code: "UK", label: "英國" },
+  { code: "IN", label: "印度" },
+  { code: "CA", label: "加拿大" },
+  { code: "AU", label: "澳洲" },
+  { code: "DE", label: "德國" },
+  { code: "FR", label: "法國" },
+  { code: "ES", label: "西班牙" },
 ];
 
 export function ResearchForm({
@@ -109,7 +116,7 @@ export function ResearchForm({
             <select
               id="country"
               name="country"
-              defaultValue={state?.ok ? state.country : "US"}
+              defaultValue={state?.ok ? state.country : DEFAULT_COUNTRY}
               className="flex h-9 w-32 rounded-md border border-white/10 bg-card/60 px-3 py-1 text-sm shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
             >
               {countries.map((c) => (
