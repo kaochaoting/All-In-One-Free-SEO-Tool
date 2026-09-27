@@ -48,7 +48,7 @@ Return a JSON object with EXACTLY this shape (no prose around it):
 {
   "aiLikelihood": <0-100 integer>,
   "originalityScore": <0-100 integer>,
-  "verdict": "<one-paragraph plain English summary>",
+  "verdict": "<one-paragraph plain language summary>",
   "flags": [
     { "snippet": "<sentence or phrase from the content>", "reason": "<why it reads as templated/AI>" }
   ]

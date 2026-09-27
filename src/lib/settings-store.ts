@@ -110,6 +110,8 @@ export type SettingKey =
   // ON keeps token use under ~500/answer for cheap providers like Gemini /
   // Groq free tiers. OFF gives full-quality long-form answers (defaults OFF).
   | "ai.credit_saver.enabled"
+  /** zh-TW fork: AI output language override (e.g. "zh-TW", "en"). */
+  | "ai.output_language"
   // How the user supplies AI: "none" | "mcp" | "api" | "both". Drives which
   // badge each tool shows and whether the tools grid filters itself. This
   // records what they *told* us; what is actually configured is read from

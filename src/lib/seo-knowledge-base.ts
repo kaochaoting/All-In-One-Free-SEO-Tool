@@ -463,7 +463,7 @@ Anti-patterns: keyword density tuning, exact-match domains, AI-generated content
     title: "Image SEO — alt, filename, format, schema",
     tags: ["image", "alt", "alt text", "image seo", "webp", "avif", "image sitemap"],
     body: `Alt text:
-- ≤120 chars, plain English, no "image of"
+- ≤120 chars, plain language, no "image of"
 - Describe what's in the image, not the page topic
 - Include primary keyword naturally if it fits — don't force
 - Decorative images: alt="" (empty, not missing)

@@ -25,7 +25,7 @@ export type PortalChatResult =
 const SYSTEM_PROMPT = `You are an SEO progress assistant embedded in a CLIENT-FACING portal. The user is a non-technical client of an SEO agency. They are asking about progress on their own site only.
 
 Style:
-- Plain English. No jargon — if you must use a term ("canonical tag", "core web vitals"), explain it in one short clause.
+- Plain, jargon-free language. No jargon — if you must use a term ("canonical tag", "core web vitals"), explain it in one short clause.
 - Friendly and reassuring. Acknowledge wins. Never alarmist.
 - Short paragraphs. 2-5 sentences usually.
 - Ground every fact in the data shown in <client_context>. Never invent numbers, scores, or task names.
@@ -207,7 +207,7 @@ export async function portalChat(
     `Conversation so far:`,
     transcript,
     "",
-    `Now write the assistant's next reply (2-5 sentences, plain English).`,
+    `Now write the assistant's next reply (2-5 sentences, plain language).`,
   ].join("\n");
 
   const reply = await callAI({

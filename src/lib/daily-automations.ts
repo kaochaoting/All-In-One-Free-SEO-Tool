@@ -223,7 +223,7 @@ async function generateForSchedule(
 
   const cfg = (s.configJson ?? {}) as Record<string, unknown>;
   const topicSeed = String(cfg.topic_seed ?? client.niche ?? "SEO");
-  const tone = String(cfg.tone ?? "professional, plain English");
+  const tone = String(cfg.tone ?? "professional, plain language");
   const context = await buildClientContext({ client, topicSeed });
 
   if (s.kind === "blog_draft") {

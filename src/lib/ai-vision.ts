@@ -13,6 +13,8 @@ import { logAiCall, checkMonthlyCap } from "./ai-usage";
 import { callGemini as sharedCallGemini } from "./providers/gemini";
 import { callAnthropic as sharedCallAnthropic } from "./providers/anthropic";
 import { callOpenAICompat as sharedCallOpenAICompat } from "./providers/openai-compat";
+import { getSetting } from "./settings-store";
+import { languageDirective, resolveAiOutputLanguage } from "./ai-language";
 
 export type VisionMessage =
   | { role: "user" | "assistant"; content: string }
@@ -64,6 +66,14 @@ export async function callAIVision(opts: VisionCallOpts): Promise<string | null>
     return null;
   }
 
+  // Output-language directive (Traditional Chinese by default in this fork).
+  try {
+    const lang = resolveAiOutputLanguage(await getSetting<string>("ai.output_language"));
+    const directive = languageDirective(lang);
+    if (directive) opts = { ...opts, system: `${opts.system}\n\n${directive}` };
+  } catch {
+    // ignore
+  }
   const max = opts.maxTokens ?? 1500;
   const temperature = opts.temperature ?? 0.5;
   const timeoutMs = opts.timeoutMs ?? 60_000;
