@@ -23,6 +23,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { AlertTriangle, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { tr } from "@/lib/i18n";
 
 type DialogOptions = {
   title: string;
@@ -143,7 +144,7 @@ export function ConfirmDialogProvider({
                 <button
                   type="button"
                   onClick={() => finish(false)}
-                  aria-label="Close"
+                  aria-label={tr("Close")}
                   className="grid size-7 shrink-0 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
                   <X className="size-3.5" />
@@ -155,7 +156,7 @@ export function ConfirmDialogProvider({
                   onClick={() => finish(false)}
                   className="inline-flex h-9 items-center gap-1.5 rounded-md border border-border bg-card px-3 text-sm font-medium text-foreground transition-colors hover:bg-accent"
                 >
-                  {pending.cancelLabel ?? "Cancel"}
+                  {pending.cancelLabel ?? tr("Cancel")}
                 </button>
                 <button
                   type="button"
@@ -168,7 +169,7 @@ export function ConfirmDialogProvider({
                       : "bg-primary text-primary-foreground hover:bg-primary/90",
                   )}
                 >
-                  {pending.confirmLabel ?? "Confirm"}
+                  {pending.confirmLabel ?? tr("Confirm")}
                 </button>
               </div>
             </motion.div>

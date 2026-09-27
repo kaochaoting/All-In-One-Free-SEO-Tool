@@ -8,6 +8,7 @@ import { Search, PanelLeftClose, PanelLeftOpen, ChevronDown, ChevronRight } from
 import { NAV_GROUPS, type NavGroup, type NavItem } from "./nav-items";
 import { ToolDot, ToolDotLegend } from "@/components/tool-dot";
 import { useStoredState } from "@/components/use-stored-state";
+import { tr } from "@/lib/i18n";
 
 /** Alias kept so the render code below reads unchanged. */
 const groups = NAV_GROUPS;
@@ -261,17 +262,17 @@ export function Sidebar({
           <>
             <div className="min-w-0 flex-1">
               <div className="truncate text-sm font-semibold leading-none text-sidebar-foreground">
-                SEO Tool
+                {tr("SEO Tool")}
               </div>
               <div className="mt-1 truncate text-xs text-sidebar-foreground/60">
-                v0.2 · local
+                {tr("v0.2 · local")}
               </div>
             </div>
             <button
               type="button"
               onClick={toggle}
-              aria-label="Collapse sidebar"
-              title="Collapse sidebar"
+              aria-label={tr("Collapse sidebar")}
+              title={tr("Collapse sidebar")}
               className="grid size-7 place-items-center rounded-md text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
             >
               <PanelLeftClose className="size-4" />
@@ -285,8 +286,8 @@ export function Sidebar({
           <button
             type="button"
             onClick={toggle}
-            aria-label="Expand sidebar"
-            title="Expand sidebar"
+            aria-label={tr("Expand sidebar")}
+            title={tr("Expand sidebar")}
             className="grid size-7 place-items-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
           >
             <PanelLeftOpen className="size-3.5" />
@@ -303,8 +304,8 @@ export function Sidebar({
           <button
             type="button"
             onClick={openSearch}
-            title="Search (⌘K)"
-            aria-label="Search"
+            title={tr("Search (⌘K)")}
+            aria-label={tr("Search")}
             className="grid size-9 place-items-center rounded-md text-sidebar-foreground/60 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
           >
             <Search className="size-4" />
@@ -505,10 +506,10 @@ export function Sidebar({
             <>
               <div className="min-w-0 flex-1">
                 <div className="truncate text-sm font-medium leading-none text-sidebar-foreground">
-                  Local user
+                  {tr("Local user")}
                 </div>
                 <div className="mt-1 truncate text-xs text-sidebar-foreground/60">
-                  Single-user mode
+                  {tr("Single-user mode")}
                 </div>
               </div>
               <ChevronRight className="size-4 text-sidebar-foreground/40" />
@@ -540,10 +541,10 @@ export function Sidebar({
                 ) : (
                   <PanelLeftClose className="size-3.5" />
                 )}
-                <span>{uiMode === "guided" ? "Show all tools" : "Guided mode"}</span>
+                <span>{uiMode === "guided" ? tr("Show all tools") : tr("Guided mode")}</span>
               </span>
               <span className="rounded bg-sidebar-accent/60 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-sidebar-foreground/80">
-                {uiMode === "guided" ? "Pro" : "Easy"}
+                {uiMode === "guided" ? tr("Pro") : tr("Easy")}
               </span>
             </button>
           </form>
@@ -555,7 +556,7 @@ export function Sidebar({
           }`}
         >
           <span className="size-1.5 rounded-full bg-emerald-400" />
-          {!collapsed && <span>Local · everything on this machine</span>}
+          {!collapsed && <span>{tr("Local · everything on this machine")}</span>}
         </div>
       </div>
     </aside>

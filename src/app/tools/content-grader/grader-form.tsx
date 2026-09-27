@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { ExternalLink, Gauge, Loader2 } from "lucide-react";
 import { gradeContent, type GradeContentState } from "./actions";
 import { DEFAULT_COUNTRY } from "@/lib/locale";
+import { tr } from "@/lib/i18n";
 
 export function GraderForm() {
   const [state, formAction, pending] = useActionState<
@@ -19,16 +20,16 @@ export function GraderForm() {
       >
         <div className="grid gap-3 md:grid-cols-[1fr_120px]">
           <label className="space-y-1 text-xs">
-            <span className="text-muted-foreground">Target keyword</span>
+            <span className="text-muted-foreground">{tr("Target keyword")}</span>
             <input
               name="targetKeyword"
               required
-              placeholder="best vegan cookbooks"
+              placeholder={tr("best vegan cookbooks")}
               className="h-9 w-full rounded-md border border-white/10 bg-card/60 px-3 text-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
             />
           </label>
           <label className="space-y-1 text-xs">
-            <span className="text-muted-foreground">Country</span>
+            <span className="text-muted-foreground">{tr("Country")}</span>
             <input
               name="country"
               defaultValue={DEFAULT_COUNTRY}
@@ -39,7 +40,7 @@ export function GraderForm() {
         </div>
         <label className="block space-y-1 text-xs">
           <span className="text-muted-foreground">
-            Your content (paste markdown or plain text)
+            {tr("Your content (paste markdown or plain text)")}
           </span>
           <textarea
             name="content"
@@ -57,12 +58,12 @@ export function GraderForm() {
           {pending ? (
             <>
               <Loader2 className="mr-2 size-4 animate-spin" />
-              Scoring against the SERP… (1-2 min)
+              {tr("Scoring against the SERP… (1-2 min)")}
             </>
           ) : (
             <>
               <Gauge className="mr-2 size-4" />
-              Grade content
+              {tr("Grade content")}
             </>
           )}
         </button>
@@ -83,7 +84,7 @@ export function GraderForm() {
         <>
           <section className="grid gap-3 sm:grid-cols-4">
             <ScoreTile
-              label="Overall"
+              label={tr("Overall")}
               value={state.grade.score}
               max={100}
               tone={
@@ -96,19 +97,19 @@ export function GraderForm() {
               big
             />
             <ScoreTile
-              label="Length"
+              label={tr("Length")}
               value={state.grade.breakdown.lengthScore}
               max={30}
             />
             <ScoreTile
-              label="Term coverage"
+              label={tr("Term coverage")}
               value={state.grade.breakdown.coverageScore}
               max={70}
             />
           </section>
 
           <section className="glass-apple relative overflow-hidden rounded-2xl p-5 space-y-3">
-            <h2 className="text-base font-semibold">Recommendations</h2>
+            <h2 className="text-base font-semibold">{tr("Recommendations")}</h2>
             <ul className="space-y-1.5 text-sm">
               {state.grade.recommendations.map((r, i) => (
                 <li key={i} className="flex items-start gap-2">
@@ -121,13 +122,13 @@ export function GraderForm() {
 
           <section className="grid gap-4 lg:grid-cols-2">
             <div className="glass-apple relative overflow-hidden rounded-2xl p-5 space-y-2">
-              <h3 className="text-sm font-semibold">Length</h3>
+              <h3 className="text-sm font-semibold">{tr("Length")}</h3>
               <p className="text-2xl font-semibold tabular-nums">
                 {state.grade.wordCount}{" "}
                 <span className="text-sm text-muted-foreground">words</span>
               </p>
               <p className="text-[11px] text-muted-foreground">
-                SERP target: {state.grade.targetWordCount.min} ·{" "}
+                {tr("SERP target:")} {state.grade.targetWordCount.min} ·{" "}
                 <strong>{state.grade.targetWordCount.ideal}</strong> ·{" "}
                 {state.grade.targetWordCount.max}
               </p>
@@ -141,23 +142,23 @@ export function GraderForm() {
               repeat a phrase in prose that didn't need it.
             */}
             <div className="glass-apple relative overflow-hidden rounded-2xl p-5 space-y-2">
-              <h3 className="text-sm font-semibold">Keyword repetition</h3>
+              <h3 className="text-sm font-semibold">{tr("Keyword repetition")}</h3>
               <p className="text-2xl font-semibold tabular-nums">
                 {state.grade.keywordDensityPct.toFixed(2)}
                 <span className="text-sm text-muted-foreground">%</span>
               </p>
               <p className="text-[11px] text-muted-foreground">
                 {state.grade.keywordDensityPct > 3.5
-                  ? "High enough to read as stuffed. Cut repetitions that don't earn their place."
-                  : "Not scored. There's no density target to hit — cover the topic well and this takes care of itself."}
+                  ? tr("High enough to read as stuffed. Cut repetitions that don't earn their place.")
+                  : tr("Not scored. There's no density target to hit — cover the topic well and this takes care of itself.")}
               </p>
             </div>
           </section>
 
           <section className="glass-apple relative overflow-hidden rounded-2xl p-5 space-y-3">
-            <h2 className="text-base font-semibold">Term coverage</h2>
+            <h2 className="text-base font-semibold">{tr("Term coverage")}</h2>
             <p className="text-[11px] text-muted-foreground">
-              Top terms across the SERP corpus. Bold = present in your draft.
+              {tr("Top terms across the SERP corpus. Bold = present in your draft.")}
             </p>
             <div className="flex flex-wrap gap-1.5">
               {state.insights.topTerms.slice(0, 60).map((t) => {
@@ -170,7 +171,7 @@ export function GraderForm() {
                         ? "bg-emerald-500/15 text-emerald-200 ring-emerald-500/30 font-medium"
                         : "bg-white/5 text-muted-foreground ring-white/10"
                     }`}
-                    title={`Appears ${t.corpusFreq} times across the SERP corpus`}
+                    title={tr("Appears {n} times across the SERP corpus", { n: t.corpusFreq })}
                   >
                     {t.term}
                   </span>
@@ -181,10 +182,9 @@ export function GraderForm() {
 
           {state.insights.recurringHeadings.length > 0 && (
             <section className="glass-apple relative overflow-hidden rounded-2xl p-5 space-y-3">
-              <h2 className="text-base font-semibold">Suggested sections</h2>
+              <h2 className="text-base font-semibold">{tr("Suggested sections")}</h2>
               <p className="text-[11px] text-muted-foreground">
-                Headings used by 2+ top-ranking pages — strong signals of what
-                searchers expect.
+                {tr("Headings used by 2+ top-ranking pages — strong signals of what searchers expect.")}
               </p>
               <ul className="space-y-1 text-sm">
                 {state.insights.recurringHeadings.map((h) => (
@@ -202,10 +202,10 @@ export function GraderForm() {
           <section className="glass-apple relative overflow-hidden rounded-2xl">
             <header className="border-b border-white/[0.06] px-5 py-4">
               <h2 className="text-base font-semibold">
-                SERP corpus ({state.insights.corpusSize} pages)
+                {tr("SERP corpus ({n} pages)", { n: state.insights.corpusSize })}
               </h2>
               <p className="mt-0.5 text-[11px] text-muted-foreground">
-                Median {state.insights.medianWordCount} words · avg keyword
+                {tr("Median")} {state.insights.medianWordCount} words · avg keyword
                 density {state.insights.avgKeywordDensityPct.toFixed(2)}%
               </p>
             </header>

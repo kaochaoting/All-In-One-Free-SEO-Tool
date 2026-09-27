@@ -12,6 +12,7 @@ import {
   clearSmtpConfig,
   type SaveSmtpResult,
 } from "./smtp-actions";
+import { tr } from "@/lib/i18n";
 
 type Initial = {
   host: string | null;
@@ -43,7 +44,7 @@ export function SmtpForm({ initial }: { initial: Initial }) {
       const r = await testSmtpConnection();
       setTestMsg(
         r.ok
-          ? { tone: "success", text: "SMTP connection verified." }
+          ? { tone: "success", text: tr("SMTP connection verified.") }
           : { tone: "error", text: r.error ?? "Failed" },
       );
     });
@@ -51,7 +52,7 @@ export function SmtpForm({ initial }: { initial: Initial }) {
 
   function runSend() {
     if (!testTo.trim()) {
-      setTestMsg({ tone: "error", text: "Enter an email to send to." });
+      setTestMsg({ tone: "error", text: tr("Enter an email to send to.") });
       return;
     }
     setTestMsg(null);
@@ -70,7 +71,7 @@ export function SmtpForm({ initial }: { initial: Initial }) {
       <form action={formAction} className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
           <Field
-            label="SMTP host"
+            label={tr("SMTP host")}
             name="host"
             defaultValue={initial.host ?? ""}
             placeholder="smtp.gmail.com"
@@ -78,7 +79,7 @@ export function SmtpForm({ initial }: { initial: Initial }) {
             required
           />
           <Field
-            label="Port"
+            label={tr("Port")}
             name="port"
             type="number"
             defaultValue={initial.port ?? "587"}
@@ -87,21 +88,21 @@ export function SmtpForm({ initial }: { initial: Initial }) {
             required
           />
           <Field
-            label="Username"
+            label={tr("Username")}
             name="user"
             defaultValue={initial.user ?? ""}
             placeholder="you@gmail.com"
             error={errors.user}
           />
           <Field
-            label="Password / App password"
+            label={tr("Password / App password")}
             name="password"
             type="password"
             placeholder={initial.hasPassword ? "•••••••••• (saved)" : ""}
             error={errors.password}
           />
           <Field
-            label="From email"
+            label={tr("From email")}
             name="fromEmail"
             type="email"
             defaultValue={initial.fromEmail ?? ""}
@@ -110,7 +111,7 @@ export function SmtpForm({ initial }: { initial: Initial }) {
             required
           />
           <Field
-            label="From name (optional)"
+            label={tr("From name (optional)")}
             name="fromName"
             defaultValue={initial.fromName ?? ""}
             placeholder="Acme SEO"
@@ -127,7 +128,7 @@ export function SmtpForm({ initial }: { initial: Initial }) {
             className="size-4 cursor-pointer accent-violet-500"
           />
           <Label htmlFor="secure" className="cursor-pointer">
-            Use TLS/SSL (port 465). Leave off for STARTTLS on 587.
+            {tr("Use TLS/SSL (port 465). Leave off for STARTTLS on 587.")}
           </Label>
         </div>
         <div className="flex flex-wrap items-center gap-2 pt-1">
@@ -141,12 +142,12 @@ export function SmtpForm({ initial }: { initial: Initial }) {
             disabled={testPending}
           >
             <CheckCircle2 className="size-3.5" />
-            Test connection
+            {tr("Test connection")}
           </Button>
           {(initial.host || initial.fromEmail) && (
             <form action={clearSmtpConfig}>
               <Button type="submit" variant="ghost" size="sm">
-                Clear all
+                {tr("Clear all")}
               </Button>
             </form>
           )}
@@ -156,7 +157,7 @@ export function SmtpForm({ initial }: { initial: Initial }) {
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.015] p-4">
         <div className="flex flex-wrap items-end gap-3">
           <div className="flex-1 space-y-1.5">
-            <Label htmlFor="testTo">Send a test email</Label>
+            <Label htmlFor="testTo">{tr("Send a test email")}</Label>
             <Input
               id="testTo"
               type="email"
@@ -172,12 +173,11 @@ export function SmtpForm({ initial }: { initial: Initial }) {
             disabled={testPending || !testTo.trim()}
           >
             <Send className="size-3.5" />
-            Send test
+            {tr("Send test")}
           </Button>
         </div>
         <p className="mt-2 text-[11px] text-muted-foreground">
-          Sends a one-line plain-text email so you can confirm before scheduling
-          real reports.
+          {tr("Sends a one-line plain-text email so you can confirm before scheduling real reports.")}
         </p>
       </div>
 
@@ -242,7 +242,7 @@ function Examples() {
     <div className="rounded-xl border border-white/[0.06] bg-white/[0.015] p-4 text-xs">
       <div className="flex items-center gap-1.5 font-medium text-foreground">
         <Mail className="size-3.5 text-violet-300" />
-        Common provider settings
+        {tr("Common provider settings")}
       </div>
       <div className="mt-2 grid gap-3 text-muted-foreground sm:grid-cols-3">
         <div>
@@ -251,16 +251,16 @@ function Examples() {
             smtp.gmail.com · 587 · STARTTLS
           </div>
           <div className="mt-1 text-[11px]">
-            Use an{" "}
+            {tr("Use an")}{" "}
             <a
               href="https://myaccount.google.com/apppasswords"
               target="_blank"
               rel="noreferrer"
               className="text-violet-300 hover:underline"
             >
-              App Password
+              {tr("App Password")}
             </a>
-            , not your real password.
+            {tr(", not your real password.")}
           </div>
         </div>
         <div>
@@ -269,7 +269,7 @@ function Examples() {
             smtp.resend.com · 465 · TLS
           </div>
           <div className="mt-1 text-[11px]">
-            Username: <code>resend</code> · Password: API key.
+            {tr("Username:")} <code>resend</code> {tr("· Password: API key.")}
           </div>
         </div>
         <div>
@@ -278,7 +278,7 @@ function Examples() {
             smtp.sendgrid.net · 587 · STARTTLS
           </div>
           <div className="mt-1 text-[11px]">
-            Username: <code>apikey</code> · Password: API key.
+            {tr("Username:")} <code>apikey</code> {tr("· Password: API key.")}
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@
 import Link from "next/link";
 import { Check, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { tr } from "@/lib/i18n";
 
 export type StepperStep = {
   id: string;
@@ -87,7 +88,7 @@ export function Stepper({
                   href={step.href}
                   className="mt-2 inline-flex items-center gap-1 text-[12px] font-medium text-primary hover:underline"
                 >
-                  Start →
+                  {tr("Start →")}
                 </Link>
               )}
             </div>

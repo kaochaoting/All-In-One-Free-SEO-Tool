@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { History, Wrench } from "lucide-react";
 import { recentTools, topToolsByUsage } from "@/lib/tool-runs";
+import { toolTitle, tr } from "@/lib/i18n";
 
 function ago(d: Date | null): string {
   if (!d) return "";
@@ -39,7 +40,7 @@ function Rail({
               className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-background/50 px-3 py-1.5 text-xs transition-colors hover:border-ring/50 hover:bg-accent"
             >
               <span className="max-w-[18ch] truncate font-medium">
-                {t.label}
+                {toolTitle(t.toolId.startsWith("/") ? t.toolId : `/tools/${t.toolId}`, t.label)}
               </span>
               <span className="text-[10px] text-muted-foreground">
                 {t.runs > 1 ? `${t.runs}x` : ago(t.lastRunAt)}
@@ -81,15 +82,15 @@ export async function MostUsedTools() {
   return (
     <>
       <Rail
-        title="Pick up where you left off"
-        hint="your most recent runs"
+        title={tr("Pick up where you left off")}
+        hint={tr("your most recent runs")}
         icon={History}
         items={recent}
       />
       {showTop && (
         <Rail
-          title="You use these most"
-          hint="across this workspace"
+          title={tr("You use these most")}
+          hint={tr("across this workspace")}
           icon={Wrench}
           items={top}
         />

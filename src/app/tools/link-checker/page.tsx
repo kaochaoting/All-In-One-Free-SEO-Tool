@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { analyzeLinks, type LinkAnalysisResult } from "./actions";
+import { tr } from "@/lib/i18n";
 
 export default function LinkCheckerPage() {
   const [url, setUrl] = useState("");
@@ -52,7 +53,7 @@ export default function LinkCheckerPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -61,7 +62,7 @@ export default function LinkCheckerPage() {
             <LinkIcon className="size-5 text-cyan-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">Link analyzer</span>
+            <span className="text-gradient-brand">{tr("Link analyzer")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
@@ -73,7 +74,7 @@ export default function LinkCheckerPage() {
 
       <section className="glass-apple relative overflow-hidden rounded-2xl p-5">
         <Label htmlFor="lc-url" className="text-sm">
-          Page URL
+          {tr("Page URL")}
         </Label>
         <div className="mt-2 flex gap-2">
           <Input

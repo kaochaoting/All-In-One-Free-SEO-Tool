@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { Loader2, Download, Copy, Check } from "lucide-react";
 import { generateSitemap, type SitemapResult } from "./actions";
+import { tr } from "@/lib/i18n";
 
 const TABS = ["xml", "txt", "html"] as const;
 
@@ -39,7 +40,7 @@ export function SitemapForm() {
       >
         <div className="grid gap-3 md:grid-cols-[1fr_140px_auto]">
           <label className="space-y-1 text-xs">
-            <span className="text-muted-foreground">Start URL</span>
+            <span className="text-muted-foreground">{tr("Start URL")}</span>
             <input
               name="url"
               required
@@ -48,7 +49,7 @@ export function SitemapForm() {
             />
           </label>
           <label className="space-y-1 text-xs">
-            <span className="text-muted-foreground">Max pages</span>
+            <span className="text-muted-foreground">{tr("Max pages")}</span>
             <input
               name="maxPages"
               type="number"
@@ -77,11 +78,10 @@ export function SitemapForm() {
             defaultChecked
             className="size-3.5"
           />
-          Respect robots.txt disallow rules
+          {tr("Respect robots.txt disallow rules")}
         </label>
         <p className="mt-2 text-[11px] text-muted-foreground">
-          Crawls only HTML pages on the start host. May take 1–3 minutes
-          for medium sites.
+          {tr("Crawls only HTML pages on the start host. May take 1–3 minutes for medium sites.")}
         </p>
       </form>
 
@@ -135,12 +135,12 @@ export function SitemapForm() {
                 {copied ? (
                   <>
                     <Check className="size-3" />
-                    Copied
+                    {tr("Copied")}
                   </>
                 ) : (
                   <>
                     <Copy className="size-3" />
-                    Copy
+                    {tr("Copy")}
                   </>
                 )}
               </button>
@@ -150,7 +150,7 @@ export function SitemapForm() {
                 className="inline-flex items-center gap-1 rounded-md bg-cyan-500/15 px-2.5 py-1 text-[10px] font-medium text-cyan-300 ring-1 ring-inset ring-cyan-500/30 hover:bg-cyan-500/25"
               >
                 <Download className="size-3" />
-                Download {filename}
+                {tr("Download")} {filename}
               </a>
             </div>
           </div>

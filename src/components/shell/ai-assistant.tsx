@@ -12,6 +12,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { chat, type ChatMessage } from "@/app/assistant/actions";
+import { tr } from "@/lib/i18n";
 
 const SUGGESTIONS = [
   "Which client has the worst score right now?",
@@ -89,8 +90,8 @@ export function AIAssistant() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          aria-label="AI assistant"
-          title="AI assistant — Esc to close"
+          aria-label={tr("AI assistant")}
+          title={tr("AI assistant — Esc to close")}
           className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 via-fuchsia-500 to-indigo-600 text-white shadow-xl shadow-violet-500/40 ring-1 ring-inset ring-white/30 transition-transform hover:scale-110"
         >
           <Sparkles className="size-5" />
@@ -116,7 +117,7 @@ export function AIAssistant() {
                   <Bot className="size-4 text-white" />
                 </div>
                 <div>
-                  <div className="text-sm font-semibold">SEO assistant</div>
+                  <div className="text-sm font-semibold">{tr("SEO assistant")}</div>
                   <div className="text-[10px] text-muted-foreground">
                     {provider
                       ? `Powered by ${provider}`
@@ -127,7 +128,7 @@ export function AIAssistant() {
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                aria-label="Close"
+                aria-label={tr("Close")}
                 className="grid size-7 place-items-center rounded-md text-muted-foreground hover:bg-white/5 hover:text-foreground"
               >
                 <X className="size-3.5" />
@@ -142,12 +143,10 @@ export function AIAssistant() {
                   </div>
                   <div className="space-y-1">
                     <h3 className="text-base font-semibold">
-                      Ask anything about your SEO data
+                      {tr("Ask anything about your SEO data")}
                     </h3>
                     <p className="text-xs text-muted-foreground max-w-md">
-                      I can see your clients, audits, keywords, tasks, and
-                      recent page changes. Numbers come from your database, not
-                      made up.
+                      {tr("I can see your clients, audits, keywords, tasks, and recent page changes. Numbers come from your database, not made up.")}
                     </p>
                   </div>
                   <div className="grid w-full max-w-md gap-2 pt-2">
@@ -221,14 +220,14 @@ export function AIAssistant() {
                   }
                 }}
                 rows={1}
-                placeholder="Ask about your SEO data…"
+                placeholder={tr("Ask about your SEO data…")}
                 disabled={pending}
                 className="max-h-32 flex-1 resize-none rounded-lg border border-white/10 bg-card/60 px-3 py-2 text-sm shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
               />
               <button
                 type="submit"
                 disabled={pending || input.trim().length === 0}
-                aria-label="Send"
+                aria-label={tr("Send")}
                 className="grid size-9 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-violet-500 via-fuchsia-500 to-indigo-600 text-white shadow-md shadow-violet-500/30 ring-1 ring-inset ring-white/20 transition-opacity disabled:opacity-50"
               >
                 {pending ? (

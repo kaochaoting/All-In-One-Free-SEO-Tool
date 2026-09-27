@@ -7,6 +7,7 @@
  * already have.
  */
 import { TOOL_CAPABILITIES } from "./tool-capabilities.generated";
+import { tr } from "@/lib/i18n";
 
 export type ToolCapability = (typeof TOOL_CAPABILITIES)[number];
 
@@ -260,14 +261,13 @@ export function badgeFor(
   if (usage === "none") {
     return cap.usesBrowser
       ? {
-          label: "Free · runs locally",
-          detail:
-            "No AI credits. Runs a browser on this machine, so it costs you nothing per use.",
+          label: tr("Free · runs locally"),
+          detail: tr("No AI credits. Runs a browser on this machine, so it costs you nothing per use."),
           tone: "free",
         }
       : {
-          label: "Free",
-          detail: "No AI credits — this one never calls a model.",
+          label: tr("Free"),
+          detail: tr("No AI credits — this one never calls a model."),
           tone: "free",
         };
   }
@@ -278,9 +278,8 @@ export function badgeFor(
   // model, and asks one only for an optional prose sentence.
   if (usage === "optional") {
     return {
-      label: "Free · AI optional",
-      detail:
-        "Works fully without a key. A model is used only to add a written summary, and everything else is computed from your own data.",
+      label: tr("Free · AI optional"),
+      detail: tr("Works fully without a key. A model is used only to add a written summary, and everything else is computed from your own data."),
       tone: "free",
     };
   }
@@ -288,15 +287,13 @@ export function badgeFor(
   if (usage === "partial") {
     return mode === "api" || mode === "both"
       ? {
-          label: "Partly uses credits",
-          detail:
-            "Some of this page calls your AI provider and the rest does not, so it costs less per run than a fully AI tool.",
+          label: tr("Partly uses credits"),
+          detail: tr("Some of this page calls your AI provider and the rest does not, so it costs less per run than a fully AI tool."),
           tone: "key",
         }
       : {
-          label: "Partly needs a key",
-          detail:
-            "The main check here runs without a model. One feature on this page needs an API key or Ollama, and that feature alone is unavailable — a connected chat subscription does not supply it, because MCP runs the other way round.",
+          label: tr("Partly needs a key"),
+          detail: tr("The main check here runs without a model. One feature on this page needs an API key or Ollama, and that feature alone is unavailable — a connected chat subscription does not supply it, because MCP runs the other way round."),
           tone: "partial",
         };
   }
@@ -309,16 +306,15 @@ export function badgeFor(
   // will fail as one that works is worse than saying nothing.
   if (mode === "none" || mode === "mcp") {
     return {
-      label: "Needs a key",
-      detail:
-        "This page calls a model directly, so it needs an API key or Ollama. A connected chat subscription does not drive it — that works the other way round, inside your chat app.",
+      label: tr("Needs a key"),
+      detail: tr("This page calls a model directly, so it needs an API key or Ollama. A connected chat subscription does not drive it — that works the other way round, inside your chat app."),
       tone: "key",
     };
   }
 
   return {
-    label: "Uses credits",
-    detail: "Calls your AI provider, so this one costs a little per run.",
+    label: tr("Uses credits"),
+    detail: tr("Calls your AI provider, so this one costs a little per run."),
     tone: "key",
   };
 }

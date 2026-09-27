@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { generateSchema, type SchemaType } from "./actions";
 import { getSchemaAdvisory } from "@/lib/schema-deprecations-2026";
+import { tr } from "@/lib/i18n";
 
 const TYPES: { id: SchemaType; label: string; description: string }[] = [
   {
@@ -94,7 +95,7 @@ export default function SchemaGeneratorPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -103,7 +104,7 @@ export default function SchemaGeneratorPage() {
             <Code2 className="size-5 text-cyan-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">Schema markup generator</span>
+            <span className="text-gradient-brand">{tr("Schema markup generator")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
@@ -166,7 +167,7 @@ export default function SchemaGeneratorPage() {
             {pending ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
-                Generating…
+                {tr("Generating…")}
               </>
             ) : (
               <>

@@ -22,6 +22,7 @@ import {
   recentNotifications,
   type Notification,
 } from "@/app/notifications/actions";
+import { tr } from "@/lib/i18n";
 
 const LAST_SEEN_KEY = "seo-notifications-last-seen";
 
@@ -142,7 +143,7 @@ export function NotificationsBell() {
       <button
         type="button"
         onClick={handleOpen}
-        aria-label="Notifications"
+        aria-label={tr("Notifications")}
         className="relative flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent/40 hover:text-foreground"
       >
         <Bell className="size-4" />
@@ -156,9 +157,9 @@ export function NotificationsBell() {
         <div className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-2xl border border-white/10 bg-card/95 shadow-2xl shadow-violet-500/10 backdrop-blur-xl">
           <div className="flex items-center justify-between border-b border-white/5 px-4 py-3">
             <div>
-              <div className="text-sm font-semibold">Notifications</div>
+              <div className="text-sm font-semibold">{tr("Notifications")}</div>
               <div className="text-[11px] text-muted-foreground">
-                Recent activity from your data
+                {tr("Recent activity from your data")}
               </div>
             </div>
             {loading && (
@@ -168,7 +169,7 @@ export function NotificationsBell() {
           <div className="max-h-96 overflow-y-auto">
             {items === null && loading ? (
               <div className="px-4 py-10 text-center text-xs text-muted-foreground">
-                Loading…
+                {tr("Loading…")}
               </div>
             ) : items === null || items.length === 0 ? (
               <div className="flex flex-col items-center gap-3 px-5 py-10 text-center">
@@ -176,11 +177,9 @@ export function NotificationsBell() {
                   <Inbox className="size-5 text-violet-300" />
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm font-medium">All caught up</p>
+                  <p className="text-sm font-medium">{tr("All caught up")}</p>
                   <p className="text-xs text-muted-foreground">
-                    Alerts appear here when audits surface critical issues,
-                    pages change, ranks drop, or the daily agent finishes
-                    a run.
+                    {tr("Alerts appear here when audits surface critical issues, pages change, ranks drop, or the daily agent finishes a run.")}
                   </p>
                 </div>
                 <Link
@@ -188,7 +187,7 @@ export function NotificationsBell() {
                   onClick={() => setOpen(false)}
                   className="mt-1 inline-flex h-7 items-center gap-1 rounded-md bg-violet-500/15 px-3 text-[11px] font-medium text-violet-300 ring-1 ring-inset ring-violet-500/30 hover:bg-violet-500/25"
                 >
-                  Add a client to start tracking →
+                  {tr("Add a client to start tracking →")}
                 </Link>
               </div>
             ) : (
@@ -239,7 +238,7 @@ export function NotificationsBell() {
                 onClick={markAllRead}
                 className="text-[10px] text-muted-foreground hover:text-foreground hover:underline"
               >
-                Mark all read
+                {tr("Mark all read")}
               </button>
             </div>
           )}

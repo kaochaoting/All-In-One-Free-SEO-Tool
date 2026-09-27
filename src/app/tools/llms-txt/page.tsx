@@ -20,6 +20,7 @@ import {
   validateLlmsTxt,
   type ValidateLlmsResult,
 } from "./actions";
+import { tr } from "@/lib/i18n";
 
 export default function LlmsTxtPage() {
   const [tab, setTab] = useState<"generate" | "validate">("generate");
@@ -31,7 +32,7 @@ export default function LlmsTxtPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -40,12 +41,11 @@ export default function LlmsTxtPage() {
             <Sparkles className="size-5 text-rose-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">llms.txt manager</span>
+            <span className="text-gradient-brand">{tr("llms.txt manager")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          The emerging standard for telling AI crawlers (ChatGPT, Claude,
-          Perplexity) what your site is about + which URLs matter.
+          {tr("The emerging standard for telling AI crawlers (ChatGPT, Claude, Perplexity) what your site is about + which URLs matter.")}
         </p>
       </header>
 
@@ -147,7 +147,7 @@ function Generator() {
             {pending ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
-                Generating…
+                {tr("Generating…")}
               </>
             ) : (
               <>
@@ -184,7 +184,7 @@ function Generator() {
                 onClick={download}
               >
                 <Download className="size-3.5" />
-                Download
+                {tr("Download")}
               </Button>
             </div>
           </header>
@@ -220,7 +220,7 @@ function Validator() {
       <section className="glass-apple relative overflow-hidden rounded-2xl p-5">
         <div className="flex items-end gap-3">
           <div className="flex-1 space-y-1.5">
-            <Label htmlFor="vurl">Site URL</Label>
+            <Label htmlFor="vurl">{tr("Site URL")}</Label>
             <Input
               id="vurl"
               value={url}
@@ -232,7 +232,7 @@ function Validator() {
             {pending ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
-                Checking…
+                {tr("Checking…")}
               </>
             ) : (
               <>
@@ -305,7 +305,7 @@ function Validator() {
 
           <section className="glass-apple relative overflow-hidden rounded-2xl">
             <header className="border-b border-white/[0.06] px-5 py-4">
-              <h2 className="text-base font-semibold">Content</h2>
+              <h2 className="text-base font-semibold">{tr("Content")}</h2>
             </header>
             <pre className="overflow-x-auto p-5 font-mono text-[13px] leading-relaxed text-foreground/90 whitespace-pre-wrap">
               {result.content}

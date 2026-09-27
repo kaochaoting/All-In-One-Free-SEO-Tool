@@ -31,6 +31,7 @@ import { getGoogleConnectionStatus } from "@/lib/google-oauth";
 import { setSetting } from "@/lib/settings-store";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { tr } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
@@ -74,25 +75,22 @@ export default async function WelcomePage() {
     {
       id: "client",
       icon: Users,
-      title: "Add your first site",
-      description:
-        "Just paste a URL. We detect the tech stack and niche, and build a 30-day task plan. No account setup, no keys.",
+      title: tr("Add your first site"),
+      description: tr("Just paste a URL. We detect the tech stack and niche, and build a 30-day task plan. No account setup, no keys."),
       href: "/clients/new",
     },
     {
       id: "audit",
       icon: ClipboardList,
-      title: "Run your first audit",
-      description:
-        "40+ checks, sorted by severity, in about a minute. This works with nothing else configured — it's the fastest way to see whether the tool is useful to you.",
+      title: tr("Run your first audit"),
+      description: tr("40+ checks, sorted by severity, in about a minute. This works with nothing else configured — it's the fastest way to see whether the tool is useful to you."),
       href: "/audits",
     },
     {
       id: "ai",
       icon: Bot,
-      title: "Add an AI provider (optional)",
-      description:
-        "Turns audit findings into plain-English explanations and fixes, and unlocks chat, exec summaries and content tools. Gemini and Groq are free — about three minutes, with the steps written out.",
+      title: tr("Add an AI provider (optional)"),
+      description: tr("Turns audit findings into plain-English explanations and fixes, and unlocks chat, exec summaries and content tools. Gemini and Groq are free — about three minutes, with the steps written out."),
       // Points at the guide rather than the settings form. A brand-new
       // user sent straight to a "paste your API key" box still has to
       // work out where the key comes from; the guide answers that first
@@ -102,25 +100,22 @@ export default async function WelcomePage() {
     {
       id: "google",
       icon: Plug,
-      title: "Connect Google (GSC + GA4)",
-      description:
-        "Optional but high-leverage. Real ranking data instead of scraped, plus organic traffic and quick wins. Five minutes, free, steps included.",
+      title: tr("Connect Google (GSC + GA4)"),
+      description: tr("Optional but high-leverage. Real ranking data instead of scraped, plus organic traffic and quick wins. Five minutes, free, steps included."),
       href: "/connect#google",
     },
     {
       id: "keywords",
       icon: Search,
-      title: "Track keywords",
-      description:
-        "Daily rank checks in browser mode (free). Mobile + desktop, per-city if local SEO.",
+      title: tr("Track keywords"),
+      description: tr("Daily rank checks in browser mode (free). Mobile + desktop, per-city if local SEO."),
       href: "/keywords",
     },
     {
       id: "report",
       icon: FileDown,
-      title: "Generate a report",
-      description:
-        "White-labeled PDF, AI-written exec summary, work-completed log. Schedule to send monthly.",
+      title: tr("Generate a report"),
+      description: tr("White-labeled PDF, AI-written exec summary, work-completed log. Schedule to send monthly."),
       href: "/reports",
     },
   ];
@@ -151,8 +146,8 @@ export default async function WelcomePage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <PageHeader
-        title="Get started"
-        description="Each step unlocks more of the tool. You can skip any step and come back to it later — but doing them in order works best."
+        title={tr("Get started")}
+        description={tr("Each step unlocks more of the tool. You can skip any step and come back to it later — but doing them in order works best.")}
         icon={Bot}
         accent="violet"
         noHelp
@@ -162,7 +157,7 @@ export default async function WelcomePage() {
       <div className="space-y-1.5">
         <div className="flex items-center justify-between text-[12px]">
           <span className="font-medium text-foreground">
-            {doneCount} of {total} complete
+            {tr("{done} of {total} complete", { done: doneCount, total })}
           </span>
           <span className="text-muted-foreground tabular-nums">{percent}%</span>
         </div>
@@ -187,7 +182,7 @@ export default async function WelcomePage() {
           type="submit"
           className="text-[12px] text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
         >
-          Skip for now and explore the dashboard →
+          {tr("Skip for now and explore the dashboard →")}
         </button>
       </form>
 
@@ -196,14 +191,12 @@ export default async function WelcomePage() {
           volume), PageSpeed, WordPress and email all sit outside it.
           One line so those stay findable without lengthening the list. */}
       <p className="text-[12px] text-muted-foreground">
-        There are a few more optional connections — Bing for backlinks and
-        keyword volume, WordPress so the agent can apply fixes, email for
-        sending reports.{" "}
+        {tr("There are a few more optional connections — Bing for backlinks and keyword volume, WordPress so the agent can apply fixes, email for sending reports.")}{" "}
         <Link
           href="/connect"
           className="underline underline-offset-4 hover:text-foreground"
         >
-          See all of them, with setup guides
+          {tr("See all of them, with setup guides")}
         </Link>
         .
       </p>
@@ -211,11 +204,10 @@ export default async function WelcomePage() {
       {doneCount === total && (
         <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-4 text-[13px]">
           <div className="font-semibold text-emerald-300">
-            You&apos;re fully set up.
+            {tr("You're fully set up.")}
           </div>
           <p className="mt-1 text-muted-foreground">
-            Every tool is now connected and ready. Head back to the dashboard
-            and let the daily agent surface what needs your attention.
+            {tr("Every tool is now connected and ready. Head back to the dashboard and let the daily agent surface what needs your attention.")}
           </p>
         </div>
       )}

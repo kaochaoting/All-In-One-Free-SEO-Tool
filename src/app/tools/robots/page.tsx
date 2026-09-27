@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { checkRobots, type RobotsResult } from "./actions";
 import { useClientId } from "@/components/client-id-field";
+import { tr } from "@/lib/i18n";
 
 export default function RobotsPage() {
   const [url, setUrl] = useState("");
@@ -41,7 +42,7 @@ export default function RobotsPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -50,19 +51,18 @@ export default function RobotsPage() {
             <FileText className="size-5 text-emerald-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">Robots.txt + sitemap validator</span>
+            <span className="text-gradient-brand">{tr("Robots.txt + sitemap validator")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Fetch + parse robots.txt and every sitemap it declares. Surface
-          common indexability foot-guns.
+          {tr("Fetch + parse robots.txt and every sitemap it declares. Surface common indexability foot-guns.")}
         </p>
       </header>
 
       <section className="glass-apple relative overflow-hidden rounded-2xl p-5">
         <div className="flex items-end gap-3">
           <div className="flex-1 space-y-1.5">
-            <Label htmlFor="rurl">Site URL</Label>
+            <Label htmlFor="rurl">{tr("Site URL")}</Label>
             <Input
               id="rurl"
               value={url}
@@ -74,12 +74,12 @@ export default function RobotsPage() {
             {pending ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
-                Checking…
+                {tr("Checking…")}
               </>
             ) : (
               <>
                 <Search className="size-4" />
-                Check
+                {tr("Check")}
               </>
             )}
           </Button>
@@ -101,7 +101,7 @@ export default function RobotsPage() {
               <header className="border-b border-white/[0.06] px-5 py-4">
                 <h2 className="flex items-center gap-2 text-base font-semibold">
                   <AlertCircle className="size-4 text-amber-300" />
-                  Issues found ({result.issues.length})
+                  {tr("Issues found ({n})", { n: result.issues.length })}
                 </h2>
               </header>
               <ul className="divide-y divide-white/[0.04]">
@@ -119,7 +119,7 @@ export default function RobotsPage() {
           ) : (
             <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
               <CheckCircle2 className="mr-2 inline size-4" />
-              No issues. robots.txt + sitemaps look healthy.
+              {tr("No issues. robots.txt + sitemaps look healthy.")}
             </div>
           )}
 
@@ -149,7 +149,7 @@ export default function RobotsPage() {
             <section className="glass-apple relative overflow-hidden rounded-2xl">
               <header className="border-b border-white/[0.06] px-5 py-4">
                 <h2 className="text-base font-semibold">
-                  Sitemaps ({result.sitemaps.length})
+                  {tr("Sitemaps ({n})", { n: result.sitemaps.length })}
                 </h2>
               </header>
               <ul className="divide-y divide-white/[0.04]">
@@ -185,7 +185,7 @@ export default function RobotsPage() {
                     {s.childSitemaps && s.childSitemaps.length > 0 && (
                       <div className="mt-1 ml-2 border-l border-white/10 pl-3 text-[11px]">
                         <div className="text-muted-foreground">
-                          {s.childSitemaps.length} child sitemaps:
+                          {s.childSitemaps.length} {tr("child sitemaps:")}
                         </div>
                         <ul className="mt-0.5 space-y-0.5">
                           {s.childSitemaps.slice(0, 8).map((c, j) => (
@@ -198,7 +198,7 @@ export default function RobotsPage() {
                           ))}
                           {s.childSitemaps.length > 8 && (
                             <li className="text-muted-foreground/70">
-                              +{s.childSitemaps.length - 8} more
+                              {tr("+{n} more", { n: s.childSitemaps.length - 8 })}
                             </li>
                           )}
                         </ul>

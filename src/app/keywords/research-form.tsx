@@ -9,21 +9,22 @@ import { Label } from "@/components/ui/label";
 import { Term } from "@/components/ui/term";
 import { researchAction, trackKeyword, type ResearchActionResult } from "./actions";
 import { DEFAULT_COUNTRY } from "@/lib/locale";
+import { tr } from "@/lib/i18n";
 
 const sources = [
-  { value: "google", label: "Google", icon: Globe, hint: "Autocomplete" },
-  { value: "youtube", label: "YouTube", icon: Video, hint: "Video queries" },
+  { value: "google", label: tr("Google"), icon: Globe, hint: tr("Autocomplete") },
+  { value: "youtube", label: tr("YouTube"), icon: Video, hint: tr("Video queries") },
   {
     value: "reddit",
-    label: "Reddit",
+    label: tr("Reddit"),
     icon: MessagesSquare,
-    hint: "Real questions",
+    hint: tr("Real questions"),
   },
   {
     value: "wikipedia",
-    label: "Wikipedia",
+    label: tr("Wikipedia"),
     icon: BookOpen,
-    hint: "Entities & topics",
+    hint: tr("Entities & topics"),
   },
 ] as const;
 
@@ -96,13 +97,13 @@ export function ResearchForm({
         </div>
         <div className="grid gap-4 md:grid-cols-[1fr_auto_auto_auto] md:items-end">
           <div className="space-y-1.5">
-            <Label htmlFor="seed">Seed keyword</Label>
+            <Label htmlFor="seed">{tr("Seed keyword")}</Label>
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 id="seed"
                 name="seed"
-                placeholder="best running shoes"
+                placeholder={tr("best running shoes")}
                 className="pl-9"
                 required
                 minLength={2}
@@ -112,7 +113,7 @@ export function ResearchForm({
             </div>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="country">Country</Label>
+            <Label htmlFor="country">{tr("Country")}</Label>
             <select
               id="country"
               name="country"
@@ -127,16 +128,16 @@ export function ResearchForm({
             </select>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="mode">Expansion</Label>
+            <Label htmlFor="mode">{tr("Expansion")}</Label>
             <select
               id="mode"
               name="mode"
               defaultValue="none"
               className="flex h-9 w-32 rounded-md border border-white/10 bg-card/60 px-2 text-xs shadow-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
             >
-              <option value="none">Just seed</option>
-              <option value="alphabet">Alphabet (a-z)</option>
-              <option value="lsi">LSI (~250 ideas)</option>
+              <option value="none">{tr("Just seed")}</option>
+              <option value="alphabet">{tr("Alphabet (a-z)")}</option>
+              <option value="lsi">{tr("LSI (~250 ideas)")}</option>
             </select>
           </div>
           <Button
@@ -157,9 +158,9 @@ export function ResearchForm({
 
       {state?.ok && state.suggestions.length === 0 && (
         <div className="rounded-2xl border border-white/5 bg-card/40 px-6 py-12 text-center text-sm text-muted-foreground backdrop-blur-md">
-          No suggestions found for{" "}
+          {tr("No suggestions found for")}{" "}
           <span className="font-medium text-foreground">{state.seed}</span>.
-          Try a broader seed or enable Expand mode.
+          {tr("Try a broader seed or enable Expand mode.")}
         </div>
       )}
 
@@ -170,19 +171,18 @@ export function ResearchForm({
             <div>
               <h2 className="flex items-center gap-2 text-base font-semibold">
                 <Sparkles className="size-4 text-cyan-300" />
-                {state.suggestions.length} suggestions for &ldquo;{state.seed}
-                &rdquo;
+                {tr("{n} suggestions for “{seed}”", { n: state.suggestions.length, seed: state.seed })}
               </h2>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                From {state.source} · {state.country}
+                {tr("From")} {state.source} · {state.country}
                 {state.volumeSource === "bing" && (
                   <>
                     {" · "}
                     <span
-                      title="Measured impressions on Bing over the last 30 days — a real number, not an estimate. Bing is a small share of search, so Google's volume for the same term is typically much higher. Use these to decide what to work on first, not to forecast traffic."
+                      title={tr("Measured impressions on Bing over the last 30 days — a real number, not an estimate. Bing is a small share of search, so Google's volume for the same term is typically much higher. Use these to decide what to work on first, not to forecast traffic.")}
                       className="cursor-help underline decoration-dotted underline-offset-2"
                     >
-                      volumes from Bing
+                      {tr("volumes from Bing")}
                     </span>
                   </>
                 )}
@@ -199,7 +199,7 @@ export function ResearchForm({
                   <span className="font-medium">{s.query}</span>
                   {s.bingVolume !== undefined && (
                     <span
-                      title={`${s.bingVolume.toLocaleString()} impressions on Bing in the last 30 days. Google's figure for this term is typically far higher — the ordering is the useful part, not the absolute number.`}
+                      title={tr("{n} impressions on Bing in the last 30 days. Google's figure for this term is typically far higher — the ordering is the useful part, not the absolute number.", { n: s.bingVolume.toLocaleString() })}
                       className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium tabular-nums text-emerald-300 ring-1 ring-inset ring-emerald-500/25"
                     >
                       {s.bingVolume.toLocaleString()}
@@ -210,13 +210,13 @@ export function ResearchForm({
                     <span
                       className={`inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ring-inset ${intentTone[s.intent]} no-underline`}
                     >
-                      {s.intent}
+                      {tr(s.intent)}
                     </span>
                   </Term>
                   {s.isLongTail && (
                     <Term term="long-tail">
                       <span className="inline-flex shrink-0 items-center rounded-full bg-white/5 px-2 py-0.5 text-[11px] font-medium text-muted-foreground ring-1 ring-inset ring-white/10 no-underline">
-                        long-tail
+                        {tr("long-tail")}
                       </span>
                     </Term>
                   )}
@@ -241,12 +241,12 @@ export function ResearchForm({
                       ))}
                     </select>
                     <Button type="submit" size="sm" variant="outline">
-                      Track
+                      {tr("Track")}
                     </Button>
                   </form>
                 ) : (
                   <span className="text-xs text-muted-foreground">
-                    Add a client to track
+                    {tr("Add a client to track")}
                   </span>
                 )}
               </li>

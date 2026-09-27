@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { quickAddClient } from "@/app/clients/actions";
+import { tr } from "@/lib/i18n";
 
 /**
  * Global quick-add dialog. Use the `useQuickAddClient` hook from any client
@@ -100,12 +101,12 @@ function QuickAddClientDialog({
         if (!pending) onClose();
       }}
       size="sm"
-      title="Add a new client"
-      description="Just paste the website URL — we'll auto-fetch the logo, name, address, social links, tech stack, and niche, then seed an initial task list."
+      title={tr("Add a new client")}
+      description={tr("Just paste the website URL — we'll auto-fetch the logo, name, address, social links, tech stack, and niche, then seed an initial task list.")}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
-          <Label htmlFor="qa-url">Website URL</Label>
+          <Label htmlFor="qa-url">{tr("Website URL")}</Label>
           <div className="relative">
             <Globe className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -132,9 +133,7 @@ function QuickAddClientDialog({
 
         <div className="rounded-md border border-violet-500/20 bg-violet-500/[0.04] px-3 py-2 text-[11px] text-muted-foreground">
           <Sparkles className="mr-1 inline size-3 text-violet-300" />
-          Auto-extracted: logo, name, description, address, phone, social
-          links, tech stack, niche, initial niche-aware + stack-aware task
-          list. Editable later.
+          {tr("Auto-extracted: logo, name, description, address, phone, social links, tech stack, niche, initial niche-aware + stack-aware task list. Editable later.")}
         </div>
 
         <div className="flex items-center justify-end gap-2 pt-1">
@@ -145,18 +144,18 @@ function QuickAddClientDialog({
             onClick={onClose}
             disabled={pending}
           >
-            Cancel
+            {tr("Cancel")}
           </Button>
           <Button type="submit" disabled={pending || !url.trim()}>
             {pending ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
-                Setting up… (~10s)
+                {tr("Setting up… (~10s)")}
               </>
             ) : (
               <>
                 <Wand2 className="size-4" />
-                Create client
+                {tr("Create client")}
               </>
             )}
           </Button>
@@ -180,7 +179,7 @@ export function QuickAddClientButton({
   const ctx = useQuickAddClient();
   return (
     <button type="button" onClick={ctx.open} className={className}>
-      {children ?? "Add client"}
+      {children ?? tr("Add client")}
     </button>
   );
 }

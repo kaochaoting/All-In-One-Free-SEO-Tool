@@ -8,6 +8,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { setCreditSaverEnabled } from "./key-actions";
+import { tr } from "@/lib/i18n";
 
 export function CreditSaverForm({ initial }: { initial: boolean }) {
   const [on, setOn] = useState(initial);
@@ -42,7 +43,7 @@ export function CreditSaverForm({ initial }: { initial: boolean }) {
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-3">
-            <h3 className="text-sm font-semibold">Credit-saver mode</h3>
+            <h3 className="text-sm font-semibold">{tr("Credit-saver mode")}</h3>
             <button
               type="button"
               role="switch"
@@ -71,24 +72,24 @@ export function CreditSaverForm({ initial }: { initial: boolean }) {
           </p>
           <div className="mt-2 grid gap-1 text-[11px] text-muted-foreground sm:grid-cols-2">
             <div className="rounded-md bg-white/[0.03] px-2 py-1.5 ring-1 ring-inset ring-white/[0.04]">
-              <span className="font-mono font-medium text-foreground">ON</span>{" "}
-              · ~500 tokens · 2-4 sentences · cheap rerolls
+              <span className="font-mono font-medium text-foreground">{tr("ON")}</span>{" "}
+              {tr("· ~500 tokens · 2-4 sentences · cheap rerolls")}
             </div>
             <div className="rounded-md bg-white/[0.03] px-2 py-1.5 ring-1 ring-inset ring-white/[0.04]">
-              <span className="font-mono font-medium text-foreground">OFF</span>{" "}
-              · up to 2000 tokens · full explanations, full briefs
+              <span className="font-mono font-medium text-foreground">{tr("OFF")}</span>{" "}
+              {tr("· up to 2000 tokens · full explanations, full briefs")}
             </div>
           </div>
           {pending && (
             <div className="mt-2 inline-flex items-center gap-1.5 text-[11px] text-muted-foreground">
               <Loader2 className="size-3 animate-spin" />
-              Saving…
+              {tr("Saving…")}
             </div>
           )}
           {saved && !pending && (
             <div className="mt-2 inline-flex items-center gap-1.5 text-[11px] text-emerald-300">
               <CheckCircle2 className="size-3" />
-              Saved.
+              {tr("Saved.")}
             </div>
           )}
         </div>

@@ -16,6 +16,8 @@ import { toast } from "sonner";
 import { Power, RefreshCw, Square, Settings as Cog, X } from "lucide-react";
 import { safeFetch } from "@/lib/safe-fetch";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
+import { selfRestartEnabled } from "@/lib/feature-flags";
+import { tr } from "@/lib/i18n";
 
 export function PowerWidget() {
   const [open, setOpen] = useState(false);
@@ -58,9 +60,9 @@ export function PowerWidget() {
 
   async function restart() {
     const ok = await confirmDialog({
-      title: "Restart the server?",
-      description: "The page will reload itself once it's back (8–15 seconds).",
-      confirmLabel: "Restart",
+      title: tr("Restart the server?"),
+      description: tr("The page will reload itself once it's back (8–15 seconds)."),
+      confirmLabel: tr("Restart"),
     });
     if (!ok) return;
     setBusy("restart");
@@ -76,7 +78,7 @@ export function PowerWidget() {
       return;
     }
     toast.success("Restarting server", {
-      description: "Page will reload itself once the server is back",
+      description: tr("Page will reload itself once the server is back"),
     });
     setMsg("Waiting for server to come back…");
     const start = Date.now();
@@ -105,10 +107,9 @@ export function PowerWidget() {
 
   async function stop() {
     const ok = await confirmDialog({
-      title: "Stop the server?",
-      description:
-        "The app will go offline. Launch it again from your desktop shortcut or by running seo.cmd.",
-      confirmLabel: "Stop server",
+      title: tr("Stop the server?"),
+      description: tr("The app will go offline. Launch it again from your desktop shortcut or by running seo.cmd."),
+      confirmLabel: tr("Stop server"),
       destructive: true,
     });
     if (!ok) return;
@@ -125,7 +126,7 @@ export function PowerWidget() {
       return;
     }
     toast.success("Server stopped", {
-      description: "Launch it again from your desktop shortcut.",
+      description: tr("Launch it again from your desktop shortcut."),
     });
     setMsg("Server stopped. Launch it again from your desktop shortcut.");
   }
@@ -136,18 +137,19 @@ export function PowerWidget() {
         <div className="mb-2 w-64 overflow-hidden rounded-lg border border-border bg-popover shadow-lg">
           <div className="flex items-center justify-between border-b border-border px-3 py-2">
             <span className="text-[12px] font-medium text-foreground">
-              Server controls
+              {tr("Server controls")}
             </span>
             <button
               type="button"
               onClick={() => setOpen(false)}
               className="grid size-5 place-items-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-              aria-label="Close"
+              aria-label={tr("Close")}
             >
               <X className="size-3" />
             </button>
           </div>
           <div className="p-1.5">
+            {selfRestartEnabled() && (
             <button
               type="button"
               onClick={restart}
@@ -157,9 +159,10 @@ export function PowerWidget() {
               <RefreshCw
                 className={`size-3.5 text-violet-300 ${busy === "restart" ? "animate-spin" : ""}`}
               />
-              <span className="flex-1">Restart server</span>
+              <span className="flex-1">{tr("Restart server")}</span>
               <span className="text-[10px] text-muted-foreground">~10s</span>
             </button>
+            )}
             <button
               type="button"
               onClick={stop}
@@ -167,7 +170,7 @@ export function PowerWidget() {
               className="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-[13px] text-foreground transition-colors hover:bg-accent disabled:opacity-50"
             >
               <Square className="size-3.5 text-rose-300" />
-              <span className="flex-1">Stop server</span>
+              <span className="flex-1">{tr("Stop server")}</span>
             </button>
             <Link
               href="/settings/install"
@@ -175,7 +178,7 @@ export function PowerWidget() {
               className="flex items-center gap-2 rounded px-2 py-2 text-[13px] text-foreground transition-colors hover:bg-accent"
             >
               <Cog className="size-3.5 text-muted-foreground" />
-              <span className="flex-1">Install as app / shortcuts</span>
+              <span className="flex-1">{tr("Install as app / shortcuts")}</span>
             </Link>
           </div>
           {msg && (
@@ -189,8 +192,8 @@ export function PowerWidget() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        title="Server controls"
-        aria-label="Server controls"
+        title={tr("Server controls")}
+        aria-label={tr("Server controls")}
         className="grid size-9 place-items-center rounded-full border border-border bg-card text-muted-foreground shadow-md transition-colors hover:bg-accent hover:text-foreground"
       >
         <Power className="size-4" />

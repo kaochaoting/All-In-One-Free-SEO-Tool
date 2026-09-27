@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { searchReddit, type RedditResearchResult } from "./actions";
+import { tr } from "@/lib/i18n";
 
 export default function RedditResearchPage() {
   const [query, setQuery] = useState("");
@@ -49,7 +50,7 @@ export default function RedditResearchPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -58,13 +59,11 @@ export default function RedditResearchPage() {
             <Flame className="size-5 text-rose-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">Reddit research</span>
+            <span className="text-gradient-brand">{tr("Reddit research")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Reddit is in 40% of LLM citations. Find the actual questions and pain
-          points your audience asks. No API key — uses Reddit&apos;s public
-          JSON endpoint.
+          {tr("Reddit is in 40% of LLM citations. Find the actual questions and pain points your audience asks. No API key — uses Reddit&apos;s public JSON endpoint.")}
         </p>
       </header>
 
@@ -131,7 +130,7 @@ export default function RedditResearchPage() {
             ) : (
               <>
                 <Search className="size-4" />
-                Search
+                {tr("Search")}
               </>
             )}
           </Button>

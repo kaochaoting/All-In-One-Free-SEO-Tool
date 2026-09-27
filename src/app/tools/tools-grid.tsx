@@ -64,8 +64,9 @@ import {
   type ConnectionMode,
   type ToolBadge,
 } from "@/lib/tool-capabilities";
+import { toolText, tr } from "@/lib/i18n";
 
-const tools = [
+const TOOLS_EN = [
   {
     href: "/tools/health-check",
     icon: Stethoscope,
@@ -847,6 +848,15 @@ const tools = [
   },
 ];
 
+// zh-TW: tool names + one-line descriptions come from src/lib/i18n/tools.zh-TW.ts
+// (falls back to the English text above for any route without a translation).
+const tools = TOOLS_EN.map((tool) => ({
+  ...tool,
+  // Keep the English text searchable too ("schema", "robots" …).
+  searchEn: `${tool.title} ${tool.description}`.toLowerCase(),
+  ...toolText(tool.href, tool),
+}));
+
 const accentMap: Record<string, string> = {
   violet: "bg-violet-500/15 text-violet-300 ring-violet-400/30",
   cyan: "bg-cyan-500/15 text-cyan-300 ring-cyan-400/30",
@@ -935,7 +945,8 @@ export function ToolsGrid({ mode = "none" }: { mode?: ConnectionMode }) {
     return tools.filter(
       (t) =>
         t.title.toLowerCase().includes(q) ||
-        t.description.toLowerCase().includes(q),
+        t.description.toLowerCase().includes(q) ||
+        t.searchEn.includes(q),
     );
   }, [q]);
 
@@ -984,8 +995,8 @@ export function ToolsGrid({ mode = "none" }: { mode?: ConnectionMode }) {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Tools"
-        description="100+ SEO utilities. Pin the ones you use daily and they'll stick to the top."
+        title={tr("Tools")}
+        description={tr("100+ SEO utilities. Pin the ones you use daily and they'll stick to the top.")}
         icon={Wrench}
         accent="violet"
       />
@@ -998,7 +1009,7 @@ export function ToolsGrid({ mode = "none" }: { mode?: ConnectionMode }) {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Filter tools… (Cmd / Ctrl + K opens global search)"
+            placeholder={tr("Filter tools… (Cmd / Ctrl + K opens global search)")}
             className="h-10 w-full rounded-md border border-white/10 bg-background/60 pl-10 pr-10 text-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
           />
           {query && (
@@ -1006,7 +1017,7 @@ export function ToolsGrid({ mode = "none" }: { mode?: ConnectionMode }) {
               type="button"
               onClick={() => setQuery("")}
               className="absolute right-2 top-1/2 grid size-7 -translate-y-1/2 place-items-center rounded text-muted-foreground hover:bg-white/10 hover:text-foreground"
-              aria-label="Clear filter"
+              aria-label={tr("Clear filter")}
             >
               <X className="size-3.5" />
             </button>
@@ -1014,7 +1025,7 @@ export function ToolsGrid({ mode = "none" }: { mode?: ConnectionMode }) {
         </div>
         {q && (
           <p className="mt-1.5 px-1 text-[11px] text-muted-foreground">
-            {totalMatches} {totalMatches === 1 ? "match" : "matches"}
+            {tr("{n} matches", { n: totalMatches })}
           </p>
         )}
         {/*
@@ -1034,7 +1045,7 @@ export function ToolsGrid({ mode = "none" }: { mode?: ConnectionMode }) {
           <div className="mt-2 rounded-xl border border-border bg-muted/40 px-4 py-3 text-[12px] leading-relaxed text-muted-foreground">
             <p>
               <strong className="text-foreground">
-                Your chat app is connected, and these tools still need a key.
+                {tr("Your chat app is connected, and these tools still need a key.")}
               </strong>{" "}
               That is not a bug. The connection runs one way: your chat app
               calls <em>into</em> this app to read your SEO data. These pages
@@ -1050,7 +1061,7 @@ export function ToolsGrid({ mode = "none" }: { mode?: ConnectionMode }) {
                 href="/settings#ai"
                 className="rounded text-foreground underline decoration-dotted underline-offset-2 hover:decoration-solid"
               >
-                Set one up
+                {tr("Set one up")}
               </Link>
               .
             </p>
@@ -1063,8 +1074,8 @@ export function ToolsGrid({ mode = "none" }: { mode?: ConnectionMode }) {
           <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 px-1 text-[11px] text-muted-foreground">
             <span>
               {hideUnusable
-                ? `${unusableCount} tools hidden — they need an AI key.`
-                : `${unusableCount} tools need an AI key.`}
+                ? tr("{n} tools hidden — they need an AI key.", { n: unusableCount })
+                : tr("{n} tools need an AI key.", { n: unusableCount })}
             </span>
             <button
               type="button"
@@ -1073,13 +1084,13 @@ export function ToolsGrid({ mode = "none" }: { mode?: ConnectionMode }) {
               }
               className="rounded text-foreground underline decoration-dotted underline-offset-2 hover:decoration-solid"
             >
-              {hideUnusable ? "Show them anyway" : "Hide them"}
+              {hideUnusable ? tr("Show them anyway") : tr("Hide them")}
             </button>
             <Link
               href="/settings#ai"
               className="rounded text-amber-500 underline decoration-dotted underline-offset-2 hover:decoration-solid dark:text-amber-300"
             >
-              Add a key
+              {tr("Add a key")}
             </Link>
             {/* A legend, because a coloured dot only means something once
                 somebody has told you what it means. Shown alongside the
@@ -1088,11 +1099,11 @@ export function ToolsGrid({ mode = "none" }: { mode?: ConnectionMode }) {
               <span className="inline-flex items-center gap-2.5">
                 <span className="inline-flex items-center gap-1">
                   <span className="size-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20" />
-                  works now
+                  {tr("works now")}
                 </span>
                 <span className="inline-flex items-center gap-1">
                   <span className="size-2.5 rounded-full bg-amber-500 ring-2 ring-amber-500/25" />
-                  needs a key
+                  {tr("needs a key")}
                 </span>
               </span>
             )}
@@ -1278,7 +1289,7 @@ function ToolCard({
                 inspection. */}
             <span
               aria-hidden="true"
-              title={usable ? "Ready to use" : "Needs an AI key"}
+              title={usable ? tr("Ready to use") : tr("Needs an AI key")}
               className={`mt-[0.4rem] size-2.5 shrink-0 rounded-full ring-2 ${
                 usable
                   ? "bg-emerald-500 ring-emerald-500/20"
@@ -1287,7 +1298,7 @@ function ToolCard({
             />
             <span className="min-w-0 flex-1">{tool.title}</span>
             <span className="sr-only">
-              {usable ? " (ready to use)" : " (needs an AI key)"}
+              {usable ? tr(" (ready to use)") : tr(" (needs an AI key)")}
             </span>
           </h3>
           <p className="text-sm text-muted-foreground">{tool.description}</p>
@@ -1310,8 +1321,8 @@ function ToolCard({
           e.stopPropagation();
           onTogglePin();
         }}
-        title={pinned ? "Unpin from top" : "Pin to top"}
-        aria-label={pinned ? "Unpin tool" : "Pin tool"}
+        title={pinned ? tr("Unpin from top") : tr("Pin to top")}
+        aria-label={pinned ? tr("Unpin tool") : tr("Pin tool")}
         className={`absolute right-3 top-3 grid size-7 place-items-center rounded-md transition-all ${
           pinned
             ? "bg-amber-500/15 text-amber-300 ring-1 ring-inset ring-amber-500/30 opacity-100"

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { KeyRound, MessageSquare } from "lucide-react";
 import { capabilityOf } from "@/lib/tool-capabilities";
+import { tr } from "@/lib/i18n";
 
 /**
  * Tells you a page will not work before you try to use it.
@@ -60,11 +61,10 @@ export function NeedsKeyBanner({
         <KeyRound className="mt-0.5 size-4 shrink-0 text-amber-500 dark:text-amber-300" />
         <div className="min-w-0 flex-1 space-y-1.5">
           <p className="text-sm font-medium text-amber-900 dark:text-amber-100">
-            This one needs an AI key
+            {tr("This one needs an AI key")}
           </p>
           <p className="text-xs leading-relaxed text-amber-900/80 dark:text-amber-100/80">
-            It writes text, so it calls a model directly. Gemini and Groq
-            have free tiers — about two minutes to set up.
+            {tr("It writes text, so it calls a model directly. Gemini and Groq have free tiers — about two minutes to set up.")}
           </p>
 
           {/* Said here because it is the exact moment the question comes
@@ -74,9 +74,7 @@ export function NeedsKeyBanner({
             <p className="flex flex-wrap items-center gap-1.5 text-xs leading-relaxed text-amber-900/80 dark:text-amber-100/80">
               <MessageSquare className="size-3 shrink-0" />
               <span>
-                {client ?? "Your chat app"} is connected, but it works the
-                other way round — it calls into this app. You can ask it to do
-                this instead, or add a key to do it here.
+                {client ?? tr("Your chat app")} {tr("is connected, but it works the other way round — it calls into this app. You can ask it to do this instead, or add a key to do it here.")}
               </span>
             </p>
           )}
@@ -85,7 +83,7 @@ export function NeedsKeyBanner({
             href="/settings#ai"
             className="inline-flex h-8 items-center rounded-lg bg-amber-500/20 px-3 text-xs font-medium text-amber-900 ring-1 ring-inset ring-amber-500/40 hover:bg-amber-500/30 dark:text-amber-100"
           >
-            Connect a key
+            {tr("Connect a key")}
           </Link>
         </div>
       </div>

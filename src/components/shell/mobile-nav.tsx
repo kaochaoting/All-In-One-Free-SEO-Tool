@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, Search, X } from "lucide-react";
 import { NAV_GROUPS, type NavItem } from "./nav-items";
 import { capabilityOf } from "@/lib/tool-capabilities";
+import { tr } from "@/lib/i18n";
 
 /**
  * Mobile-only navigation drawer. Hidden ≥md where the regular sidebar
@@ -73,7 +74,7 @@ export function MobileNav({
           setQuery("");
           setOpen(true);
         }}
-        aria-label="Open menu"
+        aria-label={tr("Open menu")}
         className="flex size-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-accent/40 hover:text-foreground md:hidden"
       >
         <Menu className="size-5" />
@@ -91,11 +92,11 @@ export function MobileNav({
           />
           <aside className="relative ml-auto flex h-full w-72 max-w-[85vw] flex-col overflow-hidden bg-card shadow-2xl ring-1 ring-border">
             <div className="flex items-center justify-between border-b border-border px-4 py-3">
-              <span className="text-sm font-semibold">Navigate</span>
+              <span className="text-sm font-semibold">{tr("Navigate")}</span>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                aria-label="Close menu"
+                aria-label={tr("Close menu")}
                 className="grid size-8 place-items-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground"
               >
                 <X className="size-4" />
@@ -109,8 +110,8 @@ export function MobileNav({
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Filter…"
-                  aria-label="Filter navigation"
+                  placeholder={tr("Filter…")}
+                  aria-label={tr("Filter navigation")}
                   className="h-9 w-full rounded-md border border-input bg-background/60 pl-8 pr-2 text-sm focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/40"
                 />
               </div>
@@ -175,7 +176,7 @@ export function MobileNav({
                 visible without scrolling. A second link to the same
                 place is just another thing to read. */}
             <footer className="border-t border-border px-4 py-3 text-[10px] text-muted-foreground">
-              Tap outside to close
+              {tr("Tap outside to close")}
             </footer>
           </aside>
         </div>

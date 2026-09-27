@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { CircleHelp } from "lucide-react";
 import { docsUrlFor } from "@/lib/docs-links";
+import { tr } from "@/lib/i18n";
 
 /**
  * The help button that sits in every page header.
@@ -23,8 +24,8 @@ export function HelpLink({ className = "" }: { className?: string }) {
       href={docsUrlFor(pathname)}
       target="_blank"
       rel="noopener noreferrer"
-      title="Open the documentation for this screen"
-      aria-label="Help for this screen"
+      title={tr("Open the documentation for this screen")}
+      aria-label={tr("Help for this screen")}
       className={
         "inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-white/10 " +
         "bg-white/[0.03] px-2.5 py-1.5 text-xs font-medium text-muted-foreground " +
@@ -33,7 +34,7 @@ export function HelpLink({ className = "" }: { className?: string }) {
       }
     >
       <CircleHelp className="size-3.5" aria-hidden="true" />
-      <span className="hidden sm:inline">Help</span>
+      <span className="hidden sm:inline">{tr("Help")}</span>
     </a>
   );
 }

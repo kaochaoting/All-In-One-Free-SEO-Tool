@@ -20,6 +20,7 @@ import {
   saveHeadersSnapshot,
   type HeadersResult,
 } from "./actions";
+import { tr } from "@/lib/i18n";
 
 export default function HeadersPage() {
   const [url, setUrl] = useState("");
@@ -52,7 +53,7 @@ export default function HeadersPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -61,12 +62,11 @@ export default function HeadersPage() {
             <ServerCog className="size-5 text-violet-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">HTTP headers + redirect chain</span>
+            <span className="text-gradient-brand">{tr("HTTP headers + redirect chain")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Follow every redirect step-by-step + show full HTTP response headers
-          at each hop. Critical for canonicalization + redirect debugging.
+          {tr("Follow every redirect step-by-step + show full HTTP response headers at each hop. Critical for canonicalization + redirect debugging.")}
         </p>
       </header>
 
@@ -122,17 +122,17 @@ export default function HeadersPage() {
               {savePending ? (
                 <>
                   <Loader2 className="size-3.5 animate-spin" />
-                  Saving…
+                  {tr("Saving…")}
                 </>
               ) : saved ? (
                 <>
                   <CheckCircle2 className="size-3.5 text-emerald-300" />
-                  Saved
+                  {tr("Saved")}
                 </>
               ) : (
                 <>
                   <Save className="size-3.5" />
-                  Save snapshot
+                  {tr("Save snapshot")}
                 </>
               )}
             </Button>

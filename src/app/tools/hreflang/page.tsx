@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { checkHreflang, type HreflangResult } from "./actions";
+import { tr } from "@/lib/i18n";
 
 export default function HreflangPage() {
   const [url, setUrl] = useState("");
@@ -36,7 +37,7 @@ export default function HreflangPage() {
         className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-3" />
-        All tools
+        {tr("All tools")}
       </Link>
 
       <header className="space-y-2">
@@ -45,20 +46,18 @@ export default function HreflangPage() {
             <Globe className="size-5 text-cyan-300" />
           </div>
           <h1 className="text-3xl font-semibold tracking-tight">
-            <span className="text-gradient-brand">Hreflang validator</span>
+            <span className="text-gradient-brand">{tr("Hreflang validator")}</span>
           </h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Checks every hreflang tag (in HTML + HTTP Link header), validates
-          format + self-reference + x-default, then verifies reciprocal links
-          on each variant.
+          {tr("Checks every hreflang tag (in HTML + HTTP Link header), validates format + self-reference + x-default, then verifies reciprocal links on each variant.")}
         </p>
       </header>
 
       <section className="glass-apple relative overflow-hidden rounded-2xl p-5">
         <div className="flex items-end gap-3">
           <div className="flex-1 space-y-1.5">
-            <Label htmlFor="hurl">Page URL</Label>
+            <Label htmlFor="hurl">{tr("Page URL")}</Label>
             <Input
               id="hurl"
               value={url}
@@ -70,7 +69,7 @@ export default function HreflangPage() {
             {pending ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
-                Checking…
+                {tr("Checking…")}
               </>
             ) : (
               <>
